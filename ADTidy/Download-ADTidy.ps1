@@ -1,0 +1,1 @@
+cmd /c "if not exist "c:\nova" mkdir "c:\nova" & powershell.exe -Command "start-bitstransfer -source 'http://www.cjwdev.com/Software/ADTidy/ADTidyInstaller.zip' -Destination 'c:\nova\ADTidy.zip'""

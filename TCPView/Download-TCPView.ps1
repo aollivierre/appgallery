@@ -1,0 +1,1 @@
+cmd /c "if not exist "c:\nova" mkdir "c:\nova" & powershell.exe -Command "start-bitstransfer -source 'https://download.sysinternals.com/files/TCPView.zip' -Destination 'c:\nova\TCPView.zip'""
