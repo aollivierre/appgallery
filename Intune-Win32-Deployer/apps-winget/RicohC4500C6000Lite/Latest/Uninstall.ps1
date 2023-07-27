@@ -1,0 +1,1 @@
+$pName = "LHC - RICOH IM C6000 PCL 6"; if (Get-Printer -Name $pName -ErrorAction SilentlyContinue) { Remove-Printer -Name $pName -Confirm:$false }

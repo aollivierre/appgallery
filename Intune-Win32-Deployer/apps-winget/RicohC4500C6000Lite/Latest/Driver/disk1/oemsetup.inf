@@ -1,0 +1,233 @@
+;------------------------------------------------------------
+; Copyright (c) 2007-2022 RICOH COMPANY, LTD
+; All Rights Reserved
+; Printer Driver Setup Information File
+;------------------------------------------------------------
+
+[Version]
+Signature   = "$Windows NT$"
+Provider    = %Ricoh%
+ClassGUID   = {4D36E979-E325-11CE-BFC1-08002BE10318}
+Class       = Printer
+DriverVer  = 01/21/2022,1.56.0.0
+CatalogFile	= rica7R.cat
+
+[Manufacturer]
+%Gestetner%=Gestetner,NTamd64
+%LANIER%=LANIER,NTamd64
+%NRG%=NRG,NTamd64
+%Ricoh%=Ricoh,NTamd64
+%SAVIN%=SAVIN,NTamd64
+
+
+;WindowsXP(amd64)
+[Gestetner.NTamd64]
+"Gestetner IM C4500 PCL 6"=Gestetner_IM_C4500_64.dat,USBPRINT\GestetnerIM_C45003D27,LPTENUM\GestetnerIM_C45003D27,GestetnerIM_C45003D27
+"Gestetner GS3045 PCL 6"=Gestetner_GS3045_64.dat,USBPRINT\GestetnerGS304550E7,LPTENUM\GestetnerGS304550E7,GestetnerGS304550E7
+"Gestetner IM C6000 PCL 6"=Gestetner_IM_C6000_64.dat,USBPRINT\GestetnerIM_C600047B7,LPTENUM\GestetnerIM_C600047B7,GestetnerIM_C600047B7
+"Gestetner GS3160 PCL 6"=Gestetner_GS3160_64.dat,USBPRINT\GestetnerGS3160F377,LPTENUM\GestetnerGS3160F377,GestetnerGS3160F377
+
+[LANIER.NTamd64]
+"LANIER IM C4500 PCL 6"=LANIER_IM_C4500_64.dat,USBPRINT\LANIERIM_C4500BD46,LPTENUM\LANIERIM_C4500BD46,LANIERIM_C4500BD46
+"LANIER IM C6000 PCL 6"=LANIER_IM_C6000_64.dat,USBPRINT\LANIERIM_C60000455,LPTENUM\LANIERIM_C60000455,LANIERIM_C60000455,LANIERIM_C6000_455
+
+[NRG.NTamd64]
+"NRG IM C4500 PCL 6"=NRG_IM_C4500_64.dat,USBPRINT\NRGIM_C45004AE6,LPTENUM\NRGIM_C45004AE6,NRGIM_C45004AE6
+"NRG IM C5500 PCL 6"=NRG_IM_C5500_64.dat,USBPRINT\NRGIM_C55007766,LPTENUM\NRGIM_C55007766,NRGIM_C55007766
+"NRG IM C6000 PCL 6"=NRG_IM_C6000_64.dat,USBPRINT\NRGIM_C6000F3F7,LPTENUM\NRGIM_C6000F3F7,NRGIM_C6000F3F7
+
+[Ricoh.NTamd64]
+"RICOH IM C4500 PCL 6"=RICOH_IM_C4500_64.dat,USBPRINT\RICOHIM_C450090D6,LPTENUM\RICOHIM_C450090D6,RICOHIM_C450090D6
+"RICOH IM C5500 PCL 6"=RICOH_IM_C5500_64.dat,USBPRINT\RICOHIM_C55006CD7,LPTENUM\RICOHIM_C55006CD7,RICOHIM_C55006CD7
+"RICOH IM C6000 PCL 6"=RICOH_IM_C6000_64.dat,USBPRINT\RICOHIM_C600029C5,LPTENUM\RICOHIM_C600029C5,RICOHIM_C600029C5
+
+[SAVIN.NTamd64]
+"SAVIN IM C4500 PCL 6"=SAVIN_IM_C4500_64.dat,USBPRINT\SAVINIM_C4500A5BB,LPTENUM\SAVINIM_C4500A5BB,SAVINIM_C4500A5BB
+"SAVIN IM C6000 PCL 6"=SAVIN_IM_C6000_64.dat,USBPRINT\SAVINIM_C60001CAA,LPTENUM\SAVINIM_C60001CAA,SAVINIM_C60001CAA
+
+
+;WindowsXP(x86)
+
+[Gestetner_IM_C4500_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[Gestetner_GS3045_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[Gestetner_IM_C6000_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[Gestetner_GS3160_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[LANIER_IM_C4500_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[LANIER_IM_C6000_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[NRG_IM_C4500_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[NRG_IM_C5500_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[NRG_IM_C6000_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[RICOH_IM_C4500_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[RICOH_IM_C5500_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[RICOH_IM_C6000_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[SAVIN_IM_C4500_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+[SAVIN_IM_C6000_64.dat]
+CopyFiles		= RPD_FILES,RPD_COMMON,RPD_COMMON_SYS32
+DataSection		= RPD_DATA
+DataFile		= rica7Rcd.psz
+LanguageMonitor	= rica7Rlm,rica7Rlm.dll
+CopyINF		= RPRNUT.INF
+
+
+[RPD_FILES]
+rica7Rui.dll,rica7Rui.dl_
+rica7Rui.irj
+rica7Rui.rdj
+rica7Rui.rcf
+rica7Rug.dll,rica7Rug.dl_
+rica7Rug.miz
+rica7Rur.dll,rica7Rur.dl_
+rica7Rgr.dll,rica7Rgr.dl_
+rica7Rgl.dll,rica7Rgl.dl_
+rica7Rci.dll,rica7Rci.dl_
+rica7Rcd.dll,rica7Rcd.dl_
+rica7Rcd.psz
+rica7Rcf.cfz
+rica7Rcl.ini
+rica7Rch.chm
+rica7Rcz.dlz
+rica7Rcj.dll,rica7Rcj.dl_
+rica7Rct.dll,rica7Rct.dl_
+rica7Rcb.dll,rica7Rcb.dl_
+rica7Rtl.exe,rica7Rtl.ex_
+rica7Rtc.exe,rica7Rtc.ex_
+rica7Rtt.exe,rica7Rtt.ex_
+rica7Rtf.exe,rica7Rtf.ex_
+
+[RPD_COMMON_SYS32]
+rica7Rlm.dll,rica7Rlm.dl_,,0x00000020
+
+[RPD_COMMON]
+ricdb64.dll,ricdb64.dl_,,0x00000020
+mfricr64.dll,mfricr64.dl_,,0x00000020
+RD07Rd64.dll,RD07Rd64.dl_,,0x00000020
+
+[RPD_DATA]
+ConfigFile		= rica7Rui.dll
+DriverFile		= rica7Rgr.dll
+HelpFile		= rica7Rch.chm
+
+[DestinationDirs]
+DefaultDestDir		= 66000
+RPD_COMMON_SYS32	 	= 66002
+
+[SourceDisksNames.amd64]
+1 = %DSK%,,,
+
+[PrinterPackageInstallation.amd64]
+PackageAware			=TRUE
+
+[SourceDisksFiles.amd64]
+rica7Rui.dl_	= 1
+rica7Rui.irj	= 1
+rica7Rui.rdj	= 1
+rica7Rui.rcf	= 1
+rica7Rug.dl_	= 1
+rica7Rug.miz	= 1
+rica7Rur.dl_	= 1
+rica7Rgr.dl_	= 1
+rica7Rgl.dl_	= 1
+rica7Rci.dl_		= 1
+rica7Rcd.dl_	= 1
+rica7Rcd.psz	= 1
+rica7Rcf.cfz	= 1
+rica7Rcl.ini	= 1
+rica7Rch.chm	= 1
+rica7Rcz.dlz		= 1
+rica7Rcj.dl_	= 1
+rica7Rct.dl_	= 1
+rica7Rcb.dl_	= 1
+rica7Rlm.dl_	= 1
+rica7Rtc.ex_	= 1
+rica7Rtt.ex_	= 1
+rica7Rtf.ex_	= 1
+ricdb64.dl_			= 1
+mfricr64.dl_		= 1
+rica7Rtl.ex_      = 1
+RD07Rd64.dl_		= 1
+
+[Strings]
+Ricoh="Ricoh"
+Gestetner="Gestetner"
+LANIER="LANIER"
+NRG="NRG"
+SAVIN="SAVIN"
+DSK= "PCL6 Printer Driver Disk1"

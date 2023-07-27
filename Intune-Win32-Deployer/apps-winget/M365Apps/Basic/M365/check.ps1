@@ -1,0 +1,1 @@
+﻿if((Get-ChildItem -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"|Get-ItemProperty|Where-Object{$_.DisplayName -match "Microsoft 365 Apps" })){ Write-Output "f";exit 0}else{exit 1}

@@ -1,0 +1,1 @@
+﻿& (Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Definition) "PhishAlertButtonSetup.exe") "/q" "/ComponentArgs" "KnowBe4 Phish Alert Button:LICENSEKEY=`"US6A42A81C6AF89F5961CAE03E6AFBCF5A`""

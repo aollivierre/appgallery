@@ -1,0 +1,1 @@
+$pName = "LHC - Sharp MX-3071 PCL6"; if (Get-Printer -Name $pName -ErrorAction SilentlyContinue) { Remove-Printer -Name $pName -Confirm:$false }

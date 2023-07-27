@@ -1,0 +1,1 @@
+& "C:\Program Files\Huntress\uninstall.exe" /S

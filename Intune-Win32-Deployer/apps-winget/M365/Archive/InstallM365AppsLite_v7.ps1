@@ -1,0 +1,1 @@
+﻿$d = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition; & "$d\setup.exe" /configure $d\config.xml

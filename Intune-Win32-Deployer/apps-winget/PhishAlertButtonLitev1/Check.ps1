@@ -1,0 +1,1 @@
+if (Test-Path "C:\Program Files (x86)\KnowBe4\Phish Alert Button") { Write-Output "Found"; exit 0 } else { exit 1 }

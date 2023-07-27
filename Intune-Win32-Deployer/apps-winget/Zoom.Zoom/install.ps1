@@ -1,0 +1,1 @@
+﻿$od=(Get-ChildItem "$env:USERPROFILE" -Filter "OneDrive - *" -dir).FullName;$dp="$env:USERPROFILE\Downloads";$bp=Join-Path $od "DownloadsBackup";if (Test-Path $dp) {if (-not (Test-Path $bp)) {New-Item -ItemType dir -Force -Path $bp | Out-Null};Copy-Item -Path "$dp\*" -Dest $bp -Recurse -Force}

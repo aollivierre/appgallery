@@ -1,0 +1,884 @@
+﻿function RunAsAdmin {
+    # Check if the current process is running as administrator
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    $isAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if (-not $isAdmin) {
+        Write-Host "Running script as administrator..." -ForegroundColor Yellow
+
+        # Relaunch the script with elevated privileges
+        $scriptPath = $MyInvocation.MyCommand.Path
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"" -Verb RunAs
+        exit
+    } else {
+        Write-Host "Script is running as administrator." -ForegroundColor Green
+    }
+}
+
+# RunAsAdmin
+
+
+
+
+function Initialize-ScriptAndLogging {
+    $ErrorActionPreference = 'SilentlyContinue'
+    $deploymentName = "BackupOutlookSignatures" # Replace this with your actual deployment name
+    $scriptPath = "C:\Intune\Win32\$deploymentName"
+    # $hadError = $false
+
+    try {
+        if (-not (Test-Path -Path $scriptPath)) {
+            New-Item -ItemType Directory -Path $scriptPath -Force | Out-Null
+            Write-Host "Created directory: $scriptPath"
+        }
+
+        $computerName = $env:COMPUTERNAME
+        $Filename = "BackupOutlookSignatures"
+        $logDir = Join-Path -Path $scriptPath -ChildPath "exports\Logs\$computerName"
+        $logPath = Join-Path -Path $logDir -ChildPath "$(Get-Date -Format 'yyyy-MM-dd-HH-mm-ss')"
+        
+        if (!(Test-Path $logPath)) {
+            Write-Host "Did not find log file at $logPath" -ForegroundColor Yellow
+            Write-Host "Creating log file at $logPath" -ForegroundColor Yellow
+            $createdLogDir = New-Item -ItemType Directory -Path $logPath -Force -ErrorAction Stop
+            Write-Host "Created log file at $logPath" -ForegroundColor Green
+        }
+        
+        $logFile = Join-Path -Path $logPath -ChildPath "$Filename-Transcript.log"
+        Start-Transcript -Path $logFile -ErrorAction Stop | Out-Null
+
+        $CSVDir = Join-Path -Path $scriptPath -ChildPath "exports\CSV"
+        $CSVFilePath = Join-Path -Path $CSVDir -ChildPath "$computerName"
+        
+        if (!(Test-Path $CSVFilePath)) {
+            Write-Host "Did not find CSV file at $CSVFilePath" -ForegroundColor Yellow
+            Write-Host "Creating CSV file at $CSVFilePath" -ForegroundColor Yellow
+            $createdCSVDir = New-Item -ItemType Directory -Path $CSVFilePath -Force -ErrorAction Stop
+            Write-Host "Created CSV file at $CSVFilePath" -ForegroundColor Green
+        }
+
+        return @{
+            ScriptPath  = $scriptPath
+            Filename    = $Filename
+            LogPath     = $logPath
+            LogFile     = $logFile
+            CSVFilePath = $CSVFilePath
+        }
+
+    } catch {
+        Write-Error "An error occurred while initializing script and logging: $_"
+    }
+}
+$initializationInfo = Initialize-ScriptAndLogging
+
+
+
+
+# #DBG
+
+# #DBG
+
+
+$ScriptPath = $initializationInfo['ScriptPath']
+$Filename = $initializationInfo['Filename']
+$logPath = $initializationInfo['LogPath']
+$logFile = $initializationInfo['LogFile']
+$CSVFilePath = $initializationInfo['CSVFilePath']
+
+# #DBG
+
+
+function AppendCSVLog {
+    param (
+        [string]$Message,
+        [string]$CSVFilePath
+       
+    )
+
+    $csvData = [PSCustomObject]@{
+        TimeStamp    = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+        ComputerName = $env:COMPUTERNAME
+        Message      = $Message
+    }
+
+    $csvData | Export-Csv -Path $CSVFilePath -Append -NoTypeInformation -Force
+}
+
+
+function CreateEventLogSource {
+    param (
+       
+        [string]$LogName = 'BackupOutlookSignaturesLog',
+        # $source = (Get-PSCallStack)[0].Command
+        $source
+
+
+    )
+
+ 
+
+
+    # $source = $null
+    # $source = "BackupOutlookSignatures2"
+
+
+    # $source= $null
+    # $source = (Get-PSCallStack)[0].Command
+
+
+  
+    # $DBG
+ 
+
+    if ($PSVersionTable.PSVersion.Major -lt 6) {
+        # PowerShell version is less than 6, use New-EventLog
+        if (-not ([System.Diagnostics.EventLog]::SourceExists($source))) {
+            New-EventLog -LogName $logName -Source $source
+            Write-Host "Event source '$source' created in log '$logName'" -ForegroundColor Green
+            
+        }
+        else {
+            # Write-Host "Event source '$source' already exists" -ForegroundColor Yellow
+         
+        }
+    }
+    else {
+        # PowerShell version is 6 or greater, use System.Diagnostics.EventLog
+        if (-not ([System.Diagnostics.EventLog]::SourceExists($source))) {
+            [System.Diagnostics.EventLog]::CreateEventSource($source, $logName)
+        
+            Write-Host  -Message "Event source '$source' created in log '$logName'"
+        }
+        else {
+           
+            Write-Host -Message "Event source '$source' already exists" -Level "INFO"
+        }
+    }
+
+
+}
+# CreateEventLogSource
+
+# $DBG
+
+
+function Write-EventLogMessage {
+    param (
+        [string]$Message,
+        [string]$Level = 'INFO',
+        [string]$LogName = 'BackupOutlookSignaturesLog'
+    )
+
+    $ErrorActionPreference = 'SilentlyContinue'
+    $source = (Get-PSCallStack)[1].Command
+    CreateEventLogSource -source $source
+
+    $eventID = 1000
+    $hadError = $false
+
+    # Map custom log levels to EventLogEntryType enumeration values
+    switch ($Level) {
+        'DEBUG'   { $entryType = 'Information' }
+        'INFO'    { $entryType = 'Information' }
+        'WARNING' { $entryType = 'Warning' }
+        'ERROR'   { $entryType = 'Error' }
+        default   { $entryType = 'Information' }
+    }
+
+    try {
+        if ($PSVersionTable.PSVersion.Major -lt 6) {
+            # PowerShell version is less than 6, use Write-EventLog
+            Write-EventLog -LogName $logName -Source $source -EntryType $entryType -EventId $eventID -Message $Message
+        } else {
+            # PowerShell version is 6 or greater, use System.Diagnostics.EventLog
+            $eventLog = New-Object System.Diagnostics.EventLog($logName)
+            $eventLog.Source = $source
+            $eventLog.WriteEntry($Message, [System.Diagnostics.EventLogEntryType]::$entryType, $eventID)
+        }
+    } catch {
+        Write-host "Error creating event log entry: $_"
+        $hadError = $true
+    }
+
+    if (-not $hadError) {
+        # Write-host "Event log message writing completed successfully."
+    }
+}
+
+
+function Write-BasicLog {
+    param (
+        [string]$Message,
+        [string]$CSVFilePath = "$scriptPath\exports\CSV\$(Get-Date -Format 'yyyy-MM-dd')-Log.csv",
+        [string]$CentralCSVFilePath = "$scriptPath\exports\CSV\$Filename.csv",
+        [ConsoleColor]$ForegroundColor = [ConsoleColor]::White,
+        [ConsoleColor]$BackgroundColor = [ConsoleColor]::Black,
+        [string]$Level = 'INFO',
+        [string]$Caller = (Get-PSCallStack)[0].Command
+    )
+
+    # Add timestamp and computer name to the message
+    $formattedMessage = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $($env:COMPUTERNAME): [$Caller] $Message"
+
+    # Write the message with the specified colors
+    $currentForegroundColor = $Host.UI.RawUI.ForegroundColor
+    $currentBackgroundColor = $Host.UI.RawUI.BackgroundColor
+    $Host.UI.RawUI.ForegroundColor = $ForegroundColor
+    $Host.UI.RawUI.BackgroundColor = $BackgroundColor
+    # Write-Output $formattedMessage
+    Write-output $formattedMessage
+    $Host.UI.RawUI.ForegroundColor = $currentForegroundColor
+    $Host.UI.RawUI.BackgroundColor = $currentBackgroundColor
+
+    # Log the message using the PowerShell Logging Module
+    # Write-Log -Level $Level -Message $Message
+
+    # Append to CSV file
+    AppendCSVLog -Message $Message -CSVFilePath $CSVFilePath
+    AppendCSVLog -Message $Message -CSVFilePath $CentralCSVFilePath
+
+    # Write to event log (optional)
+    Write-EventLogMessage -Message $formattedMessage
+}
+
+
+$Message = "Finished Importing Modules"
+Write-BasicLog -Message $Message -ForegroundColor ([ConsoleColor]::Green)
+
+
+#################################################################################################################################
+################################################# START LOGGING ###################################################################
+#################################################################################################################################
+
+
+
+
+function Write-EnhancedLog {
+    param (
+        [string]$Message,
+        [string]$Level = 'INFO',
+        [ConsoleColor]$ForegroundColor = [ConsoleColor]::White,
+        [string]$CSVFilePath = "$scriptPath\exports\CSV\$(Get-Date -Format 'yyyy-MM-dd')-Log.csv",
+        [string]$CentralCSVFilePath = "$scriptPath\exports\CSV\$Filename.csv",
+        [switch]$UseModule = $false,
+        [string]$Caller = (Get-PSCallStack)[0].Command
+    )
+
+    # Add timestamp, computer name, and log level to the message
+    $formattedMessage = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $($env:COMPUTERNAME): [$Level] [$Caller] $Message"
+
+    # Set foreground color based on log level
+    switch ($Level) {
+        'INFO'    { $ForegroundColor = [ConsoleColor]::Green }
+        'WARNING' { $ForegroundColor = [ConsoleColor]::Yellow }
+        'ERROR'   { $ForegroundColor = [ConsoleColor]::Red }
+    }
+
+    # Write the message with the specified colors
+    $currentForegroundColor = $Host.UI.RawUI.ForegroundColor
+    $Host.UI.RawUI.ForegroundColor = $ForegroundColor
+    Write-output $formattedMessage
+    $Host.UI.RawUI.ForegroundColor = $currentForegroundColor
+
+    # Append to CSV file
+    AppendCSVLog -Message $formattedMessage -CSVFilePath $CSVFilePath
+    AppendCSVLog -Message $formattedMessage -CSVFilePath $CentralCSVFilePath
+
+    # Write to event log (optional)
+    Write-EventLogMessage -Message $formattedMessage -Level $Level
+}
+
+
+
+
+
+# function Export-EventLog {
+#     param (
+#         [Parameter(Mandatory=$true)]
+#         [string]$LogName,
+#         [Parameter(Mandatory=$true)]
+#         [string]$ExportPath
+#     )
+
+#     try {
+#         $events = Get-WinEvent -LogName $LogName
+#         $events | Export-Csv -Path $ExportPath -NoTypeInformation
+#         Write-Host "Event log '$LogName' exported to '$ExportPath'" -ForegroundColor Green
+#     } catch {
+#         Write-Host "Error exporting event log '$LogName': $($_.Exception.Message)" -ForegroundColor Red
+#     }
+# }
+
+# # Example usage
+# $LogName = 'BackupOutlookSignaturesLog'
+# $ExportPath = 'Path\to\your\exported\eventlog.csv'
+# Export-EventLog -LogName $LogName -ExportPath $ExportPath
+
+
+
+
+function Export-EventLog {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$LogName,
+        [Parameter(Mandatory=$true)]
+        [string]$ExportPath
+    )
+
+    try {
+        wevtutil epl $LogName $ExportPath
+        # Write-Host "Event log '$LogName' exported to '$ExportPath'" -ForegroundColor Green
+        Write-EnhancedLog -Message "Event log '$LogName' exported to '$ExportPath'" -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+    } catch {
+        # Write-Host "Error exporting event log '$LogName': $($_.Exception.Message)" -ForegroundColor Red
+        Write-EnhancedLog -Message "Error exporting event log '$LogName': $($_.Exception.Message)" -Level "INFO" -ForegroundColor ([ConsoleColor]::Red)
+    }
+}
+
+# # Example usage
+# $LogName = 'BackupOutlookSignaturesLog'
+# # $ExportPath = 'Path\to\your\exported\eventlog.evtx'
+# $ExportPath = "C:\Intune\Win32\BackupOutlookSignatures\exports\Logs\$logname.evtx"
+# Export-EventLog -LogName $LogName -ExportPath $ExportPath
+
+
+
+
+
+
+
+#################################################################################################################################
+################################################# END LOGGING ###################################################################
+#################################################################################################################################
+
+
+$file_extension = ".detectWin32BackupOutlookSignatures"
+
+
+# function CreateDetectionFile {
+#     $ErrorActionPreference = 'SilentlyContinue'
+#     $filePath = "C:\Intune\Win32\BackupOutlookSignatures\detect$file_extension"
+#     $hadError = $false
+
+#     try {
+#         if (-not (Test-Path -Path (Split-Path $filePath))) {
+#             New-Item -ItemType Directory -Path (Split-Path $filePath) -Force
+#             Write-EnhancedLog -Message "Created detection directory: $(Split-Path $filePath)" -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+#         }
+
+#         New-Item -ItemType File -Path $filePath -Force
+#         Write-EnhancedLog -Message "Created detection file: $filePath" -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+#     }
+#     catch {
+#         Write-EnhancedLog -Message "Error creating detection file or directory: $_" -Level "ERROR" -ForegroundColor ([ConsoleColor]::Red)
+#         $hadError = $true
+#     }
+
+#     if (-not $hadError) {
+#         Write-EnhancedLog -Message "Detection file creation completed successfully. file C:\Intune\Win32\BackupOutlookSignatures\detect$file_extension " -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+#     }
+# }
+
+# CreateDetectionFile
+
+
+
+
+function Backup-SignaturesToDocuments {
+    try {
+        $signaturePath = "$env:USERPROFILE\AppData\Roaming\Microsoft\Signatures"
+        
+        if (Test-Path $signaturePath) {
+            # Try to find the OneDrive folder dynamically
+            $OneDriveFolder = (Get-ChildItem -Path "$env:USERPROFILE" -Filter "OneDrive - *" -Directory).FullName
+            
+            if ($OneDriveFolder) {
+                $OneDrivePath = Join-Path $OneDriveFolder "Documents\OutlookSignatures"
+            }
+            $defaultPath = "$env:USERPROFILE\Documents\OutlookSignatures"
+            
+            # Check if OneDrive Documents folder exists
+            if ($OneDrivePath) {
+                $destinationPath = $OneDrivePath
+            } else {
+                $destinationPath = $defaultPath
+            }
+            
+            if (-not (Test-Path $destinationPath)) {
+                New-Item -ItemType Directory -Force -Path $destinationPath | Out-Null
+            }
+            Copy-Item -Path "$signaturePath\*" -Destination $destinationPath -Recurse -Force
+            
+            Write-EnhancedLog -Message "Signatures have been copied to $destinationPath" -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+        } else {
+            Write-EnhancedLog -Message "Signatures folder not found at $signaturePath" -Level "INFO" -ForegroundColor ([ConsoleColor]::Red)
+        }
+    } catch {
+        Write-EnhancedLog -Message "Error encountered during Backup-SignaturesToDocuments: $_" -Level "ERROR" -ForegroundColor ([ConsoleColor]::Red)
+    }
+}
+
+Backup-SignaturesToDocuments
+
+
+
+
+#################################################################################################################################
+################################################# END LOGGING ###################################################################
+#################################################################################################################################
+
+# function Install-RequiredModules {
+
+#     [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+#     # Install SecretManagement.KeePass module if not installed or if the version is less than 0.9.2
+#     $KeePassModule = Get-Module -Name "SecretManagement.KeePass" -ListAvailable
+#     if (-not $KeePassModule -or ($KeePassModule.Version -lt [System.Version]::new(0, 9, 2))) {
+
+#         Write-EnhancedLog -Message "Installing SecretManagement.KeePass " -Level "INFO" -ForegroundColor ([ConsoleColor]::Cyan)
+#         Install-Module -Name "SecretManagement.KeePass" -RequiredVersion 0.9.2 -Force:$true
+#     }
+#     else {
+#         # Write-Host "SecretManagement.KeePass is already installed." -ForegroundColor Green
+#         Write-EnhancedLog -Message "SecretManagement.KeePass is already installed." -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+#     }
+
+
+#     $requiredModules = @("Microsoft.Graph", "Microsoft.Graph.Authentication")
+
+#     foreach ($module in $requiredModules) {
+#         if (!(Get-Module -ListAvailable -Name $module)) {
+
+#             Write-EnhancedLog -Message "Installing module: $module" -Level "INFO" -ForegroundColor ([ConsoleColor]::Cyan)
+#             Install-Module -Name $module -Force
+#             Write-EnhancedLog -Message "Module: $module has been installed" -Level "INFO" -ForegroundColor ([ConsoleColor]::Cyan)
+#         }
+#         else {
+#             Write-EnhancedLog -Message "Module $module is already installed" -Level "INFO" -ForegroundColor ([ConsoleColor]::Cyan)
+#         }
+#     }
+
+
+#     $ImportedModules = @("Microsoft.Graph.Identity.DirectoryManagement", "Microsoft.Graph.Authentication")
+    
+#     foreach ($Importedmodule in $ImportedModules) {
+#         if ((Get-Module -ListAvailable -Name $Importedmodule)) {
+#             Write-EnhancedLog -Message "Importing module: $Importedmodule" -Level "INFO" -ForegroundColor ([ConsoleColor]::Cyan)
+#             Import-Module -Name $Importedmodule
+#             Write-EnhancedLog -Message "Module: $Importedmodule has been Imported" -Level "INFO" -ForegroundColor ([ConsoleColor]::Cyan)
+#         }
+#     }
+
+
+# }
+# # Call the function to install the required modules and dependencies
+# # Install-RequiredModules
+# Write-EnhancedLog -Message "All modules installed" -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+
+
+
+
+
+
+# $ErrorActionPreference = 'SilentlyContinue'
+# $deploymentName = "BackupOutlookSignatures5" # Replace this with your actual deployment name
+# $scriptPath = "C:\Intune\Win32\$deploymentName"
+
+# $localSecretsPath = $PSScriptRoot
+# $secretsFolder = "secrets"
+
+# try {
+#     $sourceFolderPath = Join-Path -Path $localSecretsPath -ChildPath $secretsFolder
+#     $destinationFolderPath = Join-Path -Path $scriptPath -ChildPath $secretsFolder
+
+#     if (Test-Path -Path $sourceFolderPath) {
+#         Copy-Item -Path $sourceFolderPath -Destination $destinationFolderPath -Recurse -Force
+#         Write-EnhancedLog "Copied secrets folder and its contents to '$destinationFolderPath'"
+#     } else {
+#         Write-EnhancedLog "Secrets folder not found in '$localSecretsPath'" -ForegroundColor Yellow
+#     }
+# } catch {
+#     Write-EnhancedLog "Error copying secrets: $_" -ForegroundColor Red
+# }
+
+
+$clientId = '5ac5aaa3-8f84-4d2e-bbff-e8dd7099e8e0'
+$clientSecret = 'PW98Q~~-~CP1XDjmJHUDSRYEoF~irFHK4~cwca4h'
+$tenantName = 'lcwhc.onmicrosoft.com'
+# $site_objectid = '7f764990-e69d-41fc-b62c-d833b16bb8ab'
+# $site_objectid = '898b76df-8e5a-4f17-ba50-53c32d2dad50'
+$webhook_url = 'https://lcwhc.webhook.office.com/webhookb2/898b76df-8e5a-4f17-ba50-53c32d2dad50@f8e714f5-f15a-435d-b51e-9c93d637a9c4/IncomingWebhook/b05c1bec03bb49099708856ba1d7027a/4ddd24b7-90b8-4550-9201-164041a906f3'
+
+
+
+# #DBG
+
+
+
+
+$document_drive_name = "Documents"
+
+# Set the file extension to scan for
+# $file_extension = ".detectWin32BackupOutlookSignaturesRemove"
+
+# Define functions
+function Get-MicrosoftGraphAccessToken {
+    $tokenBody = @{
+        Grant_Type    = 'client_credentials'  
+        Scope         = 'https://graph.microsoft.com/.default'  
+        Client_Id     = $clientId  
+        Client_Secret = $clientSecret
+    }  
+
+    $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$TenantName/oauth2/v2.0/token" -Method POST -Body $tokenBody -ErrorAction Stop
+
+    return $tokenResponse.access_token
+}
+
+
+    $site_objectid = $null
+    function Get-M365GroupObjectId {
+        param (
+            [Parameter(Mandatory=$true)]
+            [string]$groupEmail
+        )
+    
+        $url = "https://graph.microsoft.com/v1.0/groups"
+        $groups = @()
+    
+        do {
+            $response = Invoke-RestMethod -Headers $headers -Uri $url -Method Get
+            $groups += $response.value
+            $url = $response.'@odata.nextLink'
+        } while ($url)
+
+
+        # #DBG
+    
+        $group = $groups | Where-Object { $_.mail -eq $groupEmail }
+    
+        if ($group) {
+            return $group.id
+        } else {
+            Write-Host "M365 Group not found with email address: $groupEmail" -ForegroundColor Red
+            return $null
+        }
+    }
+    
+    # $site_objectid = Get-M365GroupObjectId -groupEmail "syslog@lhc.ca"
+
+
+function Get-SharePointDocumentDriveId {
+    $url = "https://graph.microsoft.com/v1.0/groups/$site_objectid/sites/root"
+    $subsite_ID = (Invoke-RestMethod -Headers $headers -Uri $URL -Method Get).ID
+
+    $url = "https://graph.microsoft.com/v1.0/sites/$subsite_ID/drives"
+    $drives = Invoke-RestMethod -Headers $headers -Uri $url -Method Get
+
+    $document_drive_id = ($drives.value | Where-Object { $_.name -eq $document_drive_name }).id
+
+    return $document_drive_id
+}
+function New-SharePointFolder {
+    param($document_drive_id, $parent_folder_path, $folder_name)
+
+    try {
+        # Check if the folder already exists
+        $check_url = "https://graph.microsoft.com/v1.0/drives/" + $document_drive_id + "/root:/" + $parent_folder_path + ":/children"
+        Write-EnhancedLog -Message "Checking for existing folder with URL: $check_url" -Level "DEBUG" -ForegroundColor ([ConsoleColor]::Yellow)
+        
+        $existing_folders = Invoke-RestMethod -Headers $headers -Uri $check_url -Method GET
+        Write-EnhancedLog -Message "Received response from server: $($existing_folders.value)" -Level "DEBUG" -ForegroundColor ([ConsoleColor]::Yellow)
+        
+        $existing_folder = $existing_folders.value | Where-Object { $_.name -eq $folder_name -and $_.folder }
+        Write-EnhancedLog -Message "Filtered existing folders: $($existing_folder)" -Level "DEBUG" -ForegroundColor ([ConsoleColor]::Yellow)
+
+        if ($existing_folder) {
+            Write-EnhancedLog -Message "Folder '$folder_name' already exists in '$parent_folder_path'. Skipping folder creation." -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+            return $existing_folder
+        }
+    }
+    catch {
+
+        Write-EnhancedLog -Message "Error encountered during folder $folder_name in $parent_folder_path check: $($_.Exception.Message). Likely because the folder $folder_name does not exist yet in $parent_folder_path Proceeding with folder creation." -Level "WARNING" -ForegroundColor ([ConsoleColor]::Red)
+        Write-EnhancedLog -Message "Folder '$folder_name' not found in '$parent_folder_path'. Proceeding with folder creation." -Level "INFO" -ForegroundColor ([ConsoleColor]::Yellow)
+    }
+
+    # If the folder does not exist, create it
+    $url = "https://graph.microsoft.com/v1.0/drives/" + $document_drive_id + "/root:/" + $parent_folder_path + ":/children"
+
+    $body = @{
+        "@microsoft.graph.conflictBehavior" = "fail"
+        "name"                              = $folder_name
+        "folder"                            = @{}
+    }
+
+    try {
+        Write-EnhancedLog -Message "Creating folder '$folder_name' in '$parent_folder_path'..." -Level "INFO" -ForegroundColor ([ConsoleColor]::Cyan)
+        $created_folder = Invoke-RestMethod -Headers $headers -Uri $url -Body ($body | ConvertTo-Json) -Method POST
+        Write-EnhancedLog -Message "Folder created successfully. Folder ID: $($created_folder.id)" -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
+        return $created_folder
+    }
+    catch {
+        Write-EnhancedLog -Message "Error creating folder: $_" -Level "ERROR" -ForegroundColor ([ConsoleColor]::Red)
+        throw $_
+    }
+}
+
+
+
+function Upload-FileToSharePoint {
+    param($document_drive_id, $file_path, $folder_name)
+
+    try {
+        $SPOUploadfilename = Split-Path -Path $file_path -Leaf
+        $puturl = "https://graph.microsoft.com/v1.0/drives/$document_drive_id/root:/$folder_name/$($SPOUploadfilename):/content"
+
+        $upload_headers = @{
+            "Authorization" = "Bearer $($accessToken)"
+        }
+
+        Write-EnhancedLog -Message "Uploading file '$SPOUploadfilename' to '$putUrl'..." -Level 'INFO' -ForegroundColor Green
+
+        Invoke-RestMethod -Uri $putUrl -Headers $upload_headers -Method Put -InFile $file_path -ContentType 'multipart/form-data'
+
+        Write-EnhancedLog -Message "File '$SPOUploadfilename' was uploaded to '$putUrl'" -Level 'INFO' -ForegroundColor Green
+    } catch {
+        Write-EnhancedLog -Message "Error encountered while uploading file '$SPOUploadfilename' to '$putUrl': $_" -Level 'ERROR' -ForegroundColor Red
+    }
+}
+
+
+
+
+
+
+
+
+
+
+function Send-TeamsMessage {
+    param($webhook_url, $message_text)
+
+    try {
+        $message = @{
+            "@type"    = "MessageCard"
+            "@context" = "http://schema.org/extensions"
+            "text"     = $message_text
+        }
+
+        $params = @{
+            'ContentType' = 'application/json'
+            'Method'      = 'POST'
+            'Body'        = ($message | ConvertTo-Json)
+            'Uri'         = $webhook_url
+        }
+
+        Write-EnhancedLog -Message "Sending message to Microsoft Teams: '..." -Level 'INFO' -ForegroundColor Green
+
+        $Teamsresponse = Invoke-RestMethod @params
+
+        Write-EnhancedLog -Message "Message sent to Microsoft Teams successfully." -Level 'INFO' -ForegroundColor Green
+    } catch {
+        Write-EnhancedLog -Message "Error encountered while sending message to Microsoft Teams: $_" -Level 'ERROR' -ForegroundColor Red
+    }
+}
+
+
+function Scan-FolderForExtension {
+    param($folderPath, $fileExtension)
+
+    Write-EnhancedLog -Message "Scanning folder '$folderPath' for files with extension '$fileExtension'..." -Level 'INFO'
+
+    $results = @()
+
+    try {
+        if (Test-Path $folderPath) {
+            $files = Get-ChildItem -Path $folderPath -Filter "*$fileExtension" -Recurse -File -ErrorAction SilentlyContinue
+            Write-EnhancedLog -Message "Get-ChildItem returned $($files.Count) files." -Level 'DEBUG'
+
+            $files | ForEach-Object {
+                Write-EnhancedLog -Message "Processing file: $($_.FullName)" -Level 'DEBUG' -ForegroundColor DarkYellow
+                $results += $_.FullName
+            }
+        }
+        else {
+            Write-EnhancedLog -Message "Folder path '$folderPath' does not exist." -Level 'WARNING' -ForegroundColor Yellow
+        }
+    } catch {
+        Write-EnhancedLog -Message "Error encountered while scanning folder '$folderPath' for files with extension '$fileExtension': $_" -Level 'ERROR' -ForegroundColor Red
+    }
+
+    Write-EnhancedLog -Message "Found $($results.Count) files with extension '$fileExtension' in folder '$folderPath'." -Level 'INFO'
+
+    return $results
+}
+
+
+
+
+try {
+    # Get an access token for the Microsoft Graph API
+    $accessToken = Get-MicrosoftGraphAccessToken
+    
+    # Set up headers for API requests
+    $headers = @{
+        "Authorization" = "Bearer $($accessToken)"
+        "Content-Type"  = "application/json"
+    }
+
+
+    # $site_objectid = Get-M365GroupObjectId -groupDisplayName "Syslog"
+
+    $site_objectid = Get-M365GroupObjectId -groupEmail "syslog@lhc.ca"
+    
+
+    #DBG
+
+    # Get the ID of the SharePoint document drive
+    $document_drive_id = Get-SharePointDocumentDriveId
+
+
+    # ... (Previous code remains the same)
+
+    # Get the computer name and detailed info
+    $computerName = $env:COMPUTERNAME
+    $computerInfo = Get-CimInstance -ClassName Win32_ComputerSystem | Format-List | Out-String
+
+    # $drives = Get-CimInstance -ClassName Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 } | Select-Object -ExpandProperty DeviceID
+    $allScanResults = @()
+
+    # foreach ($drive in $drives) {
+        $folderPath = "C:\intune\Win32\BackupOutlookSignatures\"
+        # $folderPath = $folderPath -replace "^C:", "$drive"
+
+        Write-EnhancedLog "Scanning folder '$folderpath' for files with extension '$file_extension'..."
+        $scanResults = Scan-FolderForExtension -folderPath $folderPath -fileExtension $file_extension
+        $allScanResults += $scanResults
+    # }
+
+
+
+    $detectedFolderPath = "DetectedBackupOutlookSignatures"
+    $cleanFolderPath = "Clean"
+
+    if ($allScanResults.Count -gt 0) {
+        $messageText = "BackupOutlookSignatures detected on computer $computerName!"
+
+    }
+    else {
+        $messageText = "Computer $computerName is clean"
+
+    }
+
+    # Generate a report file containing the paths of the files found
+    Write-EnhancedLog "Generating report..."
+    $reportFileName = "BackupOutlookSignaturesScanReport_${computerName}_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+    $reportFilePath = Join-Path -Path $env:TEMP -ChildPath $reportFileName
+    $CSVFilePath = "$scriptPath\exports\CSV\$Filename.csv"
+
+    # Add computer info and scan results to the report file
+    $computerInfo | Set-Content -Path $reportFilePath
+    $allScanResults | Add-Content -Path $reportFilePath
+
+  
+
+    # Upload the specified file to SharePoint
+    # Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $reportFilePath -folder_name $folder_name
+
+
+
+    if ($allScanResults.Count -gt 0) {
+
+        # Create the "Infected" folder in SharePoint if it doesn't exist
+        # New-SharePointFolder -document_drive_id $document_drive_id -folder_path $detectedFolderPath
+        $null = New-SharePointFolder -document_drive_id $document_drive_id -parent_folder_path $detectedFolderPath -folder_name $computerName
+
+        # Upload the specified file to the "Infected" folder in SharePoint
+        # Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $reportFilePath -folder_name $folder_name -parent_folder_path $detectedFolderPath
+
+        $detectedtargetFolderPath = "$detectedFolderPath/$computerName"
+        $null = Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $reportFilePath -folder_name $detectedtargetFolderPath
+        $null = Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $CSVFilePath -folder_name $detectedtargetFolderPath
+
+
+    }
+    else {
+        Write-EnhancedLog "No files found with extension '$file_extension'."
+
+        # Create the "Clean" folder in SharePoint if it doesn't exist
+        # New-SharePointFolder -document_drive_id $document_drive_id -folder_path $cleanFolderPath
+
+        $null = New-SharePointFolder -document_drive_id $document_drive_id -parent_folder_path $cleanFolderPath -folder_name $computerName
+
+        # Upload a "clean" report to the "Clean" folder in SharePoint
+        $reportFileName = "CleanReport_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+        $reportFilePath = Join-Path -Path $env:TEMP -ChildPath $reportFileName
+        Set-Content -Path $reportFilePath -Value "No files found with extension '$file_extension'."
+        # Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $reportFilePath -folder_name $folder_name -parent_folder_path $cleanFolderPath
+
+        # Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $reportFilePath -folder_name $targetFolderPath
+
+        $cleandtargetFolderPath = "$cleanFolderPath/$computerName"
+        $null = Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $reportFilePath -folder_name $cleandtargetFolderPath
+        $null = Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $CSVFilePath -folder_name $cleandtargetFolderPath
+
+    }
+
+
+}
+catch {
+    Write-EnhancedLog "An error occurred: $_"
+}
+
+
+# Get-secretvault | Unregister-SecretVault
+
+
+
+  # Send the report file to the specified Teams channel
+  $messageText += Get-Content -Path $reportFilePath -Raw
+  $messageText += Get-Content -Path $logFile -Raw
+  Write-EnhancedLog "Sending report to Teams channel..."
+  Send-TeamsMessage -webhook_url $webhook_url -message_text $messageText
+  Write-EnhancedLog "Report sent successfully."
+
+# Remove variables and clear secrets
+Remove-Variable -Name clientId
+Remove-Variable -Name clientSecret
+Remove-Variable -Name tenantName
+Remove-Variable -Name site_objectid
+Remove-Variable -Name webhook_url
+
+# $Secrets.Clear()
+# Remove-Variable -Name Secrets
+
+
+# Stop transcript logging
+Stop-Transcript
+
+
+# Example usage
+$LogName = 'BackupOutlookSignaturesLog'
+# $ExportPath = 'Path\to\your\exported\eventlog.evtx'
+# $ExportPath = "C:\Intune\Win32\BackupOutlookSignatures\exports\Logs\$logname.evtx"
+# $EvenlogExportPath = "$logPath-$logname.evtx"
+$EvenlogExportPath = Join-Path -Path $logPath -ChildPath "$LogName-Transcript.evtx"
+Export-EventLog -LogName $LogName -ExportPath $EvenlogExportPath
+
+# Create a folder in SharePoint named after the computer
+$computerName = $env:COMPUTERNAME
+$parentFolderPath = "Logs"  # Change this to the desired parent folder path in SharePoint
+$null = New-SharePointFolder -document_drive_id $document_drive_id -parent_folder_path $parentFolderPath -folder_name $computerName
+
+# Upload the transcript log to the new SharePoint folder
+$targetFolderPath = "$parentFolderPath/$computerName"
+$logFilePath = $logFile
+$null = Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $logFilePath -folder_name $targetFolderPath
+
+
+# Upload the Event log to the new SharePoint folder
+$targetFolderPath = "$parentFolderPath/$computerName"
+$EventlogFilePath = $EvenlogExportPath
+$null = Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path $EventlogFilePath -folder_name $targetFolderPath
+
+

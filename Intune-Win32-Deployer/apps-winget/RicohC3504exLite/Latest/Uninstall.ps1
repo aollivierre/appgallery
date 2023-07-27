@@ -1,0 +1,1 @@
+$PrinterName = "LHC - RICOH MP C3504ex PCL 6"; if (Get-Printer -Name $PrinterName -ErrorAction SilentlyContinue) { Remove-Printer -Name $PrinterName -Confirm:$false }

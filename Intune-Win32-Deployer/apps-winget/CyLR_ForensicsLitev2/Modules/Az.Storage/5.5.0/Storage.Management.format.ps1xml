@@ -1,0 +1,1370 @@
+﻿<?xml version="1.0"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSStorageAccount</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSStorageAccount</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>StorageAccountName</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>ResourceGroupName</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>PrimaryLocation</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>SkuName</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Kind</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>AccessTier</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>CreationTime</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>ProvisioningState</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>EnableHttpsTrafficOnly</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>LargeFileShares</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>StorageAccountName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>ResourceGroupName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>PrimaryLocation</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Sku.Name</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Kind</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>AccessTier</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>CreationTime</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>ProvisioningState</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>EnableHttpsTrafficOnly</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>LargeFileSharesState</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSNetworkRuleSet</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSNetworkRuleSet</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>Bypass</PropertyName>
+                <Label>Bypass</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>DefaultAction</PropertyName>
+                <Label>DefaultAction</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>if (($_.ipRules -ne $null) -and ($_.ipRules.Count -ne 0)) {"[" + $_.ipRules[0].IPAddressOrRange + ",...]"} else {$null}</ScriptBlock>
+                <Label>IpRules</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>if ($_.virtualNetworkRules[0] -ne $null) {"[" + $_.virtualNetworkRules[0].VirtualNetworkResourceId + ",...]"} else {$null}</ScriptBlock>
+                <Label>VirtualNetworkRules</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>if ($_.ResourceAccessRules[0] -ne $null) {"[(" + $_.ResourceAccessRules[0].TenantId + "," + $_.ResourceAccessRules[0].ResourceId + "),...]"} else {$null}</ScriptBlock>
+                <Label>ResourceAccessRules</Label>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSContainer</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSContainer</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock>$_.ResourceGroupName + ", StorageAccountName: " + $_.StorageAccountName</ScriptBlock>
+        <Label>ResourceGroupName</Label>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Name</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>PublicAccess</Label>
+            <Alignment>Left</Alignment>
+            <Width>20</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>LastModified</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>HasLegalHold</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>HasImmutabilityPolicy</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Deleted</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>VersionId</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>ImmutableStorageWithVersioning</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <ScriptBlock>$_.Name</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.PublicAccess</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.LastModifiedTime.ToUniversalTime().ToString("u")</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.HasLegalHold</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.HasImmutabilityPolicy</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.Deleted</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.Version</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.ImmutableStorageWithVersioning.Enabled</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSManagementPolicy</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSManagementPolicy</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>ResourceGroupName</PropertyName>
+                <Label>ResourceGroupName</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>StorageAccountName</PropertyName>
+                <Label>StorageAccountName</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Id</PropertyName>
+                <Label>Id</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Type</PropertyName>
+                <Label>Type</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>LastModifiedTime</PropertyName>
+                <Label>LastModifiedTime</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>ConvertTo-Json $_.Rules -Depth 10</ScriptBlock>
+                <Label>Rules</Label>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSManagementPolicyActionGroup</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSManagementPolicyActionGroup</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.TierToCool.DaysAfterModificationGreaterThan</ScriptBlock>
+                <Label>BaseBlob.TierToCool.DaysAfterModificationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.TierToCool.DaysAfterLastAccessTimeGreaterThan</ScriptBlock>
+                <Label>BaseBlob.TierToCool.DaysAfterLastAccessTimeGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.TierToCool.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>BaseBlob.TierToCool.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.EnableAutoTierToHotFromCool</ScriptBlock>
+                <Label>BaseBlob.EnableAutoTierToHotFromCool</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.TierToArchive.DaysAfterModificationGreaterThan</ScriptBlock>
+                <Label>BaseBlob.TierToArchive.DaysAfterModificationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.TierToArchive.DaysAfterLastAccessTimeGreaterThan</ScriptBlock>
+                <Label>BaseBlob.TierToArchive.DaysAfterLastAccessTimeGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.TierToArchive.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>BaseBlob.TierToArchive.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.TierToArchive.DaysAfterLastTierChangeGreaterThan</ScriptBlock>
+                <Label>BaseBlob.TierToArchive.DaysAfterLastTierChangeGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.Delete.DaysAfterModificationGreaterThan</ScriptBlock>
+                <Label>BaseBlob.Delete.DaysAfterModificationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.Delete.DaysAfterLastAccessTimeGreaterThan</ScriptBlock>
+                <Label>BaseBlob.Delete.DaysAfterLastAccessTimeGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.BaseBlob.Delete.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>BaseBlob.Delete.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Snapshot.TierToCool.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>Snapshot.TierToCool.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Snapshot.TierToArchive.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>Snapshot.TierToArchive.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Snapshot.TierToArchive.DaysAfterLastTierChangeGreaterThan</ScriptBlock>
+                <Label>Snapshot.TierToArchive.DaysAfterLastTierChangeGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Snapshot.Delete.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>Snapshot.Delete.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Version.TierToCool.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>Version.TierToCool.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Version.TierToArchive.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>Version.TierToArchive.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Version.TierToArchive.DaysAfterLastTierChangeGreaterThan</ScriptBlock>
+                <Label>Version.TierToArchive.DaysAfterLastTierChangeGreaterThan</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>$_.Version.Delete.DaysAfterCreationGreaterThan</ScriptBlock>
+                <Label>Version.Delete.DaysAfterCreationGreaterThan</Label>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSManagementPolicyRule</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSManagementPolicyRule</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>Enabled</PropertyName>
+                <Label>Enabled</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Name</PropertyName>
+                <Label>Name</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>ConvertTo-Json $_.Definition -Depth 10</ScriptBlock>
+                <Label>Definition</Label>
+              </ListItem>    
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSFileServiceProperties</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSFileServiceProperties</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>StorageAccountName</PropertyName>
+                <Label>StorageAccountName</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>ResourceGroupName</PropertyName>
+                <Label>ResourceGroupName</Label>
+              </ListItem>
+              <ListItem>
+                <Label>ShareDeleteRetentionPolicy.Enabled</Label>
+                <ScriptBlock>$_.ShareDeleteRetentionPolicy.Enabled</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ShareDeleteRetentionPolicy.Days</Label>
+                <ScriptBlock>$_.ShareDeleteRetentionPolicy.Days</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ProtocolSettings.Smb.Multichannel.Enabled</Label>
+                <ScriptBlock>$_.ProtocolSettings.Smb.Multichannel.Enabled</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ProtocolSettings.Smb.Versions</Label>
+                <ScriptBlock>$_.ProtocolSettings.Smb.Versions</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ProtocolSettings.Smb.AuthenticationMethods</Label>
+                <ScriptBlock>$_.ProtocolSettings.Smb.AuthenticationMethods</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ProtocolSettings.Smb.KerberosTicketEncryption</Label>
+                <ScriptBlock>$_.ProtocolSettings.Smb.KerberosTicketEncryption</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ProtocolSettings.Smb.ChannelEncryption</Label>
+                <ScriptBlock>$_.ProtocolSettings.Smb.ChannelEncryption</ScriptBlock>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobServiceProperties</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobServiceProperties</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>StorageAccountName</PropertyName>
+                <Label>StorageAccountName</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>ResourceGroupName</PropertyName>
+                <Label>ResourceGroupName</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>DefaultServiceVersion</PropertyName>
+                <Label>DefaultServiceVersion</Label>
+              </ListItem>
+              <ListItem>
+                <Label>DeleteRetentionPolicy.Enabled</Label>
+                <ScriptBlock>$_.DeleteRetentionPolicy.Enabled</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>DeleteRetentionPolicy.Days</Label>
+                <ScriptBlock>$_.DeleteRetentionPolicy.Days</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>DeleteRetentionPolicy.AllowPermanentDelete</Label>
+                <ScriptBlock>$_.DeleteRetentionPolicy.AllowPermanentDelete</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ContainerDeleteRetentionPolicy.Enabled</Label>
+                <ScriptBlock>$_.ContainerDeleteRetentionPolicy.Enabled</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ContainerDeleteRetentionPolicy.Days</Label>
+                <ScriptBlock>$_.ContainerDeleteRetentionPolicy.Days</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>RestorePolicy.Enabled</Label>
+                <ScriptBlock>$_.RestorePolicy.Enabled</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>RestorePolicy.Days</Label>
+                <ScriptBlock>$_.RestorePolicy.Days</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>RestorePolicy.MinRestoreTime</Label>
+                <ScriptBlock>$_.RestorePolicy.MinRestoreTime</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ChangeFeed.Enabled</Label>
+                <ScriptBlock>$_.ChangeFeed.Enabled</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ChangeFeed.RetentionInDays</Label>
+                <ScriptBlock>$_.ChangeFeed.RetentionInDays</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <PropertyName>IsVersioningEnabled</PropertyName>
+                <Label>IsVersioningEnabled</Label>
+              </ListItem>
+              <ListItem>
+                <Label>LastAccessTimeTrackingPolicy.Enable</Label>
+                <ScriptBlock>$_.LastAccessTimeTrackingPolicy.Enable</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>LastAccessTimeTrackingPolicy.Name</Label>
+                <ScriptBlock>$_.LastAccessTimeTrackingPolicy.Name</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>LastAccessTimeTrackingPolicy.TrackingGranularityInDays</Label>
+                <ScriptBlock>$_.LastAccessTimeTrackingPolicy.TrackingGranularityInDays</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>LastAccessTimeTrackingPolicy.BlobType</Label>
+                <ScriptBlock>$_.LastAccessTimeTrackingPolicy.BlobType</ScriptBlock>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSShare</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSShare</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock>$_.ResourceGroupName + ", StorageAccountName: " + $_.StorageAccountName</ScriptBlock>
+        <Label>ResourceGroupName</Label>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>QuotaGiB</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>EnabledProtocols</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>AccessTier</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Deleted</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Version</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>ShareUsageBytes</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>snapshotTime</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>QuotaGiB</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>EnabledProtocols</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>AccessTier</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Deleted</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Version</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>ShareUsageBytes</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.snapshotTime.ToUniversalTime().ToString("s")+"Z"</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSObjectReplicationPolicy</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSObjectReplicationPolicy</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>ResourceGroupName</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>StorageAccountName</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>PolicyId</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>EnabledTime</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>SourceAccount</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>DestinationAccount</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Rules</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>ResourceGroupName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>StorageAccountName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>PolicyId</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>EnabledTime</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>SourceAccount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>DestinationAccount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>if (($_.Rules -ne $null) -and ($_.Rules.Count -ne 0)) { if ($_.Rules.Count -eq 1) {'[' + $_.Rules[0].RuleId + ']'} else {'[' + $_.Rules[0].RuleId + ',...]'}} else {$null}</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSObjectReplicationPolicyRule</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSObjectReplicationPolicyRule</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>RuleId</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>SourceContainer</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>DestinationContainer</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Filters.PrefixMatch</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Filters.MinCreationTime</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>RuleId</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>SourceContainer</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>DestinationContainer</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>'{' + ($_.Filters.PrefixMatch -join ', ') + '}'</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Filters.MinCreationTime.ToUniversalTime().ToString("s")+"Z"</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobRestoreStatus</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobRestoreStatus</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Status</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>RestoreId</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>FailureReason</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Parameters.TimeToRestore</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Parameters.BlobRanges</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>RestoreId</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>FailureReason</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Parameters.TimeToRestore.ToString("o")</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>if ($_.Parameters.BlobRanges[0] -ne $null) {if ($_.Parameters.BlobRanges[1] -ne $null) {'["' + $_.Parameters.BlobRanges[0].StartRange + '" -> "' + $_.Parameters.BlobRanges[0].EndRange  + '",...]'} else {'["' + $_.Parameters.BlobRanges[0].StartRange + '" -> "' + $_.Parameters.BlobRanges[0].EndRange  + '"]'}} else {$null}</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSRestorePolicy</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSRestorePolicy</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Enabled</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Days</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>MinRestoreTime</Label>
+          </TableColumnHeader>          
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Enabled</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Days</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>MinRestoreTime</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSEncryptionScope</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSEncryptionScope</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock>$_.ResourceGroupName + ", StorageAccountName: " + $_.StorageAccountName</ScriptBlock>
+        <Label>ResourceGroupName</Label>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Name</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>State</Label>
+            <Alignment>Left</Alignment>
+            <Width>20</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Source</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>KeyVaultKeyUri</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>RequireInfrastructureEncryption</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>State</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Source</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.KeyVaultProperties.keyUri</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>RequireInfrastructureEncryption</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Management.Storage.Models.Endpoints</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Management.Storage.Models.Endpoints</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>Blob</PropertyName>
+                <Label>Blob</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Queue</PropertyName>
+                <Label>Queue</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Table</PropertyName>
+                <Label>Table</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>File</PropertyName>
+                <Label>File</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Web</PropertyName>
+                <Label>Web</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Dfs</PropertyName>
+                <Label>Dfs</Label>
+              </ListItem>
+              <ListItem>
+                <ScriptBlock>ConvertTo-Json $_.MicrosoftEndpoints -Compress</ScriptBlock>
+                <Label>MicrosoftEndpoints</Label>
+              </ListItem> 
+              <ListItem>
+                <ScriptBlock>ConvertTo-Json $_.InternetEndpoints -Compress</ScriptBlock>
+                <Label>InternetEndpoints</Label>
+              </ListItem>   
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobInventoryPolicyRule</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobInventoryPolicyRule</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Enabled</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Destination</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>ObjectType</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Format</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Schedule</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>IncludeSnapshots</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>IncludeBlobVersions</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+              <Alignment>Left</Alignment>
+              <Label>IncludeDeleted</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>BlobTypes</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>PrefixMatch</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+              <Alignment>Left</Alignment>
+              <Label>ExcludePrefix</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>SchemaFields</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Enabled</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Destination</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.ObjectType</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.Format</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.Schedule</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.Filters.IncludeSnapshots</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.Filters.IncludeBlobVersions</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                  <Alignment>Left</Alignment>
+                  <ScriptBlock>$_.Definition.Filters.IncludeDeleted</ScriptBlock>
+              </TableColumnItem>  
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.Filters.BlobTypes</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.Filters.PrefixMatch</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                  <Alignment>Left</Alignment>
+                  <ScriptBlock>$_.Definition.Filters.ExcludePrefix</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Definition.SchemaFields</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobInventoryPolicy</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSBlobInventoryPolicy</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>StorageAccountName</PropertyName>
+                <Label>StorageAccountName</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>ResourceGroupName</PropertyName>
+                <Label>ResourceGroupName</Label>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Name</PropertyName>
+                <Label>Name</Label>
+              </ListItem>
+              <ListItem>
+                <Label>Id</Label>
+                <PropertyName>Id</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Type</Label>
+                <PropertyName>Type</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>LastModifiedTime</Label>
+                <PropertyName>LastModifiedTime</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Enabled</Label>
+                <ScriptBlock>$_.Enabled</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>Rules</Label>
+                <ScriptBlock>$_.Rules</ScriptBlock>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Management.Storage.Models.PSLocalUser</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Management.Storage.Models.PSLocalUser</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock>$_.ResourceGroupName + ", StorageAccountName: " + $_.StorageAccountName</ScriptBlock>
+        <Label>ResourceGroupName</Label>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Sid</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>HomeDirectory</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>HasSharedKey</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>HasSshKey</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>HasSshPassword</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>PermissionScopes</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>Sid</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>HomeDirectory</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>HasSharedKey</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>HasSshKey</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <PropertyName>HasSshPassword</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <!--PropertyName>PermissionScopes</PropertyName-->
+                <ScriptBlock>if (($_.PermissionScopes -ne $null) -and ($_.PermissionScopes.Count -ne 0)) {if ($_.PermissionScopes.Count -eq 1) {"[" + $_.PermissionScopes[0].ResourceName + "]"} else {"[" + $_.PermissionScopes[0].ResourceName + ",...]"}} else {$null}</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
+<!-- SIG # Begin signature block -->
+<!-- MIIn0QYJKoZIhvcNAQcCoIInwjCCJ74CAQExDzANBglghkgBZQMEAgEFADB5Bgor -->
+<!-- BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG -->
+<!-- KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCB99OhjxlR0GN09 -->
+<!-- 9VyvHRqje4riLdhl1Ylqu8SAZnncvaCCDYUwggYDMIID66ADAgECAhMzAAACzfNk -->
+<!-- v/jUTF1RAAAAAALNMA0GCSqGSIb3DQEBCwUAMH4xCzAJBgNVBAYTAlVTMRMwEQYD -->
+<!-- VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy -->
+<!-- b3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNpZ25p -->
+<!-- bmcgUENBIDIwMTEwHhcNMjIwNTEyMjA0NjAyWhcNMjMwNTExMjA0NjAyWjB0MQsw -->
+<!-- CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u -->
+<!-- ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMR4wHAYDVQQDExVNaWNy -->
+<!-- b3NvZnQgQ29ycG9yYXRpb24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB -->
+<!-- AQDrIzsY62MmKrzergm7Ucnu+DuSHdgzRZVCIGi9CalFrhwtiK+3FIDzlOYbs/zz -->
+<!-- HwuLC3hir55wVgHoaC4liQwQ60wVyR17EZPa4BQ28C5ARlxqftdp3H8RrXWbVyvQ -->
+<!-- aUnBQVZM73XDyGV1oUPZGHGWtgdqtBUd60VjnFPICSf8pnFiit6hvSxH5IVWI0iO -->
+<!-- nfqdXYoPWUtVUMmVqW1yBX0NtbQlSHIU6hlPvo9/uqKvkjFUFA2LbC9AWQbJmH+1 -->
+<!-- uM0l4nDSKfCqccvdI5l3zjEk9yUSUmh1IQhDFn+5SL2JmnCF0jZEZ4f5HE7ykDP+ -->
+<!-- oiA3Q+fhKCseg+0aEHi+DRPZAgMBAAGjggGCMIIBfjAfBgNVHSUEGDAWBgorBgEE -->
+<!-- AYI3TAgBBggrBgEFBQcDAzAdBgNVHQ4EFgQU0WymH4CP7s1+yQktEwbcLQuR9Zww -->
+<!-- VAYDVR0RBE0wS6RJMEcxLTArBgNVBAsTJE1pY3Jvc29mdCBJcmVsYW5kIE9wZXJh -->
+<!-- dGlvbnMgTGltaXRlZDEWMBQGA1UEBRMNMjMwMDEyKzQ3MDUzMDAfBgNVHSMEGDAW -->
+<!-- gBRIbmTlUAXTgqoXNzcitW2oynUClTBUBgNVHR8ETTBLMEmgR6BFhkNodHRwOi8v -->
+<!-- d3d3Lm1pY3Jvc29mdC5jb20vcGtpb3BzL2NybC9NaWNDb2RTaWdQQ0EyMDExXzIw -->
+<!-- MTEtMDctMDguY3JsMGEGCCsGAQUFBwEBBFUwUzBRBggrBgEFBQcwAoZFaHR0cDov -->
+<!-- L3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9jZXJ0cy9NaWNDb2RTaWdQQ0EyMDEx -->
+<!-- XzIwMTEtMDctMDguY3J0MAwGA1UdEwEB/wQCMAAwDQYJKoZIhvcNAQELBQADggIB -->
+<!-- AE7LSuuNObCBWYuttxJAgilXJ92GpyV/fTiyXHZ/9LbzXs/MfKnPwRydlmA2ak0r -->
+<!-- GWLDFh89zAWHFI8t9JLwpd/VRoVE3+WyzTIskdbBnHbf1yjo/+0tpHlnroFJdcDS -->
+<!-- MIsH+T7z3ClY+6WnjSTetpg1Y/pLOLXZpZjYeXQiFwo9G5lzUcSd8YVQNPQAGICl -->
+<!-- 2JRSaCNlzAdIFCF5PNKoXbJtEqDcPZ8oDrM9KdO7TqUE5VqeBe6DggY1sZYnQD+/ -->
+<!-- LWlz5D0wCriNgGQ/TWWexMwwnEqlIwfkIcNFxo0QND/6Ya9DTAUykk2SKGSPt0kL -->
+<!-- tHxNEn2GJvcNtfohVY/b0tuyF05eXE3cdtYZbeGoU1xQixPZAlTdtLmeFNly82uB -->
+<!-- VbybAZ4Ut18F//UrugVQ9UUdK1uYmc+2SdRQQCccKwXGOuYgZ1ULW2u5PyfWxzo4 -->
+<!-- BR++53OB/tZXQpz4OkgBZeqs9YaYLFfKRlQHVtmQghFHzB5v/WFonxDVlvPxy2go -->
+<!-- a0u9Z+ZlIpvooZRvm6OtXxdAjMBcWBAsnBRr/Oj5s356EDdf2l/sLwLFYE61t+ME -->
+<!-- iNYdy0pXL6gN3DxTVf2qjJxXFkFfjjTisndudHsguEMk8mEtnvwo9fOSKT6oRHhM -->
+<!-- 9sZ4HTg/TTMjUljmN3mBYWAWI5ExdC1inuog0xrKmOWVMIIHejCCBWKgAwIBAgIK -->
+<!-- YQ6Q0gAAAAAAAzANBgkqhkiG9w0BAQsFADCBiDELMAkGA1UEBhMCVVMxEzARBgNV -->
+<!-- BAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jv -->
+<!-- c29mdCBDb3Jwb3JhdGlvbjEyMDAGA1UEAxMpTWljcm9zb2Z0IFJvb3QgQ2VydGlm -->
+<!-- aWNhdGUgQXV0aG9yaXR5IDIwMTEwHhcNMTEwNzA4MjA1OTA5WhcNMjYwNzA4MjEw -->
+<!-- OTA5WjB+MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UE -->
+<!-- BxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSgwJgYD -->
+<!-- VQQDEx9NaWNyb3NvZnQgQ29kZSBTaWduaW5nIFBDQSAyMDExMIICIjANBgkqhkiG -->
+<!-- 9w0BAQEFAAOCAg8AMIICCgKCAgEAq/D6chAcLq3YbqqCEE00uvK2WCGfQhsqa+la -->
+<!-- UKq4BjgaBEm6f8MMHt03a8YS2AvwOMKZBrDIOdUBFDFC04kNeWSHfpRgJGyvnkmc -->
+<!-- 6Whe0t+bU7IKLMOv2akrrnoJr9eWWcpgGgXpZnboMlImEi/nqwhQz7NEt13YxC4D -->
+<!-- dato88tt8zpcoRb0RrrgOGSsbmQ1eKagYw8t00CT+OPeBw3VXHmlSSnnDb6gE3e+ -->
+<!-- lD3v++MrWhAfTVYoonpy4BI6t0le2O3tQ5GD2Xuye4Yb2T6xjF3oiU+EGvKhL1nk -->
+<!-- kDstrjNYxbc+/jLTswM9sbKvkjh+0p2ALPVOVpEhNSXDOW5kf1O6nA+tGSOEy/S6 -->
+<!-- A4aN91/w0FK/jJSHvMAhdCVfGCi2zCcoOCWYOUo2z3yxkq4cI6epZuxhH2rhKEmd -->
+<!-- X4jiJV3TIUs+UsS1Vz8kA/DRelsv1SPjcF0PUUZ3s/gA4bysAoJf28AVs70b1FVL -->
+<!-- 5zmhD+kjSbwYuER8ReTBw3J64HLnJN+/RpnF78IcV9uDjexNSTCnq47f7Fufr/zd -->
+<!-- sGbiwZeBe+3W7UvnSSmnEyimp31ngOaKYnhfsi+E11ecXL93KCjx7W3DKI8sj0A3 -->
+<!-- T8HhhUSJxAlMxdSlQy90lfdu+HggWCwTXWCVmj5PM4TasIgX3p5O9JawvEagbJjS -->
+<!-- 4NaIjAsCAwEAAaOCAe0wggHpMBAGCSsGAQQBgjcVAQQDAgEAMB0GA1UdDgQWBBRI -->
+<!-- bmTlUAXTgqoXNzcitW2oynUClTAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTAL -->
+<!-- BgNVHQ8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBRyLToCMZBD -->
+<!-- uRQFTuHqp8cx0SOJNDBaBgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3JsLm1pY3Jv -->
+<!-- c29mdC5jb20vcGtpL2NybC9wcm9kdWN0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFf -->
+<!-- MDNfMjIuY3JsMF4GCCsGAQUFBwEBBFIwUDBOBggrBgEFBQcwAoZCaHR0cDovL3d3 -->
+<!-- dy5taWNyb3NvZnQuY29tL3BraS9jZXJ0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFf -->
+<!-- MDNfMjIuY3J0MIGfBgNVHSAEgZcwgZQwgZEGCSsGAQQBgjcuAzCBgzA/BggrBgEF -->
+<!-- BQcCARYzaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9kb2NzL3ByaW1h -->
+<!-- cnljcHMuaHRtMEAGCCsGAQUFBwICMDQeMiAdAEwAZQBnAGEAbABfAHAAbwBsAGkA -->
+<!-- YwB5AF8AcwB0AGEAdABlAG0AZQBuAHQALiAdMA0GCSqGSIb3DQEBCwUAA4ICAQBn -->
+<!-- 8oalmOBUeRou09h0ZyKbC5YR4WOSmUKWfdJ5DJDBZV8uLD74w3LRbYP+vj/oCso7 -->
+<!-- v0epo/Np22O/IjWll11lhJB9i0ZQVdgMknzSGksc8zxCi1LQsP1r4z4HLimb5j0b -->
+<!-- pdS1HXeUOeLpZMlEPXh6I/MTfaaQdION9MsmAkYqwooQu6SpBQyb7Wj6aC6VoCo/ -->
+<!-- KmtYSWMfCWluWpiW5IP0wI/zRive/DvQvTXvbiWu5a8n7dDd8w6vmSiXmE0OPQvy -->
+<!-- CInWH8MyGOLwxS3OW560STkKxgrCxq2u5bLZ2xWIUUVYODJxJxp/sfQn+N4sOiBp -->
+<!-- mLJZiWhub6e3dMNABQamASooPoI/E01mC8CzTfXhj38cbxV9Rad25UAqZaPDXVJi -->
+<!-- hsMdYzaXht/a8/jyFqGaJ+HNpZfQ7l1jQeNbB5yHPgZ3BtEGsXUfFL5hYbXw3MYb -->
+<!-- BL7fQccOKO7eZS/sl/ahXJbYANahRr1Z85elCUtIEJmAH9AAKcWxm6U/RXceNcbS -->
+<!-- oqKfenoi+kiVH6v7RyOA9Z74v2u3S5fi63V4GuzqN5l5GEv/1rMjaHXmr/r8i+sL -->
+<!-- gOppO6/8MO0ETI7f33VtY5E90Z1WTk+/gFcioXgRMiF670EKsT/7qMykXcGhiJtX -->
+<!-- cVZOSEXAQsmbdlsKgEhr/Xmfwb1tbWrJUnMTDXpQzTGCGaIwghmeAgEBMIGVMH4x -->
+<!-- CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRt -->
+<!-- b25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01p -->
+<!-- Y3Jvc29mdCBDb2RlIFNpZ25pbmcgUENBIDIwMTECEzMAAALN82S/+NRMXVEAAAAA -->
+<!-- As0wDQYJYIZIAWUDBAIBBQCgga4wGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQw -->
+<!-- HAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEICoT -->
+<!-- XYENG5NAgJvMDM3NRBg+Tkjw+2luLK2O+2p+N9MXMEIGCisGAQQBgjcCAQwxNDAy -->
+<!-- oBSAEgBNAGkAYwByAG8AcwBvAGYAdKEagBhodHRwOi8vd3d3Lm1pY3Jvc29mdC5j -->
+<!-- b20wDQYJKoZIhvcNAQEBBQAEggEAcySpUqtjrAe+a9Ltp2crqIL1LiMOd8KFB9ov -->
+<!-- 4Kur0tK9h2pCweDR34C3qITwdCg9exENp25ZpNay4IsRIu9jvK/UJTvZ5YSD1Yuo -->
+<!-- eEWuZ/lblIYyPbMS9fdTjV9uMswbtuUoqrSVKZn/yG1myQBAxMYqn5RfFUG7mCT5 -->
+<!-- tUltTux7w1gEOC10kX0ikGg3UaUfGUoyjQcQGmYKFlwMzdfDzG9wIA/aU7nqv95E -->
+<!-- kkfsS6Zri409S/XVxPbHS/ZUl7sFP/cR+tbAA4JoaiJyTiBbZECUNZLdaHqmcxII -->
+<!-- UZlaMAFkUyEIwqnmzmc7ufz0dI7if4WK/uyFHJDDQdF8Ds3meaGCFywwghcoBgor -->
+<!-- BgEEAYI3AwMBMYIXGDCCFxQGCSqGSIb3DQEHAqCCFwUwghcBAgEDMQ8wDQYJYIZI -->
+<!-- AWUDBAIBBQAwggFZBgsqhkiG9w0BCRABBKCCAUgEggFEMIIBQAIBAQYKKwYBBAGE -->
+<!-- WQoDATAxMA0GCWCGSAFlAwQCAQUABCAe/l20oG7TA1O4+XJIbr6xFB/PudXAFIx6 -->
+<!-- BFuG2g0DuQIGZBsSeoVUGBMyMDIzMDMzMDA1NDQzOC42MjZaMASAAgH0oIHYpIHV -->
+<!-- MIHSMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMH -->
+<!-- UmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMS0wKwYDVQQL -->
+<!-- EyRNaWNyb3NvZnQgSXJlbGFuZCBPcGVyYXRpb25zIExpbWl0ZWQxJjAkBgNVBAsT -->
+<!-- HVRoYWxlcyBUU1MgRVNOOjE3OUUtNEJCMC04MjQ2MSUwIwYDVQQDExxNaWNyb3Nv -->
+<!-- ZnQgVGltZS1TdGFtcCBTZXJ2aWNloIIRezCCBycwggUPoAMCAQICEzMAAAG1rRrf -->
+<!-- 14VwbRMAAQAAAbUwDQYJKoZIhvcNAQELBQAwfDELMAkGA1UEBhMCVVMxEzARBgNV -->
+<!-- BAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jv -->
+<!-- c29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAg -->
+<!-- UENBIDIwMTAwHhcNMjIwOTIwMjAyMjExWhcNMjMxMjE0MjAyMjExWjCB0jELMAkG -->
+<!-- A1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQx -->
+<!-- HjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEtMCsGA1UECxMkTWljcm9z -->
+<!-- b2Z0IElyZWxhbmQgT3BlcmF0aW9ucyBMaW1pdGVkMSYwJAYDVQQLEx1UaGFsZXMg -->
+<!-- VFNTIEVTTjoxNzlFLTRCQjAtODI0NjElMCMGA1UEAxMcTWljcm9zb2Z0IFRpbWUt -->
+<!-- U3RhbXAgU2VydmljZTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAJcL -->
+<!-- CrhlXoLCjYmFxcFPgkh57dmuz31sNsj8IlvmEZRCbB94mxSIj35P8m5TKfCRmp7b -->
+<!-- vuw4v/t3ucFjf52yVCDFIxFiZ3PCTI6D5hwlrDLSTrkf9UbuGmtUa8ULSHpatPfE -->
+<!-- wZeJOzbBBPO5e6ihZsvIsBjUI5MK9GzLuAScMuwVF4lx3oDklPfdq30OMTWaMc57 -->
+<!-- +Nky0LHPTZnAauVrJZKlQE3HPD0n4ASxKXRtQ6dsKjcOCayRcCTQNW3800nGAAXO -->
+<!-- bJkWQYLD+CYiv/Ala5aHIXhMkKJ45t6xbba6IwK3klJ4sQC7vaQ67ASOA1Dxht+K -->
+<!-- CG4niNaKhZf8ZOwPu7jPJOKPInzFVjU2nM2z5XQ2LZ+oQa3u69uURA+LnnAsT/A8 -->
+<!-- ct+GD1BJVpZTz9ywF6eXDMEY8fhFs4xLSCxCl7gHH8a1wk8MmIZuVzcwgmWIeP4B -->
+<!-- dlNsv22H3pCqWqBWMJKGXk+mcaEG1+Sn7YI/rWZBVdtVL2SJCem9+Gv+OHba7Cun -->
+<!-- Yk5lZzUzPSej+hIZZNrH3FMGxyBi/JmKnSjosneEcTgpkr3BTZGRIK5OePJhwmw2 -->
+<!-- 08jvcUszdRJFsW6fJ/yx1Z2fX6eYSCxp7ZDM2g+Wl0QkMh0iIbD7Ue0P6yqB8oxa -->
+<!-- oLRjvX7Z8WL8cza2ynjAs8JnKsDK1+h3MXtEnimfAgMBAAGjggFJMIIBRTAdBgNV -->
+<!-- HQ4EFgQUbFCG2YKGVV1V1VkF9DpNVTtmx1MwHwYDVR0jBBgwFoAUn6cVXQBeYl2D -->
+<!-- 9OXSZacbUzUZ6XIwXwYDVR0fBFgwVjBUoFKgUIZOaHR0cDovL3d3dy5taWNyb3Nv -->
+<!-- ZnQuY29tL3BraW9wcy9jcmwvTWljcm9zb2Z0JTIwVGltZS1TdGFtcCUyMFBDQSUy -->
+<!-- MDIwMTAoMSkuY3JsMGwGCCsGAQUFBwEBBGAwXjBcBggrBgEFBQcwAoZQaHR0cDov -->
+<!-- L3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9jZXJ0cy9NaWNyb3NvZnQlMjBUaW1l -->
+<!-- LVN0YW1wJTIwUENBJTIwMjAxMCgxKS5jcnQwDAYDVR0TAQH/BAIwADAWBgNVHSUB -->
+<!-- Af8EDDAKBggrBgEFBQcDCDAOBgNVHQ8BAf8EBAMCB4AwDQYJKoZIhvcNAQELBQAD -->
+<!-- ggIBAJBRjqcoyldrNrAPsE6g8A3YadJhaz7YlOKzdzqJ01qm/OTOlh9fXPz+de8b -->
+<!-- oywoofx5ZT+cSlpl5wCEVdfzUA5CQS0nS02/zULXE9RVhkOwjE565/bS2caiBbSl -->
+<!-- cpb0Dcod9Qv6pAvEJjacs2pDtBt/LjhoDpCfRKuJwPu0MFX6Gw5YIFrhKc3RZ0Xc -->
+<!-- ly99oDqkr6y4xSqb+ChFamgU4msQlmQ5SIRt2IFM2u3JxuWdkgP33jKvyIldOgM1 -->
+<!-- GnWcOl4HE66l5hJhNLTJnZeODDBQt8BlPQFXhQlinQ/Vjp2ANsx4Plxdi0FbaNFW -->
+<!-- LRS3enOg0BXJgd/BrzwilWEp/K9dBKF7kTfoEO4S3IptdnrDp1uBeGxwph1k1Vng -->
+<!-- BoD4kiLRx0XxiixFGZqLVTnRT0fMIrgA0/3x0lwZJHaS9drb4BBhC3k858xbpWde -->
+<!-- m/zb+nbW4EkWa3nrCQTSqU43WI7vxqp5QJKX5S+idMMZPee/1FWJ5o40WOtY1/dE -->
+<!-- BkJgc5vb7P/tm49Nl8f2118vL6ue45jV0NrnzmiZt5wHA9qjmkslxDo/ZqoTLeLX -->
+<!-- bzIx4YjT5XX49EOyqtR4HUQaylpMwkDYuLbPB0SQYqTWlaVn1OwXEZ/AXmM3S6CM -->
+<!-- 8ESw7Wrc+mgYaN6A/21x62WoMaazOTLDAf61X2+V59WEu/7hMIIHcTCCBVmgAwIB -->
+<!-- AgITMwAAABXF52ueAptJmQAAAAAAFTANBgkqhkiG9w0BAQsFADCBiDELMAkGA1UE -->
+<!-- BhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAc -->
+<!-- BgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEyMDAGA1UEAxMpTWljcm9zb2Z0 -->
+<!-- IFJvb3QgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IDIwMTAwHhcNMjEwOTMwMTgyMjI1 -->
+<!-- WhcNMzAwOTMwMTgzMjI1WjB8MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGlu -->
+<!-- Z3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBv -->
+<!-- cmF0aW9uMSYwJAYDVQQDEx1NaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMDCC -->
+<!-- AiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOThpkzntHIhC3miy9ckeb0O -->
+<!-- 1YLT/e6cBwfSqWxOdcjKNVf2AX9sSuDivbk+F2Az/1xPx2b3lVNxWuJ+Slr+uDZn -->
+<!-- hUYjDLWNE893MsAQGOhgfWpSg0S3po5GawcU88V29YZQ3MFEyHFcUTE3oAo4bo3t -->
+<!-- 1w/YJlN8OWECesSq/XJprx2rrPY2vjUmZNqYO7oaezOtgFt+jBAcnVL+tuhiJdxq -->
+<!-- D89d9P6OU8/W7IVWTe/dvI2k45GPsjksUZzpcGkNyjYtcI4xyDUoveO0hyTD4MmP -->
+<!-- frVUj9z6BVWYbWg7mka97aSueik3rMvrg0XnRm7KMtXAhjBcTyziYrLNueKNiOSW -->
+<!-- rAFKu75xqRdbZ2De+JKRHh09/SDPc31BmkZ1zcRfNN0Sidb9pSB9fvzZnkXftnIv -->
+<!-- 231fgLrbqn427DZM9ituqBJR6L8FA6PRc6ZNN3SUHDSCD/AQ8rdHGO2n6Jl8P0zb -->
+<!-- r17C89XYcz1DTsEzOUyOArxCaC4Q6oRRRuLRvWoYWmEBc8pnol7XKHYC4jMYcten -->
+<!-- IPDC+hIK12NvDMk2ZItboKaDIV1fMHSRlJTYuVD5C4lh8zYGNRiER9vcG9H9stQc -->
+<!-- xWv2XFJRXRLbJbqvUAV6bMURHXLvjflSxIUXk8A8FdsaN8cIFRg/eKtFtvUeh17a -->
+<!-- j54WcmnGrnu3tz5q4i6tAgMBAAGjggHdMIIB2TASBgkrBgEEAYI3FQEEBQIDAQAB -->
+<!-- MCMGCSsGAQQBgjcVAgQWBBQqp1L+ZMSavoKRPEY1Kc8Q/y8E7jAdBgNVHQ4EFgQU -->
+<!-- n6cVXQBeYl2D9OXSZacbUzUZ6XIwXAYDVR0gBFUwUzBRBgwrBgEEAYI3TIN9AQEw -->
+<!-- QTA/BggrBgEFBQcCARYzaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9E -->
+<!-- b2NzL1JlcG9zaXRvcnkuaHRtMBMGA1UdJQQMMAoGCCsGAQUFBwMIMBkGCSsGAQQB -->
+<!-- gjcUAgQMHgoAUwB1AGIAQwBBMAsGA1UdDwQEAwIBhjAPBgNVHRMBAf8EBTADAQH/ -->
+<!-- MB8GA1UdIwQYMBaAFNX2VsuP6KJcYmjRPZSQW9fOmhjEMFYGA1UdHwRPME0wS6BJ -->
+<!-- oEeGRWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2kvY3JsL3Byb2R1Y3RzL01p -->
+<!-- Y1Jvb0NlckF1dF8yMDEwLTA2LTIzLmNybDBaBggrBgEFBQcBAQROMEwwSgYIKwYB -->
+<!-- BQUHMAKGPmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2kvY2VydHMvTWljUm9v -->
+<!-- Q2VyQXV0XzIwMTAtMDYtMjMuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQCdVX38Kq3h -->
+<!-- LB9nATEkW+Geckv8qW/qXBS2Pk5HZHixBpOXPTEztTnXwnE2P9pkbHzQdTltuw8x -->
+<!-- 5MKP+2zRoZQYIu7pZmc6U03dmLq2HnjYNi6cqYJWAAOwBb6J6Gngugnue99qb74p -->
+<!-- y27YP0h1AdkY3m2CDPVtI1TkeFN1JFe53Z/zjj3G82jfZfakVqr3lbYoVSfQJL1A -->
+<!-- oL8ZthISEV09J+BAljis9/kpicO8F7BUhUKz/AyeixmJ5/ALaoHCgRlCGVJ1ijbC -->
+<!-- HcNhcy4sa3tuPywJeBTpkbKpW99Jo3QMvOyRgNI95ko+ZjtPu4b6MhrZlvSP9pEB -->
+<!-- 9s7GdP32THJvEKt1MMU0sHrYUP4KWN1APMdUbZ1jdEgssU5HLcEUBHG/ZPkkvnNt -->
+<!-- yo4JvbMBV0lUZNlz138eW0QBjloZkWsNn6Qo3GcZKCS6OEuabvshVGtqRRFHqfG3 -->
+<!-- rsjoiV5PndLQTHa1V1QJsWkBRH58oWFsc/4Ku+xBZj1p/cvBQUl+fpO+y/g75LcV -->
+<!-- v7TOPqUxUYS8vwLBgqJ7Fx0ViY1w/ue10CgaiQuPNtq6TPmb/wrpNPgkNWcr4A24 -->
+<!-- 5oyZ1uEi6vAnQj0llOZ0dFtq0Z4+7X6gMTN9vMvpe784cETRkPHIqzqKOghif9lw -->
+<!-- Y1NNje6CbaUFEMFxBmoQtB1VM1izoXBm8qGCAtcwggJAAgEBMIIBAKGB2KSB1TCB -->
+<!-- 0jELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1Jl -->
+<!-- ZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEtMCsGA1UECxMk -->
+<!-- TWljcm9zb2Z0IElyZWxhbmQgT3BlcmF0aW9ucyBMaW1pdGVkMSYwJAYDVQQLEx1U -->
+<!-- aGFsZXMgVFNTIEVTTjoxNzlFLTRCQjAtODI0NjElMCMGA1UEAxMcTWljcm9zb2Z0 -->
+<!-- IFRpbWUtU3RhbXAgU2VydmljZaIjCgEBMAcGBSsOAwIaAxUAjTCfa9dUWY9D1rt7 -->
+<!-- pPmkBxdyLFWggYMwgYCkfjB8MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGlu -->
+<!-- Z3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBv -->
+<!-- cmF0aW9uMSYwJAYDVQQDEx1NaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMDAN -->
+<!-- BgkqhkiG9w0BAQUFAAIFAOfPcvIwIhgPMjAyMzAzMzAxMDMxMTRaGA8yMDIzMDMz -->
+<!-- MTEwMzExNFowdzA9BgorBgEEAYRZCgQBMS8wLTAKAgUA589y8gIBADAKAgEAAgIB -->
+<!-- HQIB/zAHAgEAAgIRRDAKAgUA59DEcgIBADA2BgorBgEEAYRZCgQCMSgwJjAMBgor -->
+<!-- BgEEAYRZCgMCoAowCAIBAAIDB6EgoQowCAIBAAIDAYagMA0GCSqGSIb3DQEBBQUA -->
+<!-- A4GBAKD/iuxMLhRZj3wWGcd4aiznz8ScKZ2frpUFVTJ8Dvcia6w+PTYeO9OvbygY -->
+<!-- M4oAwYem9Go/T2LaHsqOVhNTgQekIu0e3WEnYjVN3ZJEqOUk+X+XGV3Q3j6lySwX -->
+<!-- cFiPxRY/yPv+HX82ZfELSAkhIMa0nOYzC3vlp7Ulp8LOGTCXMYIEDTCCBAkCAQEw -->
+<!-- gZMwfDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcT -->
+<!-- B1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UE -->
+<!-- AxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENBIDIwMTACEzMAAAG1rRrf14VwbRMA -->
+<!-- AQAAAbUwDQYJYIZIAWUDBAIBBQCgggFKMBoGCSqGSIb3DQEJAzENBgsqhkiG9w0B -->
+<!-- CRABBDAvBgkqhkiG9w0BCQQxIgQgio8n/bympBdB0zFn0fzw18pOuyjxtUzmbuyO -->
+<!-- zuCkzukwgfoGCyqGSIb3DQEJEAIvMYHqMIHnMIHkMIG9BCAnyg01LWhnFon2HNzl -->
+<!-- ZyKae2JJ9EvCXJVc65QIBfHIgzCBmDCBgKR+MHwxCzAJBgNVBAYTAlVTMRMwEQYD -->
+<!-- VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy -->
+<!-- b3NvZnQgQ29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jvc29mdCBUaW1lLVN0YW1w -->
+<!-- IFBDQSAyMDEwAhMzAAABta0a39eFcG0TAAEAAAG1MCIEIHzlNI8NLRo5ai0JNI+S -->
+<!-- /fY4DlC+h4b+LWN84HgAgBpVMA0GCSqGSIb3DQEBCwUABIICAAEPUsjowLiVpSYM -->
+<!-- SM8TgjZniZuIGuGSKFbzJC5zy+VZrPIr/KQBR3wedYk0f9Gm+J3HxUYzavmCYL/c -->
+<!-- AGKRKpAHYYdJoNgDZ0QDODC6QMGWuTbJAddySoTXuYRHxb0nr33qdiLd6RXT92Tx -->
+<!-- INWIgICFSMleW5j1HEfV43IgIKcqwQe+ekJEklDLh3AUT5f95iE8mMFv89TTj9Nu -->
+<!-- mCfQj4B1dIVt3NkqQaxBQsiNblAyUu/gdsBPGVkKwZ9E7MSxbNbNIof8LTZ1AtA0 -->
+<!-- BBWvrZpTFruuH2PD282O6rRhiiIRUf0ids0djJUtYMKN3emC6HSylgUuER+Y/ZtQ -->
+<!-- wBxlDBLMM9b0cpmjxhzx2XDG65A6bcqYAcFjta5ndg1W6qadz1UsJ98U9u/un91f -->
+<!-- cMfg2L3IXIJOHsaoHItk0XbOhFBvVjgfU6ZyKBHYRzHioXM7GkfNjpJOC/5FLSIS -->
+<!-- tm4xaS90fhpnVlBg9e2hzB77R8T3IbjDTH3xQCbSIThD9DKIhIa5WHEU0OtKb4zl -->
+<!-- 1iGkUBneNe2+T9CCG5zFu7mDU0r0VeuvPuoc3kTKlT0PYPZyTkmdDdqV6LYSAssn -->
+<!-- gebIWkDVbV2p/o+6Dln62ImRidEqi8925gUrvyfjOKw8f8dzeARWFkwFDgXBLMb/ -->
+<!-- XSmPllDEuVi8lxNavOEJKaWg91eg -->
+<!-- SIG # End signature block -->

@@ -1,0 +1,13 @@
+{
+	"ini_list"	: 
+	[
+		{
+			"PrinterModelName"	: ["IM C4500","GS3045","IM C6000","GS3160","IM C5500"],
+			"LoadDll"			: "MFRicr64.dll",
+			"ResDll"			: "RD07Rd64.dll",
+			"Version"			: "1.1.20.0"
+			
+		}
+	]
+}
+

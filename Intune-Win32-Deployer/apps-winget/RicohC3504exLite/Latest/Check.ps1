@@ -1,0 +1,1 @@
+$pName = "LHC - RICOH MP C3504ex PCL 6"; $pRegKeyPath = "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Print\Printers\$pName"; if ((Get-ItemProperty -Path $pRegKeyPath -Name "Name" -ErrorAction SilentlyContinue)."Name" -eq $pName) { Write-Output "Printer '$pName' detected."; exit 0 } else { exit 1 }
