@@ -19,9 +19,9 @@ try {
 
     # Restart the Windows Update service
     Restart-Service wuauserv -Force
-    # Write-Host "Remediation completed successfully."
+    Write-Host "Remediation completed successfully."
     # exit 0
 } catch {
-    # Write-Error "An error occurred during remediation: $_"
+    Write-Error "An error occurred during remediation: $_"
     # exit 2
 }

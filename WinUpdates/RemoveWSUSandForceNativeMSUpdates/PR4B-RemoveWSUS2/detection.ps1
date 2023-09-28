@@ -20,13 +20,13 @@ try {
     }
 
     if (($missingOrCorrectKeys + $correctValues) -notcontains $false) {
-        # Write-Host "All registry keys and values are set correctly. No remediation needed."
+        Write-Host "All registry keys and values are set correctly. No remediation needed."
         exit 0
     } else {
-        # Write-Host "Registry keys and/or values are incorrect. Remediation needed."
+        Write-Host "Registry keys and/or values are incorrect. Remediation needed."
         exit 1
     }
 } catch {
-    # Write-Error "An error occurred: $_"
+    Write-Error "An error occurred: $_"
     exit 2
 }
