@@ -1,0 +1,458 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+  <Configuration ConfigName="Visio Configuration"
+                 ChangeDescription="2.0.1611.13"
+                 ConfigVersion="2.0.1611.13"
+                 ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+                 DownloadURL="http://www.microsoft.com/office/offcat"
+                 FixItURL="http://go.microsoft.com/?linkid={0}"
+                 ReferencedFiles="common.config.xml,officeupdates.config.xml,visio.crashes.config.xml"
+                 Symptoms="1">
+    <DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryGenerator" />
+    <!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+    <Substitution Name="MAJORVERSION"></Substitution>
+    <Substitution Name="INSTALLTYPE"></Substitution>
+    <Substitution Name="APPNAME">Visio</Substitution>
+    <Substitution Name="DAYS">14</Substitution>
+    <Substitution Name="MAXEVENTS">10</Substitution>
+    <ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+    <!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+    <ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+    <ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+    <ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+    <ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+    <ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+    <ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+    <ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+    <ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+    <ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+    <ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+    <ObjectProcessor Name="IfThenElse" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfThenElseObjectProcessor"/>
+    <ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+    <ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+    <ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+    <ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+    <ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+    <ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+    <ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+    <ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+    <ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"></ExtFormat>
+  </Configuration>
+  <Object Type="Group" Name="Visio Scan" Class="Scan Type" GroupingClass="True">
+    <!--OFFICE DETAILS-->
+    <Object Type="Group" Name="Install details">
+      <Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Visio" Key6="visio" Key7="%MAJORVERSION%">
+        <Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+        </Setting>
+        <Object Type="IfThenElse" Key1="'%WOW6432NODE%'=''" Key2="emptyval" Key3="%WOW6432NODE%">
+          <Setting Key1="wowcacheval" Substitution="WOWCACHEVAL" Display="Hide" />
+          <Object Type="Cache" Name="wowcache" Key1="Add" Key2="wowcache" Key3="%WOWCACHEVAL%">
+          </Object>
+        </Object>
+        <Setting Key1="Bitness" Substitution="APPBITNESS">
+          <Rule Name="bitness" Query="$."></Rule>
+        </Setting>
+        <Setting Key1="FullVersion">
+          <Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+          <Rule Name="nBuild" Query="substring-before(substring-after(string($.),concat($n2DigitVersion,'.0.')),'.')"></Rule>
+          <Rule Name="sFullAppVersion" Query="$.">
+          </Rule>
+          <!--Rule Name="sVisio16Scanned" Query="$n2DigitVersion&gt;15" Error="Warning" Title="OffCAT scan results may be inaccurate with Visio %MAJORVERSION%" Text="Your scan results may not be completely accurate as the scanned version of Visio (%MAJORVERSION%) is not yet supported by OffCAT. Please send feedback to the OffCAT team if you discover a rule or configuration setting that is inaccurately reported by OffCAT." SSID="543fcf15-aafa-4fda-85c9-fd10e15451cf" Symptoms="_Alert from OffCAT"></Rule-->
+        </Setting>
+        <Setting Key1="Name">
+          <Rule Name="appName" Query="$."></Rule>
+        </Setting>
+        <Setting Key1="Path"></Setting>
+        <Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Hide">
+        </Setting>
+        <Object Type="Cache" Name="InstallPathCACHE" Key1="Add" Key2="INSTALLPATHCACHE" Key3="%INSTALLPATH%"/>
+        <Setting Key1="Version">
+          <Rule Name="n4DigitSKUVersion" Query="$."></Rule>
+        </Setting>
+        <Rule Name="nInstallType" Query="'%INSTALLTYPE%'"></Rule>
+        <Reference Type="InstalledServicePack" Name="InstalledServicePack" File="common.config.xml"></Reference>
+        <Setting Key1="Type">
+          <Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+          <Rule Name="f2016MSI" Query="$n4DigitSKUVersion='2016' and $.='MSI'"></Rule>
+        </Setting>
+        <!--SKU-->
+        <Object Type="Group" Name="Office SKU">
+          <Object Type="If" Key1="'%MAJORVERSION%'='11'">
+            <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{7E5F9F34-8EA7-4EA2-ABFB-CA4E742EFFA1}">
+              <Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+              <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+                <Setting Key1="ProductName" Display="Right"></Setting>
+              </Object>
+            </Object>
+          </Object>
+          <Object Type="If" Key1="'%MAJORVERSION%'='12'">
+            <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{0638C49D-BB8B-4CD1-B191-05DE8F325736}">
+              <Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+              <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+                <Setting Key1="ProductName" Display="Right"></Setting>
+              </Object>
+            </Object>
+          </Object>
+          <Object Type="If" Key1="'%MAJORVERSION%'='14' and '%APPBITNESS%'='x86'">
+            <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{4371C2B1-3F27-41F5-A849-9987AB91D990}">
+              <Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+              </Setting>
+              <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+                <Setting Key1="ProductName" Substitution="PN" Display="Right">
+                </Setting>
+                <Setting Key1="ProductID" Substitution="PID" SubstitutionFormat="(.....)-(...-......).*----$2" Display="Hide">
+                </Setting>
+                <Object Type="If" Key1="contains('%PN%','Single Image')">
+                  <Object Type="WMI" Key3="OfficeSoftwareProtectionProduct" Key4="Name LIKE '%Office 14, Office%' AND ProductKeyID LIKE '%%PID%%'" Display="Hide">
+                    <Setting Key1="ID" Substitution="REGID" Display="Hide">
+                    </Setting>
+                    <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\14.0\Registration\{%REGID%}" Display="Hide">
+                      <Setting Key1="ProductName">
+                      </Setting>
+                    </Object>
+                  </Object>
+                </Object>
+              </Object>
+            </Object>
+          </Object>
+          <Object Type="If" Key1="'%MAJORVERSION%'='14' and '%APPBITNESS%'='x64'">
+            <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{DB2B19E4-F894-47B1-A6F1-9B391A4AE0A8}">
+              <Setting Key1="ProductCode" Substitution="PRODUCTCODE">                
+              </Setting>
+              <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+                <Setting Key1="ProductName" Substitution="PN" Display="Right">
+                </Setting>
+                <Setting Key1="ProductID" Substitution="PID" SubstitutionFormat="(.....)-(...-......).*----$2" Display="Hide">
+                </Setting>
+                <Object Type="If" Key1="contains('%PN%','Single Image')">
+                  <Object Type="WMI" Key3="OfficeSoftwareProtectionProduct" Key4="Name LIKE '%Office 14, Office%' AND ProductKeyID LIKE '%%PID%%'" Display="Hide">
+                    <Setting Key1="ID" Substitution="REGID" Display="Hide">
+                    </Setting>
+                    <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\14.0\Registration\{%REGID%}" Display="Hide">
+                      <Setting Key1="ProductName">
+                      </Setting>
+                    </Object>
+                  </Object>
+                </Object>
+              </Object>
+            </Object>
+          </Object>
+          <Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+            <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{5D502092-1543-4D9B-89FE-7B4364417CC6}">
+              <Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+                <Rule Name="SKU2013" Query="substring(string($.),11,4)"></Rule>
+                <Rule Name="ReleaseType2013" Query="substring(string($.),3,1)"></Rule>
+              </Setting>
+              <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+                <Setting Key1="ProductName" Display="Right">
+                </Setting>
+              </Object>
+            </Object>
+          </Object>
+          <Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+            <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{7069FF90-1D63-4F85-A2AB-6F0D01C78D83}">
+              <Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+                <Rule Name="SKU201364" Query="substring(string($.),11,4)"></Rule>
+                <Rule Name="ReleaseType201364" Query="substring(string($.),3,1)"></Rule>
+              </Setting>
+              <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+                <Setting Key1="ProductName" Display="Right">
+                </Setting>
+              </Object>
+            </Object>
+          </Object>
+          <Object Type="If" Key1="number('%MAJORVERSION%')&gt;14 and '%INSTALLTYPE%'='ClickToRun'">
+            <Object Type="C2RSKU" Key1="Visio" Key2="%APPBITNESS%" Key3="%MAJORVERSION%">
+              <Setting Key1="ProductName">
+              </Setting>
+            </Object>
+          </Object>
+        </Object>
+        <!--/SKU-->
+        <!--MSO-->
+        <Reference Type="MSO" Name="MSO" File="common.config.xml">
+        </Reference>
+        <!--/MSO-->
+        <!--ADALCSIDLL-->
+        <Reference Type="ADALCSIDLL" Name="ADALCSIDLL" File="common.config.xml">
+        </Reference>
+        <!--/ADALCSI-->
+        <!--OART.dll-->
+        <Reference Type="OART" Name="OART" File="common.config.xml">
+        </Reference>
+        <!--/OART.dll-->
+        <Object Type="File" Key2="%INSTALLPATH%\vislib.dll">
+          <Setting Key1="Version" Display="Hide">
+            <Rule Name="sVislibDllVersion" Query="$."></Rule>
+          </Setting>
+        </Object>
+      </Object>
+      <!--INSTALLED UPDATES-->
+      <Object Type="If" Key1="'%INSTALLTYPE%'='MSI'">
+        <Object Type="Group" Name="Installed Updates" Class="Office Update" GroupingClass="True" Display="Right" TrackProgress="TrackProgress">
+          <Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml"></Reference>
+        </Object>
+      </Object>
+      <Object Type="If" Key1="'%INSTALLTYPE%'='ClickToRun'">
+        <Object Type="Group" Name="ClickToRun Details" GroupingClass="True" Class="Office Update" Display="Right">
+          <Object Type="Cache" Name="wowcache" Key1="Dump" Key2="wowcache" Display="Hide">
+            <Setting Key1="WowVal" Substitution="WOW6432NODE" Display="Hide"></Setting>
+            <Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml"></Reference>
+          </Object>
+        </Object>
+      </Object>
+      <!--/INSTALLED UPDATES-->
+      <!--ADAL updates-->
+      <Object Type="If" Key1="number('%MAJORVERSION%')=15">
+        <Object Type="Group" Name="Office 2013 Modern Authentication support">
+          <Object Type="Group" Name="Prerequisites" Display="Right">
+            <Object Type="Group" Name="%APPNAME%" Display="Right">
+              <Object Type="Group" Name="Hidden">
+                <Rule Name="fKB2956155Installed" Query="versioncompare($sVislibDllVersion,'15.0.4701.1001')"
+                      P0="if($fKB2956155Installed&gt;=0,' ',' not ')" P1="if($nInstallType='MSI','KB2956155','Click-to-run March 2015 build')"
+                      Text="{1} (or later) is{0}installed" GUID="615090"></Rule>
+              </Object>
+            </Object>
+            <Object Type="Cache" Name="InstallPathCACHE" Key1="Dump" Key2="INSTALLPATHCACHE" Display="Hide">
+              <Setting Key1="Val" Substitution="INSTALLPATH" Display="Hide"></Setting>
+            <Reference Type="ADAL" Name="ADAL" File="common.config.xml">
+            </Reference>
+            </Object>
+            <Rule Name="sAdalEnabled" Query="true()" Error="None" 
+                  P0="if($fKB2956155Installed&gt;=0 and $ADAL_fKB2956151Installed&gt;=0,' ',' not ')"
+                  P2="if($fKB2956155Installed&gt;=0,'Installed','Not Installed')"
+                  P3="if($ADAL_fKB2956151Installed&gt;=0,'Installed','Not Installed')"
+                  P4="'%APPNAME%'"
+                  Title="All prerequisites for ADAL are{0}installed"
+                  Text="All prerequisites for ADAL are{0}installed:&#xD;&#xA;{4} 2013 March 2015 update - {2}&#xD;&#xA;Mso.dll 2013 March 2015 update - {3}"
+                 GUID="615090" SSID="e51d49ab-d1e7-4f74-929b-086c05b40cab" Symptoms="Modern Authentication for Office"></Rule>
+          </Object>
+        </Object>
+      </Object>
+      <!--/ADAL updates-->
+    </Object>
+    <!--OFFICE DETAILS-->
+    <!--USER DETAILS-->
+    <Object Type="Group" Name="User Details" Display="Right">
+      <Reference Type="UserDetails" Name="UserDetails" File="common.config.xml"></Reference>
+    </Object>
+    <!--/USER DETAILS-->
+    <!--MACHINE DETAILS-->
+    <Object Type="Group" Name="Machine Details">
+      <Reference Type="MachineDetails" Name="MachineDetails" File="common.config.xml"></Reference>
+      <Reference Type="ServicesRunning" Name="ServicesRunning" File="common.config.xml"></Reference>
+      <Reference Type="OSDetails" Name="OSDetails" File="common.config.xml"></Reference>
+    </Object>
+    <!--MACHINE DETAILS-->
+    <!--ADD-INS-->
+    <Object Type="Group" Name="Registered add-ins" Class="Add-ins" GroupingClass="True" TrackProgress="TrackProgress">
+      <!--PDFMaker-->
+      <Object Type="Registry" Key2="HKEY_CLASSES_ROOT" Key3="PDFMVisio.PDFMVisioCOMAddin\CLSID">
+        <Setting Key1="(Default)" Substitution="PDFMAKERGUID"></Setting>
+        <Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Visio" Key6="visio" Key7="%MAJORVERSION%" Display="Hide">
+          <Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide"></Setting>
+          <Object Type="Registry" Key2="HKEY_CLASSES_ROOT" Key3="%WOW6432NODE%\CLSID\%PDFMAKERGUID%\InprocServer32">
+            <Setting Key1="(Default)" Substitution="PDFMAKERPATH"></Setting>
+            <Object Type="File" Key2="%PDFMAKERPATH%">
+              <Setting Key1="Version">
+                <Rule Name="sPDFMakerVisio" Query="$n2DigitVersion&gt;13 and number(substring($.,1,1))!=1 and ($hkcuPDFMaker or $hklmPDFMaker or $hklmWowPDFMaker)" Error="Warning" Title="An incompatible version of the PDFMaker add-in is installed" Text="You have a version of the PDFMaker add-in installed that is not compatible with Visio. Please update the add-in to version 10 or higher. &#xd;&#xa;http://helpx.adobe.com/acrobat/kb/compatible-web-browsers-pdfmaker-applications.html" GUID="275735" SSID="261179a5-34f4-4a6d-afff-5a3bad8738c7" Symptoms="Crash,Add-ins"></Rule>
+                <Rule Name="sPDFMakerx64" Query="$n2DigitVersion&gt;13 and ((substring($.,1,2)='10' and number(substring($.,4,1))&lt;1) or substring($.,1,1)!='1')  and $bitness='x64'" Error="Warning" Title="Adobe PDFMaker detected on a client with 64-bit Office" Text="The Adobe PDFMaker add-in was found on a computer that also has a 64-bit install of Office. The PDFMaker add-in version you have is not supported with 64-bit versions of Office. &#xd;&#xa;http://helpx.adobe.com/acrobat/kb/compatible-web-browsers-pdfmaker-applications.html" GUID="275735" SSID="43f92f91-0f4c-44a6-b410-5ddc6d7270d9" Symptoms="Crash,Add-ins"></Rule>
+              </Setting>
+            </Object>
+          </Object>
+        </Object>
+      </Object>
+      <!--/PDFMaker-->
+      <!--HKCU addins-->
+      <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\Visio\Addins" Key5="Subtree" Display="Right">
+        <Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+        <Rule Name="hkcuPDFMaker" Query="../Instance/Setting[@Key1='__KEYPATH' and contains(Value,'PDFMaker.OfficeAddin')]"></Rule>
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+          <Setting Key1="CommandLineSafe"></Setting>
+          <Setting Key1="Description"></Setting>
+          <Setting Key1="FriendlyName"></Setting>
+          <Setting Key1="Loadbehavior"></Setting>
+        </Object>
+      </Object>
+      <!--/HKCU addins-->
+      <!--HKLM addins-->
+      <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\Visio\Addins" Key5="Subtree" Display="Right">
+        <Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+        <Rule Name="hklmPDFMaker" Query="../Instance/Setting[@Key1='__KEYPATH' and contains(Value,'PDFMaker.OfficeAddin')]"></Rule>
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+          <Setting Key1="CommandLineSafe"></Setting>
+          <Setting Key1="Description"></Setting>
+          <Setting Key1="FriendlyName"></Setting>
+          <Setting Key1="Loadbehavior"></Setting>
+        </Object>
+      </Object>
+      <!--/HKLM addins-->
+      <!--HKLM WOW addins-->
+      <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Visio\Addins" Key5="Subtree" Display="Right">
+        <Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+        <Rule Name="hklmWowPDFMaker" Query="../Instance/Setting[@Key1='__KEYPATH' and contains(Value,'PDFMaker.OfficeAddin')]"></Rule>
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+          <Setting Key1="CommandLineSafe"></Setting>
+          <Setting Key1="Description"></Setting>
+          <Setting Key1="FriendlyName"></Setting>
+          <Setting Key1="Loadbehavior"></Setting>
+        </Object>
+      </Object>
+      <!--/HKLM WOW addins-->
+      <!--RESILIENCY-->
+      <Object Type="Group" Name="Resiliency" Class="Add-ins" Display="Right">
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Visio\Resiliency" Display="Right">
+          <Setting Key1="__VALUES">
+          </Setting>
+        </Object>
+        <Object Type="Group" Name="HKEY_CURRENT_USER\Software\Microsoft\Office\%MAJORVERSION%.0\Visio\Resiliency\DisabledItems" Display="Right">
+          <Object Type="Group" Name="Disabled Add-ins" Display="Right">
+            <Object Type="DisabledItems" Key1="Visio" Key2="%MAJORVERSION%" Display="Right">
+              <Setting Key1="Type" Display="Right">
+              </Setting>
+              <Setting Key1="Module" Display="Right">
+              </Setting>
+              <Setting Key1="FriendlyName" Display="Right">
+              </Setting>
+            </Object>
+            <Rule Name="sDisabledAddins" Query="count(../Instance/Object/Instance)&gt;0 and $nRestrictToList&lt;1 and $n2DigitVersion&gt;14" Error="Warning" Title="Visio add-ins have been automatically disabled" Text="Visio add-ins have been disabled due to performance or stability issues. Please see 'Registered add-ins' under Configuration Details for the list of disabled add-ins." GUID="272802" SSID="46637076-d2c4-40c3-b58c-6ed5b4154f15" Symptoms="Add-ins"></Rule>
+          </Object>
+        </Object>
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Visio\Resiliency\DoNotDisableAddinList" Display="Right">
+          <Setting Key1="__VALUES">
+          </Setting>
+        </Object>
+        <!--O15 resiliency policy-->
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Visio\Resiliency" Key4="" Key5="Base" Display="Right">
+          <Setting Key1="RestrictToList">
+          </Setting>
+          <Rule Name="nRestrictToList" Query="if(../Instance/Setting[@Key1='RestrictToList']=true(),../Instance/Setting[@Key1='RestrictToList']/Value,-1)">
+          </Rule>
+          <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Visio\Resiliency\AddinList" Key4="" Key5="Base" Display="Right">
+            <Setting Key1="__VALUES">
+            </Setting>
+          </Object>
+        </Object>
+      </Object>
+      <!--/RESILIENCY-->
+    </Object>
+    <!--/ADD-INS-->
+    <!--Problem Addins-->
+    <Object Type="Group" Name="Add-ins with known problems" GroupingClass="True" Class="ProblemAddins" TrackProgress="TrackProgress">
+      <Reference Type="CommonProbAddins" Name="CommonProbAddins" File="common.config.xml"></Reference>
+    </Object>
+    <!--/PROBLEM ADDINS-->
+    <!--REG SETTINGS-->
+    <Object Type="Group" Name="Office Registry Settings" Class="Visio Settings" GroupingClass="True" TrackProgress="TrackProgress">
+      <Object Type="Group" Name="HKEY_CURRENT_USER" Display="Right">
+        <!--app specific-->
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\Visio" Key5="Subtree" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+        </Object>
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Visio" Key4="^((?!File MRU)(?!Place MRU).)*$" Key5="Subtree" Key6="True" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+        </Object>
+        <!--common-->
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+          <Setting Key1="VBAOff">
+            <Rule Name="sHkcuVBAOff" Query="$.=1 and $HklmVBAOff=-1 and $HkcuVBAOffPol=-1 and $HklmVBAOffPol=-1" Error="Warning" Title="VBA functionality is impaired or disabled (HKCU registry data)" Text="The VBAOff value in the HKCU registry hive is set to a value other than 0. In this configuration, Visual Basic for Applications (VBA) is disabled in Office programs. Set VBAOff=0 if you need to use VBA." GUID="296647" SSID="a6029f64-61e2-4769-86aa-975f9eb33f06" Symptoms="VBA"></Rule>
+          </Setting>
+          <Rule Name="HkcuVBAOff" Query="if(../Instance/Setting[@Key1='VBAOff'],../Instance/Setting[@Key1='VBAOff']/Value,-1)"></Rule>
+        </Object>
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Key4="^((?!Identity)(?!Internet)(?!Logging)(?!OfficeStart)(?!Open Find)(?!Research)(?!Roaming)(?!ServicesManagerCache)(?!UserSidEmailMapping).)*$" Key5="Subtree" Key6="True" Display="Right">
+          <Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+          <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+            <Setting Key1="__VALUES"></Setting>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Group" Name="HKEY_LOCAL_MACHINE" Display="Right">
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\Visio" Key5="Subtree" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+        </Object>
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\Visio" Key5="Subtree" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+        </Object>
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Visio" Key5="Subtree" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+        </Object>
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\%MAJORVERSION%.0\Visio" Key5="Subtree" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+        </Object>
+        <!--common-->
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Display="Right">
+          <Setting Key1="__VALUES"></Setting>
+          <Setting Key1="VBAOff">
+            <Rule Name="sHklmVBAOff" Query="$.=1 and $HkcuVBAOffPol=-1 and $HklmVBAOffPol=-1" Error="Warning" Title="Visual Basic for Applications is disabled (HKLM registry data)" Text="The VBAOff value = 1 in the registry under the HKLM hive. In this configuration, Visual Basic for Applications (VBA) is disabled in Office programs. Set VBAOff=0 if you need to use VBA." GUID="296647" SSID="88a7ab19-529d-43bb-ab0c-8d0781e9e571" Symptoms="VBA"></Rule>
+          </Setting>
+          <Rule Name="HklmVBAOff" Query="if(../Instance/Setting[@Key1='VBAOff'],../Instance/Setting[@Key1='VBAOff']/Value,-1)"></Rule>
+        </Object>
+        <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Key5="Subtree" Display="Right">
+          <Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+          </Setting>
+          <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+            <Setting Key1="__VALUES">
+            </Setting>
+          </Object>
+        </Object>
+      </Object>
+    </Object>
+    <!--/REG SETTINGS-->
+    <!--OFFICE POLICIES-->
+    <Object Type="Group" Name="Office Policies" Class="Policies" GroupingClass="True" TrackProgress="TrackProgress">
+      <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0" Key5="Subtree" Display="Right">
+        <Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+        <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+          <Setting Key1="__VALUES"></Setting>
+        </Object>
+      </Object>
+      <Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Common" Display="Right">
+        <Setting Key1="__VALUES"></Setting>
+        <Rule Name="fPolicies" Query="count(../Instance[contains(lower-case(@Name),'visio')]/Setting)&gt;0"></Rule>
+        <Setting Key1="VBAOff">
+          <Rule Name="sHkcuVBAOffPol" Query="$.=1 and $HklmVBAOffPol=-1" Error="Warning" Title="VBA Functionality is impaired or disabled due to Policy under HKCU" Text="The VBAOff value is set to a value other than 0 as a policy under HKCU. In this configuration, Visual Basic for Applications (VBA) is disabled in Office programs. Set VBAOff=0 if you need to use VBA." GUID="296647" SSID="55c04c95-43ca-4179-9fa3-d650018176a8" Symptoms="VBA"></Rule>
+        </Setting>
+        <Rule Name="HkcuVBAOffPol" Query="if(../Instance/Setting[@Key1='VBAOff'],../Instance/Setting[@Key1='VBAOff']/Value,-1)"></Rule>
+      </Object>
+      <Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Common" Display="Right">
+        <Setting Key1="__VALUES"></Setting>
+        <Setting Key1="VBAOff">
+          <Rule Name="sHklmVBAOffPol" Query="$.=1" Error="Warning" Title="VBA Functionality is impaired or disabled due to Policy under HKLM" Text="The VBAOff value is set to a value other than 0 as a policy under HKLM. In this configuration, Visual Basic for Applications (VBA) is disabled in Office programs. Set VBAOff=0 if you need to use VBA." GUID="296647" SSID="b0806507-8600-4ac2-9234-44beb6a1238e" Symptoms="VBA"></Rule>
+        </Setting>
+        <Rule Name="HklmVBAOffPol" Query="if(../Instance/Setting[@Key1='VBAOff'],../Instance/Setting[@Key1='VBAOff']/Value,-1)"></Rule>
+      </Object>
+    </Object>
+    <!--/OFFICE POLICIES-->
+    <!--EVENTLOGS-->
+    <Object Type="Group" Name="Application Event Logs" Class="Event Logs" GroupingClass="True">
+      <Object Type="Group" Name="Application Event Log Entries for Last Visio crashes" Class="Application Event Logs" GroupingClass="True" TrackProgress="TrackProgress">
+        <Reference Type="VisioCrashes" Name="VisioCrashes" File="visio.crashes.config.xml">
+        </Reference>
+      </Object>
+    </Object>
+    <!--/EVENTLOGS-->
+    <!--MISC-->
+    <Object Type="Group" Name="Miscellaneous" Class="Miscellaneous" GroupingClass="True" TrackProgress="TrackProgress">
+      <Reference Type="OffCATVersionInfo" Name="OffCATVersionInfo" File="common.config.xml">
+      </Reference>
+      <Reference Type="GPResult" Name="GPResult" File="common.config.xml">
+      </Reference>
+      <Reference Type="CommonMisc" Name="CommonMisc" File="common.config.xml">
+      </Reference>
+    </Object>
+    <!--/MISC-->
+  </Object>
+  <!--EXTERNALREFS-->
+  <Rule Name="effectiveSlowBitrate"></Rule>
+  <Rule Name="sWordVersion"></Rule>
+  <Rule Name="sPpCoreVersion"></Rule>
+  <Rule Name="fOfficeProductVersion15"></Rule>
+  <Rule Name="fOfficeProductVersion15x64"></Rule>
+  <Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+  <Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+  <Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+  <Rule Name="fMapiHttpConnected14"></Rule>
+  <Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+  <Rule Name="OUTLOOKVERSION_sOutlookExeVersion"></Rule>
+</ObjectCollector>

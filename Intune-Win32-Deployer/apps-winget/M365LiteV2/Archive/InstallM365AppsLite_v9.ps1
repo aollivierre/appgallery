@@ -1,0 +1,1 @@
+﻿param($u) ; $d = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition ; Start-BitsTransfer -Source "https://officecdn.microsoft.com/pr/wsus/setup.exe" -Destination "$d\setup.exe" ; Start-BitsTransfer -Source $u -Destination "$d\config.xml" ; & "$d\setup.exe" /configure "$d\config.xml"

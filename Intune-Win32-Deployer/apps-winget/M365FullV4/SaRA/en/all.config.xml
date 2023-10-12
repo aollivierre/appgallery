@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ObjectCollector>
+	<Configuration ConfigName="All Applications Config File" ChangeDescription="2.0.1607.19" ConfigVersion="2.0.1607.19" ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}" DownloadURL="http://www.microsoft.com/office/offcat" FixItURL="http://go.microsoft.com/?linkid={0}" Applications="access,excel,infopath,outlook,onenote,publisher,powerpoint,skype,visio,word">
+		<!--!!! GLOBAL SUBSTITUTIONS SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF OFFICE TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION" />
+		<Substitution Name="INSTALLTYPE" />
+		<Substitution Name="APPLICATIONS" />
+		<Substitution Name="LABEL"></Substitution>
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+	</Configuration>
+	<Object Type="Engine" Display="Hide">
+		<Setting Key1="ExecutionDirectory" Substitution="EXECDIR" Display="Hide" />
+		<Object Type="If" Key1="contains('%APPLICATIONS%','access') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="Access Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG access -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+			</Object>
+		</Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','excel') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="Excel Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG excel -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+			</Object>
+		</Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','infopath') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="InfoPath Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG infopath -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>					
+			</Object>
+		</Object>
+    <Object Type="If" Key1="contains('%APPLICATIONS%','onedrive') or string-length('%APPLICATIONS%')=0">
+      <Object Type="Group" Name="OneDrive Scan" TrackProgress="TrackProgress">
+        <Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG onedrive -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+      </Object>
+    </Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','onenote') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="OneNote Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG onenote -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+			</Object>
+		</Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','outlook') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="Outlook Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG outlook -AE -ND -PIIACK"/>					
+			</Object>
+		</Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','powerpoint') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="PowerPoint Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG powerpoint -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>					
+			</Object>
+		</Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','project') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="Project Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG project -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+			</Object>
+		</Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','publisher') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="Publisher Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG publisher -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+			</Object>
+		</Object>
+    <Object Type="If" Key1="contains('%APPLICATIONS%','skype') or contains('%APPLICATIONS%','lync') or string-length('%APPLICATIONS%')=0">
+      <Object Type="Group" Name="Skype for Business/Lync Scan" TrackProgress="TrackProgress">
+        <Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG lync -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK">
+        </Object>
+      </Object>
+    </Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','visio') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="Visio Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG visio -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+			</Object>
+		</Object>
+		<Object Type="If" Key1="contains('%APPLICATIONS%','word') or string-length('%APPLICATIONS%')=0">
+			<Object Type="Group" Name="Word Scan" TrackProgress="TrackProgress">
+				<Object Type="CommandLine" Key2="%EXECDIR%\offcatcmd.exe" Key3="-l &quot;%LABEL%&quot; -CFG Word -GS MAJORVERSION %MAJORVERSION% INSTALLTYPE %INSTALLTYPE% -AE -ND -PIIACK"/>
+			</Object>
+		</Object>
+	</Object>
+</ObjectCollector>

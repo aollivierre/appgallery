@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+	<Configuration ConfigName="OneNote Crashes"
+								 ChangeDescription="2.0.1608.23"
+								 ConfigVersion="2.0.1608.23"
+								 ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+								 DownloadURL="http://www.microsoft.com/office/offcat"
+								 FixItURL="http://go.microsoft.com/?linkid={0}"
+								 ReferencedFiles="common.config.xml,officeupdates.config.xml"
+								 Symptoms="1">
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">OneNote</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"/>
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="OneNote" Key6="onenote" Key7="%MAJORVERSION%">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS">
+			<Rule Name="bitness" Query="$."></Rule>
+		</Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Add" Key2="WOW6432NODECACHE" Key3="%WOW6432NODE%">
+		</Object>
+		<Object Type="Cache" Name="AppBitnessCache" Key1="Add" Key2="APPBITNESSCACHE" Key3="%APPBITNESS%">
+		</Object>
+		<Setting Key1="FullVersion">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+			<Rule Name="sFullAppVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Name">
+			<Rule Name="appName" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Path">          
+		</Setting>
+		<Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Hide">
+		</Setting>
+		<Setting Key1="Version">
+			<Rule Name="n4DigitSKUVersion" Query="$.">
+			</Rule>          
+		</Setting>
+		<Setting Key1="Type">
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="nInstallType" Query="$."></Rule>
+		</Setting>
+	</Object>
+	<Object Type="Cache" Name="AppBitnessCache" Key1="Dump" Key2="APPBITNESSCACHE" Display="Hide">
+		<Setting Key1="Val" Substitution="APPBITNESS" Display="Hide"></Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Dump" Key2="WOW6432NODECACHE" Display="Hide">
+			<Setting Key1="Val" Substitution="WOW6432NODE" Display="Hide">
+			</Setting>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{DACE5A15-C57C-44DE-9AFF-89B4412485AF}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide"></Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{74F233A9-A17A-477C-905F-853F5FCDAD40}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide"></Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+	</Object>
+	
+	<Type Name="OneNoteCrashes">
+
+		<!--EVENTLOGS-->
+
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="onenote.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Setting Key1="__ALL"></Setting>
+			<Setting Key1="Faulting Application Name" Display="Right"></Setting>
+			<Setting Key1="Faulting Application Version" Display="Right">
+				<Rule Name="nFaultingAppVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Application Timestamp" Display="Right">
+				<Rule Name="faultAppTimeStamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Name" Display="Right">
+				<Rule Name="faultModuleName" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Version" Display="Right">
+				<Rule Name="nFaultingModuleVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Timestamp" Display="Right">
+				<Rule Name="faultModuleTimestamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Exception code" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right">
+				<Rule Name="faultOffset" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Timegenerated" Display="Hide">
+				<Rule Name="TimeOfCrash" Query="$."/>
+			</Setting>
+			<Setting Key1="Message" Display="Right">
+				<Rule Name="sCrashMessage" Query="$."></Rule>
+				<Rule Name="crashLookup" Query="true()" Title="Event 1000" Text="{8}" Error="Error" Internal="True" P0="if($bitness='x86','Crash32','Crash64')" P1="'onenote.exe'" P2="$nFaultingAppVersion" P3="$faultAppTimeStamp" P4="$faultModuleName" P5="$nFaultingModuleVersion" P6="$faultModuleTimestamp" P7="$faultOffset" P8="$sCrashMessage" P9="$TimeOfCrash" Symptoms="Crash event lookup"></Rule>
+			</Setting>
+
+			<Rule Name="n3459258MsoCrashOneNote00003ABC" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4631.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00003abc')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="n3459258MsoCrashOneNote0000329C" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='0.0.0.0')] and Setting[@Key1='Fault offset' and (lower-case(Value)='0000329c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="s3459258MsoCrashOneNoteX86" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='MSI' and $n2DigitVersion=15 and $bitness='x86' and ($n3459258MsoCrashOneNote00003ABC&gt;0 or $n3459258MsoCrashOneNote0000329C&gt;0)" Error="Error" P0="$n3459258MsoCrashOneNote00003ABC + $n3459258MsoCrashOneNote0000329C" Title="Known crashing issue when OneNote stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when OneNote stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506810" SSID="8370eeee-0484-45bd-8bcc-a970b8aa47b5" Symptoms="Crash"></Rule>
+			<Rule Name="n3459258MsoCrashOneNote00000000013F766E" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4631.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00000000013f766e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="n3459258MsoCrashOneNote00000000013EB86E" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='0.0.0.0')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00000000013eb86e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="s3459258MsoCrashOneNoteX64" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='MSI' and $n2DigitVersion=15 and $bitness='x64' and ($n3459258MsoCrashOneNote00000000013F766E&gt;0 or $n3459258MsoCrashOneNote00000000013EB86E&gt;0)" Error="Error" P0="$n3459258MsoCrashOneNote00000000013F766E + $n3459258MsoCrashOneNote00000000013EB86E" Title="Known crashing issue when OneNote stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when OneNote stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506821" SSID="77168246-6c01-40c1-958d-feb472a085d3" Symptoms="Crash"></Rule>
+			<Rule Name="s3459258MsoCrashOneNoteC2R" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='ClickToRun' and $n2DigitVersion=15 and ($n3459258MsoCrashOneNote00003ABC&gt;0 or $n3459258MsoCrashOneNote0000329C&gt;0)" Error="Error" P0="$n3459258MsoCrashOneNote00003ABC + $n3459258MsoCrashOneNote0000329C" Title="Known crashing issue when OneNote stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when OneNote stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506872" SSID="fe67f307-8de7-46bb-a504-8156652746eb" Symptoms="Crash"></Rule>
+
+		</Object>
+		
+	</Type>
+
+	<Reference Type="OneNoteCrashes" Name="OneNoteCrashes" File="onenote.crashes.config.xml">
+	</Reference>
+	<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml">
+	</Reference>
+	<Reference Type="MSO" Name="MSO" File="common.config.xml">
+	</Reference>
+	<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+	</Reference>		
+				
+	<!--EXTERNALREFS-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+
+</ObjectCollector>

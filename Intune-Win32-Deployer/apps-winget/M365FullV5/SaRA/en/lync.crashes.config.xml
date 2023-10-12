@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ObjectCollector>
+	<Configuration ConfigName="Skype for Business Crashes" ChangeDescription="2.0.1703.19" ConfigVersion="2.0.1703.19" ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}" DownloadURL="http://www.microsoft.com/office/offcat" FixItURL="http://go.microsoft.com/?linkid={0}" ReferencedFiles="common.config.xml,officeupdates.config.xml" Symptoms="1">
+		<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryDataPostprocessor" />
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">Lync</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor" />
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor" />
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node" />
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Skype for Business" Key6="lync" Key7="%MAJORVERSION%">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS">
+			<Rule Name="bitness" Query="$."></Rule>
+		</Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Add" Key2="WOW6432NODECACHE" Key3="%WOW6432NODE%">
+		</Object>
+		<Object Type="Cache" Name="AppBitnessCache" Key1="Add" Key2="APPBITNESSCACHE" Key3="%APPBITNESS%">
+		</Object>
+		<Setting Key1="FullVersion">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+			<Rule Name="sFullAppVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Name">
+			<Rule Name="appName" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Path">
+		</Setting>
+		<Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Hide">
+		</Setting>
+		<Setting Key1="Version">
+			<Rule Name="n4DigitSKUVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Type">
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="nInstallType" Query="$."></Rule>
+		</Setting>
+	</Object>
+	<Object Type="Cache" Name="AppBitnessCache" Key1="Dump" Key2="APPBITNESSCACHE" Display="Hide">
+		<Setting Key1="Val" Substitution="APPBITNESS" Display="Hide"></Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Dump" Key2="WOW6432NODECACHE" Display="Hide">
+			<Setting Key1="Val" Substitution="WOW6432NODE" Display="Hide">
+			</Setting>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{DACE5A15-C57C-44DE-9AFF-89B4412485AF}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide"></Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{74F233A9-A17A-477C-905F-853F5FCDAD40}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Hide"></Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+		</Object>
+	</Object>
+
+	
+	<Type Name="LyncCrashes">
+
+		<!--EVENTLOGS-->
+
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="lync.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Rule Name="nCrashCount" Query="count(../Instance)">
+			</Rule>
+			<Setting Key1="__ALL"></Setting>
+			<Setting Key1="Faulting Application Name" Display="Right"></Setting>
+			<Setting Key1="Faulting Application Version" Display="Right">
+				<Rule Name="nFaultingAppVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Application Timestamp" Display="Right">
+				<Rule Name="faultAppTimeStamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Name" Display="Right">
+				<Rule Name="faultModuleName" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Version" Display="Right">
+				<Rule Name="nFaultingModuleVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Timestamp" Display="Right">
+				<Rule Name="faultModuleTimestamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Exception code" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right">
+				<Rule Name="faultOffset" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Timegenerated" Display="Hide">
+				<Rule Name="TimeOfCrash" Query="$." />
+			</Setting>
+			<Setting Key1="Message" Display="Right">
+				<Rule Name="sCrashMessage" Query="$."></Rule>
+				<Rule Name="crashLookup" Query="true()" Title="Event 1000" Text="{8}" Error="Error" Internal="True" P0="if($bitness='x86','Crash32','Crash64')" P1="'lync.exe'" P2="$nFaultingAppVersion" P3="$faultAppTimeStamp" P4="$faultModuleName" P5="$nFaultingModuleVersion" P6="$faultModuleTimestamp" P7="$faultOffset" P8="$sCrashMessage" P9="$TimeOfCrash" Symptoms="Crash event lookup"></Rule>
+			</Setting>
+			<Setting Key1="FaultingModule" Display="Hide">
+				<Rule Name="sFaultingModule" Query="lower-case($.)"></Rule>
+			</Setting>
+			<Setting Key1="FaultingModulePath" Substitution="FAULTMODPATH" Display="Hide">
+				<Rule Name="sFaultingModulePath" Query="$."></Rule>
+			</Setting>
+			<Object Type="File" Key2="%FAULTMODPATH%" Display="Hide">
+				<Setting Key1="CompanyName" Display="Hide">
+					<Rule Name="sFaultModuleCompanyName" Query="$."></Rule>
+					<Rule Name="sThirdPartyFaultModule" Query="not(contains(lower-case($sFaultModuleCompanyName),'microsoft'))" Error="Error" P0="$sFaultingModule" P1="$sFaultModuleCompanyName" P2="$TimeOfCrash" P3="if($OSDetails_fWin7Installed,620677,if($OSDetails_fWin8Installed or $OSDetails_fWin81Installed,620675,if($OSDetails_fWin10Installed,620676,'')))" Title="Skype for Business crash due to third-party module: {0} on: {2}" Text="To resolve this issue, make sure Skype for Business is up-to-date. If the problem continues, update the software related to this dll file.&#xD;&#xA;&#xD;&#xA;For reference, the third-party vendor is:&#xD;&#xA;{1}." GUID="{3}" SSID="e1f5dbea-11e2-4746-82cc-ba4cf2a40c4d" Symptoms="Crash"></Rule>
+					<Rule Name="sMicrosoftFaultModule" Query="contains(lower-case($sFaultModuleCompanyName),'microsoft')" Error="Error" P0="$sFaultingModule" P1="$sFaultModuleCompanyName" P2="$TimeOfCrash" P3="if($OSDetails_fWin7Installed,620677,if($OSDetails_fWin8Installed or $OSDetails_fWin81Installed,620675,if($OSDetails_fWin10Installed,620676,'')))" Title="Skype for Business crash due to module: {0} on: {2}" Text="To resolve this issue, make sure Skype for Business is up-to-date. If the problem continues, make sure you are using the latest video and audio drivers for your hardware.&#xD;&#xA;&#xD;&#xA;Click the 'Click here ...' link for information on updating drivers." GUID="{3}" SSID="67611732-8f49-427b-845a-3ef43ba45637" Symptoms="Crash"></Rule>
+				</Setting>
+			</Object>
+
+			<Rule Name="n3511980Crash107460756537" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='001dba3b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3511980Crash107517044785" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='001db75b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3511980Crash120281007626" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000260b44')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3511980Crash120296601017" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000260ffc')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="sSkype15Crash3511980MSI" Query="$nInstallType='MSI' and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&lt;=0 and ($n3511980Crash107460756537&gt;0 or $n3511980Crash107517044785&gt;0 or $n3511980Crash120281007626&gt;0 or $n3511980Crash120296601017&gt;0)" Error="Error" P0="$n3511980Crash107460756537 + $n3511980Crash107517044785 + $n3511980Crash120281007626 + $n3511980Crash120296601017" P1="if($bitness='x86','623968','623969')" Title="Known crashing issue in Skype for Business" Text="A known crashing issue with Skype for Business that occurs when you change networks (for example, ethernet to wireless) has been detected {0} time(s). It is fixed in the Sept 8, 2015 update for Skype for Business.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details on the Sept 8, 2015 update. Or, click the 'Download the update ...' link to access the very latest update for Skype for Business." GUID="624177" PATCH="{1}" SSID="366c78f4-09d2-4ad3-9ee0-081157472c2a" Symptoms="Crash"></Rule>
+			<Rule Name="sSkype15Crash3511980C2R" Query="$nInstallType='ClickToRun' and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&lt;=0 and ($n3511980Crash107460756537&gt;0 or $n3511980Crash107517044785&gt;0 or $n3511980Crash120281007626&gt;0 or $n3511980Crash120296601017&gt;0)" Error="Error" P0="$n3511980Crash107460756537 + $n3511980Crash107517044785 + $n3511980Crash120281007626 + $n3511980Crash120296601017" Title="Known crashing issue in Skype for Business" Text="A known crashing issue with Skype for Business that occurs when you change networks (for example, ethernet to wireless) has been detected {0} time(s). It is fixed in the Sept 8, 2015 update for Skype for Business.&#xD;&#xA;&#xD;&#xA;To resolve this problem, click the 'Click here...' link and then update Office using the steps in the 'Get the latest version of Office' section." GUID="623970" SSID="5f73a8d7-8910-484d-85d4-50b03fbb5b7f" Symptoms="Crash"></Rule>
+
+			<Rule Name="n3511574Crash107493170466" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00007098')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3511574Crash120277026333" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000003d06')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3511574Crash120285161475" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000003d66')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="sSkype15Crash3511574MSI" Query="$nInstallType='MSI' and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&lt;=0 and ($n3511574Crash107493170466&gt;0 or $n3511574Crash120277026333&gt;0 or $n3511574Crash120285161475&gt;0)" Error="Error" P0="$n3511574Crash107493170466 + $n3511574Crash120277026333 + $n3511574Crash120285161475" P1="if($bitness='x86','624082','624083')" Title="Known crashing issue in Skype for Business" Text="A known crashing issue that occurs when you start Skype for Business has been detected {0} time(s). It is fixed in the Sept 8, 2015 update for Skype for Business.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details on the Sept 8, 2015 update. Or, click the 'Download the update ...' link to access the very latest update for Skype for Business." GUID="624176" PATCH="{1}" SSID="c084e884-902a-4add-9bdf-c2b2da305ebf" Symptoms="Crash"></Rule>
+			<Rule Name="sSkype15Crash3511574C2R" Query="$nInstallType='ClickToRun' and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&lt;=0 and ($n3511574Crash107493170466&gt;0 or $n3511574Crash120277026333&gt;0 or $n3511574Crash120285161475&gt;0)" Error="Error" P0="$n3511574Crash107493170466 + $n3511574Crash120277026333 + $n3511574Crash120285161475" Title="Known crashing issue in Skype for Business" Text="A known crashing issue that occurs when you start Skype for Business has been detected {0} time(s). It is fixed in the Sept 8, 2015 update for Skype for Business.&#xD;&#xA;&#xD;&#xA;To resolve this problem, click the 'Click here...' link and then update Office using the steps in the 'Get the latest version of Office' section." GUID="624084" SSID="a9237cbf-7688-46ac-af9e-a60c69522963" Symptoms="Crash"></Rule>
+
+			<Rule Name="n3514296Crash107698080307" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00029225')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3514296Crash107732775236" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00053b06')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3514296Crash120361591904" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000002fae4')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3514296Crash107729127526" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0003d968')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="sSkypeFB15Crash3514296MSI" Query="$nInstallType='MSI' and versioncompare($Emsmdb32DllInfo_sEmsmdb322013Version,'15.0.4771.1004')&lt;0 and ($n3514296Crash107698080307&gt;0 or $n3514296Crash107732775236&gt;0 or $n3514296Crash120361591904&gt;0 or $n3514296Crash107729127526&gt;0)" Error="Error" P0="$n3514296Crash107698080307 + $n3514296Crash107732775236 + $n3514296Crash120361591904 + $n3514296Crash107729127526" Title="Known crashing issue after installing the Nov 2015 update" Text="A crashing issue in Skype for Business that occurs after installing the November 10, 2015 update for Outlook 2013 (KB3101488) has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please click the 'Click here...' link for details on this issue.&#xD;&#xA;Or, click the 'Download the update ...' link to access the {1} version of latest Outlook 2013 update." P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" P2="if($bitness='x86','708701','708702')" PATCH="{2}" GUID="703834" SSID="47f2b13d-90c8-40e2-a122-b3a76138422f" Symptoms="Crash (with a fix)"></Rule>
+			<Rule Name="sSkypeFB15Crash3514296C2R" Query="$nInstallType='ClickToRun' and versioncompare($Emsmdb32DllInfo_sEmsmdb322013Version,'15.0.4771.1004')&lt;0 and ($n3514296Crash107698080307&gt;0 or $n3514296Crash107732775236&gt;0 or $n3514296Crash120361591904&gt;0 or $n3514296Crash107729127526&gt;0)" Error="Error" P0="$n3514296Crash107698080307 + $n3514296Crash107732775236 + $n3514296Crash120361591904 + $n3514296Crash107729127526" Title="Known crashing issue after installing the Nov 2015 update" Text="A crashing issue in Skype for Business that occurs after installing the November 10, 2015 update for Outlook 2013 (KB3101488) has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please click the 'Click here...' link for details on this issue. Then, update Office using the steps in the 'Click-to-Run installation of Office 2013' section of the article." GUID="703834" SSID="6080bce6-ad54-4b89-9856-9366f10337ad" Symptoms="Crash (with a fix)"></Rule>
+
+			<Rule Name="n3509710Crash0098bbf7" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0098bbf7')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3509710Crash00955f9f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00955f9f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3509710Crash00989977" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00989977')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3509710Crash0000000000e7d204" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000e7d204')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3509710Crash0000000000e74d00" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000e74d00')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3509710Crash0000000000e46b24" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000e46b24')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="n3509710Crash0000000000e5c5ac" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000e5c5ac')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='uc.dll')]])"></Rule>
+			<Rule Name="sSkype15Crash3509710MSI" Query="$nInstallType='MSI' and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4787.1001')&lt;0 and ($n3509710Crash0098bbf7&gt;0 or $n3509710Crash00955f9f&gt;0 or $n3509710Crash00989977&gt;0 or $n3509710Crash0000000000e7d204&gt;0 or $n3509710Crash0000000000e74d00&gt;0 or $n3509710Crash0000000000e46b24&gt;0 or $n3509710Crash0000000000e5c5ac&gt;0)" Error="Error" P0="$n3509710Crash0098bbf7 + $n3509710Crash00955f9f + $n3509710Crash00989977 + $n3509710Crash0000000000e7d204 + $n3509710Crash0000000000e74d00 + $n3509710Crash0000000000e46b24 + $n3509710Crash0000000000e5c5ac" P1="if($bitness='x86','722905','722865')" Title="Known crashing issue in Skype for Business" Text="A known crashing issue that occurs in Skype for Business has been detected {0} time(s). It is fixed in the January 12, 2016 update for Skype for Business.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details on the January 12, 2016 update. Or, click the 'Download the update ...' link to access the very latest update for Skype for Business." GUID="722864" PATCH="{1}" SSID="72ad5d7c-8391-4f9f-a2c2-d93b18e5c00d" Symptoms="Crash"></Rule>
+			<Rule Name="sSkype15Crash35097102R" Query="$nInstallType='ClickToRun' and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4787.1001')&lt;0 and ($n3509710Crash0098bbf7&gt;0 or $n3509710Crash00955f9f&gt;0 or $n3509710Crash00989977&gt;0 or $n3509710Crash0000000000e7d204&gt;0 or $n3509710Crash0000000000e74d00&gt;0 or $n3509710Crash0000000000e46b24&gt;0 or $n3509710Crash0000000000e5c5ac&gt;0)" Error="Error" P0="$n3509710Crash0098bbf7 + $n3509710Crash00955f9f + $n3509710Crash00989977 + $n3509710Crash0000000000e7d204 + $n3509710Crash0000000000e74d00 + $n3509710Crash0000000000e46b24 + $n3509710Crash0000000000e5c5ac" Title="Known crashing issue in Skype for Business" Text="A known crashing issue that occurs in Skype for Business has been detected {0} time(s). It is fixed in the January 12, 2016 update for Skype for Business.&#xD;&#xA;&#xD;&#xA;To resolve this problem, click the 'Click here...' link and then update Office using the steps in the 'Get the latest version of Office' section." GUID="722869" SSID="929793b7-4d1f-43aa-8fb7-bd3eed84f0f5" Symptoms="Crash"></Rule>
+
+			<Rule Name="n3158521Crash00026889" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00026889')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash00055425" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00055425')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash00056436" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00056436')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0001e193" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001e193')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0000000000014fd0" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000014fd0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash000000000002fe34" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000002fe34')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0000000000035aeb" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000035aeb')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0000000000035b6b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000035b6b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash000000000003dd8e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000003dd8e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash000000000004a604" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000004a604')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash000000000004ad94" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000004ad94')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash000000000004bd0f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000004bd0f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0000000000065e8e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000065e8e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0001dbc6" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001dbc6')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0001df63" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001df63')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0001e12c" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001e12c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0001e1b3" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001e1b3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0001e493" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001e493')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash00026d79" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00026d79')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash00031d76" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00031d76')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash00034c00" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00034c00')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash00038df9" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00038df9')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash0004e6df" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0004e6df')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash00053d26" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00053d26')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash000540ca" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000540ca')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="n3158521Crash000545ba" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000545ba')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])"></Rule>
+			<Rule Name="sLync15CrashKB3158521" Query="$n2DigitVersion=15 and ($n3158521Crash00026889&gt;0 or $n3158521Crash00055425&gt;0 or $n3158521Crash00056436&gt;0 or $n3158521Crash0001e193&gt;0 or $n3158521Crash0000000000014fd0&gt;0 or $n3158521Crash000000000002fe34&gt;0 or $n3158521Crash0000000000035aeb&gt;0 or $n3158521Crash0000000000035b6b&gt;0 or $n3158521Crash000000000003dd8e&gt;0 or $n3158521Crash000000000004a604&gt;0 or $n3158521Crash000000000004ad94&gt;0 or $n3158521Crash000000000004bd0f&gt;0 or $n3158521Crash0000000000065e8e&gt;0 or $n3158521Crash0001dbc6&gt;0 or $n3158521Crash0001df63&gt;0 or $n3158521Crash0001e12c&gt;0 or $n3158521Crash0001e1b3&gt;0 or $n3158521Crash0001e493&gt;0 or $n3158521Crash00026d79&gt;0 or $n3158521Crash00031d76&gt;0 or $n3158521Crash00034c00&gt;0 or $n3158521Crash00038df9&gt;0 or $n3158521Crash0004e6df&gt;0 or $n3158521Crash00053d26&gt;0 or $n3158521Crash000540ca&gt;0 or $n3158521Crash000545ba&gt;0)" Error="Error" P0="$n3158521Crash00026889 + $n3158521Crash00055425 + $n3158521Crash00056436 + $n3158521Crash0001e193 + $n3158521Crash0000000000014fd0 + $n3158521Crash000000000002fe34 + $n3158521Crash0000000000035aeb + $n3158521Crash0000000000035b6b + $n3158521Crash000000000003dd8e + $n3158521Crash000000000004a604 + $n3158521Crash000000000004ad94 + $n3158521Crash000000000004bd0f + $n3158521Crash0000000000065e8e + $n3158521Crash0001dbc6 + $n3158521Crash0001df63 + $n3158521Crash0001e12c + $n3158521Crash0001e1b3 + $n3158521Crash0001e493 + $n3158521Crash00026d79 + $n3158521Crash00031d76 + $n3158521Crash00034c00 + $n3158521Crash00038df9 + $n3158521Crash0004e6df + $n3158521Crash00053d26 + $n3158521Crash000540ca + $n3158521Crash000545ba" Title="Known crashing issue in Lync 2013 (Skype for Business)" Text="A crashing issue that occurs in Lync 2013 (Skype for Business) when the April 5, 2016, update for Outlook 2013 (KB3114941) is installed has been detected {0} time(s).&#xd;&#xa;&#xd;&#xa;Please click the 'Click here ...' link for steps to work around this issue." GUID="787124" SSID="8ba7babb-14a4-4240-ba74-88c2a32547be" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash"></Rule>
+
+			<Rule Name="n2264340Crash001591c2" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='001591c2')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0015a2d6" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0015a2d6')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec8f2" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec8f2')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec8ea" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec8ea')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158921" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158921')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00157978" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00157978')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec272" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec272')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158e29" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158e29')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ebbfa" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ebbfa')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0015a37e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0015a37e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ebe0a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ebe0a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158ddb" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158ddb')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec2da" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec2da')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec53a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec53a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158dd6" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158dd6')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ebd4a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ebd4a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001efa6a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001efa6a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0015892b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0015892b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec0ba" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec0ba')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158e69" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158e69')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158118" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158118')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="sSkypeForBusiness16Crash2264340" Query="$n2DigitVersion=16 and ($n2264340Crash001591c2&gt;0 or $n2264340Crash0015a2d6&gt;0 or $n2264340Crash00000000001ec8f2&gt;0 or $n2264340Crash00000000001ec8ea&gt;0 or $n2264340Crash00158921&gt;0 or $n2264340Crash00157978&gt;0 or $n2264340Crash00000000001ec272&gt;0 or $n2264340Crash00158e29&gt;0 or $n2264340Crash00000000001ebbfa&gt;0 or $n2264340Crash0015a37e&gt;0 or $n2264340Crash00000000001ebe0a&gt;0 or $n2264340Crash00158ddb&gt;0 or $n2264340Crash00000000001ec2da&gt;0 or $n2264340Crash00000000001ec53a&gt;0 or $n2264340Crash00158dd6&gt;0 or $n2264340Crash00000000001ebd4a&gt;0 or $n2264340Crash00000000001efa6a&gt;0 or $n2264340Crash0015892b&gt;0 or $n2264340Crash00000000001ec0ba&gt;0 or $n2264340Crash00158e69&gt;0 or $n2264340Crash00158118&gt;0)" Error="Error" P0="$n2264340Crash001591c2 + $n2264340Crash0015a2d6 + $n2264340Crash00000000001ec8f2 + $n2264340Crash00000000001ec8ea + $n2264340Crash00158921 + $n2264340Crash00157978 + $n2264340Crash00000000001ec272 + $n2264340Crash00158e29 + $n2264340Crash00000000001ebbfa + $n2264340Crash0015a37e + $n2264340Crash00000000001ebe0a + $n2264340Crash00158ddb + $n2264340Crash00000000001ec2da + $n2264340Crash00000000001ec53a + $n2264340Crash00158dd6 + $n2264340Crash00000000001ebd4a + $n2264340Crash00000000001efa6a + $n2264340Crash0015892b + $n2264340Crash00000000001ec0ba + $n2264340Crash00158e69 + $n2264340Crash00158118" Title="Known crashing issue in Skype For Business"
+      Text="A crashing issue that occurs in Skype For Business has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please click the 'Click here...' link for details on this issue." GUID="787610" SSID="9ee59810-0069-4465-a71e-2ba185699619" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash" />
+
+			<!-- -failure 80176c10-1d4a-a62e-e8a8-9605995c9192 -app Lync.exe -kb 3114941 -majorversion 16 -->
+			<Rule Name="n3114941Crash00055635" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00055635')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0004e6df" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0004e6df')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000000000003d85e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000003d85e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0000000000035b6b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000035b6b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000540ca" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000540ca')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00055425" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00055425')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00034c50" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00034c50')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000000000003dd8e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000003dd8e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0003dae8" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0003dae8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00023d20" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00023d20')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0001dd93" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001dd93')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0005da68" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0005da68')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000000000004bd0f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000004bd0f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00026d79" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00026d79')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000000000002fe34" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000002fe34')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00038e19" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00038e19')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00031d76" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00031d76')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000000000005012f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000005012f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000552a5" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000552a5')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0000000000035aeb" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000035aeb')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00032228" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00032228')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0001d4f1" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001d4f1')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0000000000048d84" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000048d84')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00034bc0" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00034bc0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0001df23" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001df23')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0005456a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0005456a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0003d968" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0003d968')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00026889" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00026889')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000000000004a604" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000004a604')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0001e493" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0001e493')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0002a3a0" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0002a3a0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash00053b06" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00053b06')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash000000000003d86e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000003d86e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0003c7ef" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0003c7ef')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3114941Crash0000000000017740" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000017740')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="sSFB16Crash3114941" Query="$n2DigitVersion=16 and ($n3114941Crash00055635&gt;0 or $n3114941Crash0004e6df&gt;0 or $n3114941Crash000000000003d85e&gt;0 or $n3114941Crash0000000000035b6b&gt;0 or $n3114941Crash000540ca&gt;0 or $n3114941Crash00055425&gt;0 or $n3114941Crash00034c50&gt;0 or $n3114941Crash000000000003dd8e&gt;0 or $n3114941Crash0003dae8&gt;0 or $n3114941Crash00023d20&gt;0 or $n3114941Crash0001dd93&gt;0 or $n3114941Crash0005da68&gt;0 or $n3114941Crash000000000004bd0f&gt;0 or $n3114941Crash00026d79&gt;0 or $n3114941Crash000000000002fe34&gt;0 or $n3114941Crash00038e19&gt;0 or $n3114941Crash00031d76&gt;0 or $n3114941Crash000000000005012f&gt;0 or $n3114941Crash000552a5&gt;0 or $n3114941Crash0000000000035aeb&gt;0 or $n3114941Crash00032228&gt;0 or $n3114941Crash0001d4f1&gt;0 or $n3114941Crash0000000000048d84&gt;0 or $n3114941Crash00034bc0&gt;0 or $n3114941Crash0001df23&gt;0 or $n3114941Crash0005456a&gt;0 or $n3114941Crash0003d968&gt;0 or $n3114941Crash00026889&gt;0 or $n3114941Crash000000000004a604&gt;0 or $n3114941Crash0001e493&gt;0 or $n3114941Crash0002a3a0&gt;0 or $n3114941Crash00053b06&gt;0 or $n3114941Crash000000000003d86e&gt;0 or $n3114941Crash0003c7ef&gt;0 or $n3114941Crash0000000000017740&gt;0)" Error="Error" P0="$n3114941Crash00055635 + $n3114941Crash0004e6df + $n3114941Crash000000000003d85e + $n3114941Crash0000000000035b6b + $n3114941Crash000540ca + $n3114941Crash00055425 + $n3114941Crash00034c50 + $n3114941Crash000000000003dd8e + $n3114941Crash0003dae8 + $n3114941Crash00023d20 + $n3114941Crash0001dd93 + $n3114941Crash0005da68 + $n3114941Crash000000000004bd0f + $n3114941Crash00026d79 + $n3114941Crash000000000002fe34 + $n3114941Crash00038e19 + $n3114941Crash00031d76 + $n3114941Crash000000000005012f + $n3114941Crash000552a5 + $n3114941Crash0000000000035aeb + $n3114941Crash00032228 + $n3114941Crash0001d4f1 + $n3114941Crash0000000000048d84 + $n3114941Crash00034bc0 + $n3114941Crash0001df23 + $n3114941Crash0005456a + $n3114941Crash0003d968 + $n3114941Crash00026889 + $n3114941Crash000000000004a604 + $n3114941Crash0001e493 + $n3114941Crash0002a3a0 + $n3114941Crash00053b06 + $n3114941Crash000000000003d86e + $n3114941Crash0003c7ef + $n3114941Crash0000000000017740" Title="Known crashing issue in Skype For Business" Text="A crashing issue that occurs in Skype For Business has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please click the 'Click here...' link for details on this issue." GUID="787124" SSID="22097708-cd10-4fc3-8cd8-53757977ef02" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash" />
+
+			<Rule Name="n3631084Crash00080a53" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00080a53')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash00041bae" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00041bae')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash0004db22" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0004db22')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash0006cc4b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0006cc4b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash0006d013" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0006d013')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash0004378b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0004378b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash0006cdab" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0006cdab')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash0006cc7b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0006cc7b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash00044649" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00044649')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="n3631084Crash0006d0c3" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0006d0c3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='ntdll.dll')]])" />
+			<Rule Name="sSkypeForBusiness15Crash3631084MSI" Query="$n2DigitVersion=15 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'15.0.4885.1000')&lt;0 and ($n3631084Crash00080a53&gt;0 or $n3631084Crash00041bae&gt;0 or $n3631084Crash0004db22&gt;0 or $n3631084Crash0006cc4b&gt;0 or $n3631084Crash0006d013&gt;0 or $n3631084Crash0004378b&gt;0 or $n3631084Crash0006cdab&gt;0 or $n3631084Crash0006cc7b&gt;0 or $n3631084Crash00044649&gt;0 or $n3631084Crash0006d0c3&gt;0)" Error="Error" P0="$n3631084Crash00080a53 + $n3631084Crash00041bae + $n3631084Crash0004db22 + $n3631084Crash0006cc4b + $n3631084Crash0006d013 + $n3631084Crash0004378b + $n3631084Crash0006cdab + $n3631084Crash0006cc7b + $n3631084Crash00044649 + $n3631084Crash0006d0c3" P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" Title="Known crashing issue in Skype For Business" Text="A crashing issue that occurs in Skype For Business has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest {1} update for Skype 2013 to fix this issue." GUID="617205" SSID="09ad69d0-49b4-41f0-ad6d-085b16397c26" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash" />
+
+			<Rule Name="n3631881Crash000bdb18" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000bdb18')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash000000000004aea8" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000004aea8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash0000c54f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000c54f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash000000000002a1c8" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000002a1c8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash0000000000071f28" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000071f28')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash000b3e28" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000b3e28')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash0000845d" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000845d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash0000000000008a5c" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000008a5c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash00015b68" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00015b68')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="n3631881Crash000da6f2" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000da6f2')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])" />
+			<Rule Name="sSkypeForBusiness15Crash3631881MSI" Query="$n2DigitVersion=15 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'15.0.4885.1000')&lt;0 and ($n3631881Crash000bdb18&gt;0 or $n3631881Crash000000000004aea8&gt;0 or $n3631881Crash0000c54f&gt;0 or $n3631881Crash000000000002a1c8&gt;0 or $n3631881Crash0000000000071f28&gt;0 or $n3631881Crash000b3e28&gt;0 or $n3631881Crash0000845d&gt;0 or $n3631881Crash0000000000008a5c&gt;0 or $n3631881Crash00015b68&gt;0 or $n3631881Crash000da6f2&gt;0)" Error="Error" P0="$n3631881Crash000bdb18 + $n3631881Crash000000000004aea8 + $n3631881Crash0000c54f + $n3631881Crash000000000002a1c8 + $n3631881Crash0000000000071f28 + $n3631881Crash000b3e28 + $n3631881Crash0000845d + $n3631881Crash0000000000008a5c + $n3631881Crash00015b68 + $n3631881Crash000da6f2" P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" Title="Known crashing issue in Skype For Business" Text="A crashing issue that occurs in Skype For Business has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest {1} update for Skype 2013 to fix this issue." GUID="617205" SSID="cbab22c0-4485-45bd-8453-358dd3464722" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash" />
+
+			<Rule Name="n3632708Crash0000000000088393_120673690712" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000088393')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash000000000008b12d_120678227184" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008b12d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash000000000009c9bd_120666348344" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000009c9bd')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash000000000009da9e_120659070919" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000009da9e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00041bae_108171308967" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00041bae')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00044649_108120924009" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00044649')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00044846_108017420857" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00044846')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0004db22_108549480206" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0004db22')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0005b803_108047630296" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0005b803')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0005c583_108128811268" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0005c583')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0005fdd1_74170243742" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0005fdd1')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0005fe81_108348639551" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0005fe81')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0006cc7b_108552344032" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0006cc7b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0006cdab_108759689917" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0006cdab')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0007114b_108693958994" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0007114b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash000728b3_108552224831" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000728b3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00072943_108276403447" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00072943')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00074360_108429768596" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00074360')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00077b63_108420186112" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00077b63')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00077c03_108527219091" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00077c03')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00077c73_108571820514" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00077c73')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash000784c3_108625937210" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000784c3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash000809d3_108031221904" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000809d3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00080a53_108156933498" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00080a53')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00080a83_107914781298" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00080a83')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0008c073_108689078151" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0008c073')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0008c263_108765103975" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0008c263')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00098e83_108519228261" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00098e83')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash00098f23_108629023118" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00098f23')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash000994a3_108488087831" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000994a3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="n3632708Crash0009c863_108667306125" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0009c863')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='lyncdesktopviewmodel.dll')]])" />
+			<Rule Name="sSkypeForBusiness15Crash3632708MSI" Query="$n2DigitVersion=15 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'15.0.4903.1001')&lt;0 and ($n3632708Crash0000000000088393_120673690712&gt;0 or $n3632708Crash000000000008b12d_120678227184&gt;0 or $n3632708Crash000000000009c9bd_120666348344&gt;0 or $n3632708Crash000000000009da9e_120659070919&gt;0 or $n3632708Crash00041bae_108171308967&gt;0 or $n3632708Crash00044649_108120924009&gt;0 or $n3632708Crash00044846_108017420857&gt;0 or $n3632708Crash0004db22_108549480206&gt;0 or $n3632708Crash0005b803_108047630296&gt;0 or $n3632708Crash0005c583_108128811268&gt;0 or $n3632708Crash0005fdd1_74170243742&gt;0 or $n3632708Crash0005fe81_108348639551&gt;0 or $n3632708Crash0006cc7b_108552344032&gt;0 or $n3632708Crash0006cdab_108759689917&gt;0 or $n3632708Crash0007114b_108693958994&gt;0 or $n3632708Crash000728b3_108552224831&gt;0 or $n3632708Crash00072943_108276403447&gt;0 or $n3632708Crash00074360_108429768596&gt;0 or $n3632708Crash00077b63_108420186112&gt;0 or $n3632708Crash00077c03_108527219091&gt;0 or $n3632708Crash00077c73_108571820514&gt;0 or $n3632708Crash000784c3_108625937210&gt;0 or $n3632708Crash000809d3_108031221904&gt;0 or $n3632708Crash00080a53_108156933498&gt;0 or $n3632708Crash00080a83_107914781298&gt;0 or $n3632708Crash0008c073_108689078151&gt;0 or $n3632708Crash0008c263_108765103975&gt;0 or $n3632708Crash00098e83_108519228261&gt;0 or $n3632708Crash00098f23_108629023118&gt;0 or $n3632708Crash000994a3_108488087831&gt;0 or $n3632708Crash0009c863_108667306125&gt;0)" Error="Error" P0="$n3632708Crash0000000000088393_120673690712 + $n3632708Crash000000000008b12d_120678227184 + $n3632708Crash000000000009c9bd_120666348344 + $n3632708Crash000000000009da9e_120659070919 + $n3632708Crash00041bae_108171308967 + $n3632708Crash00044649_108120924009 + $n3632708Crash00044846_108017420857 + $n3632708Crash0004db22_108549480206 + $n3632708Crash0005b803_108047630296 + $n3632708Crash0005c583_108128811268 + $n3632708Crash0005fdd1_74170243742 + $n3632708Crash0005fe81_108348639551 + $n3632708Crash0006cc7b_108552344032 + $n3632708Crash0006cdab_108759689917 + $n3632708Crash0007114b_108693958994 + $n3632708Crash000728b3_108552224831 + $n3632708Crash00072943_108276403447 + $n3632708Crash00074360_108429768596 + $n3632708Crash00077b63_108420186112 + $n3632708Crash00077c03_108527219091 + $n3632708Crash00077c73_108571820514 + $n3632708Crash000784c3_108625937210 + $n3632708Crash000809d3_108031221904 + $n3632708Crash00080a53_108156933498 + $n3632708Crash00080a83_107914781298 + $n3632708Crash0008c073_108689078151 + $n3632708Crash0008c263_108765103975 + $n3632708Crash00098e83_108519228261 + $n3632708Crash00098f23_108629023118 + $n3632708Crash000994a3_108488087831 + $n3632708Crash0009c863_108667306125" P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" P2="if($bitness='x86',617203,617204)" Title="Known crashing issue in Skype for Business" Text="A crashing issue that occurs in Skype for Business has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest {1} update for Skype for Business 2013 to fix this issue." GUID="617205" PATCH="{2}" SSID="ddb330d7-93f2-419b-8b4e-c5c987924d7e" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash (with a fix)" />
+			
+			<Reference Type="CommonCrashes" Name="CommonCrashes" File="common.config.xml"></Reference>
+			
+		</Object>
+
+		<Object Type="EventLog" Key1="Application" Key2="emet" Key3="2" Key4="lync.exe" Key7="14" Key8="10000">
+			<Setting Key1="Message"></Setting>
+			<Rule Name="nEmetEvent2CountSkype" Query="count(../Instance)"></Rule>
+			<Rule Name="sEmetMitigationSkype" Query="$nEmetEvent2CountSkype&gt;0" Error="Error" P0="$nEmetEvent2CountSkype" P1="'%APPNAME%'" Title="{1} was closed by the Enhanced Mitigation Experience Toolkit (EMET)" Text="The Application Event log indicates the Enhanced Mitigation Experience Toolkit forced {1} to close {0} times in the last 14 days.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details on this type of event." GUID="623505" SSID="96d09643-20bd-4534-8617-97e0362d43db" Symptoms="Crash"></Rule>
+		</Object>
+
+		<Reference Type="DisplayLinkUMD" Name="DisplayLinkUMD" File="common.config.xml"></Reference>
+		
+	</Type>
+
+	<Reference Type="LyncCrashes" Name="LyncCrashes" File="lync.crashes.config.xml">
+	</Reference>
+	<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml">
+	</Reference>
+	<Reference Type="MSO" Name="MSO" File="common.config.xml">
+	</Reference>
+	<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+	</Reference>		
+				
+	<!--EXTERNALREFS-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+
+</ObjectCollector>

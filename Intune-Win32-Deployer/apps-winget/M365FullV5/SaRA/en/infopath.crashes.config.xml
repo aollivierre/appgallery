@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+	<Configuration  ConfigName="Infopath Crashes"
+									ChangeDescription="2.0.1608.23"
+								 ConfigVersion="2.0.1608.23"
+									ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+									DownloadURL="http://www.microsoft.com/office/offcat"
+									FixItURL="http://go.microsoft.com/?linkid={0}"
+									ReferencedFiles="common.config.xml,officeupdates.config.xml"
+									Symptoms="1">
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">InfoPath</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"/>
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="InfoPath" Key6="infopath" Key7="%MAJORVERSION%">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS">
+			<Rule Name="bitness" Query="$.">            
+			</Rule>
+		</Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Add" Key2="WOW6432NODECACHE" Key3="%WOW6432NODE%">
+		</Object>
+		<Object Type="Cache" Name="AppBitnessCache" Key1="Add" Key2="APPBITNESSCACHE" Key3="%APPBITNESS%">
+		</Object>
+		<Setting Key1="FullVersion">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))">            
+			</Rule>
+			<Rule Name="sFullAppVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Name">
+			<Rule Name="appName" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Path"></Setting>
+		<Setting Key1="Version">
+			<Rule Name="n4DigitSKUVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Type">
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="nInstallType" Query="$."></Rule>
+		</Setting>
+	</Object>
+	<Object Type="Cache" Name="AppBitnessCache" Key1="Dump" Key2="APPBITNESSCACHE" Display="Hide">
+		<Setting Key1="Val" Substitution="APPBITNESS" Display="Hide"></Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Dump" Key2="WOW6432NODECACHE" Display="Hide">
+			<Setting Key1="Val" Substitution="WOW6432NODE" Display="Hide">
+			</Setting>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{3741355B-72CF-4CEE-948E-CC9FBDBB8E7A}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+						<Rule Name="sNoIRMInfoPath2013" Query="contains('%PRODUCTCODE%','0FF1CE') and $n2DigitVersion=15 and not(($SKU2013='0011' and ($ReleaseType2013='1' or $ReleaseType2013='0')) or $SKU2013='0044')" P0="$SKUName2013" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="302311" SSID="b5a7887a-f4c6-4622-bd17-ed771c6f874b" Symptoms="Information Rights Management"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName2013" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{19AF7201-09A2-4C73-AB50-FCEF94CB2BA9}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+						<Rule Name="sNoIRMInfoPath201364" Query="contains('%PRODUCTCODE%','0FF1CE') and $n2DigitVersion=15 and not(($SKU201364='0011' and ($ReleaseType201364='1' or $ReleaseType201364='0')) or $SKU201364='0044')" P0="$SKUName201364" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="302311" SSID="10fbf07a-d90e-4407-871e-aafdc97a0a6b" Symptoms="Information Rights Management"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName201364" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+	</Object>
+	
+	<Type Name="InfoPathCrashes">
+		
+		<!--EVENTLOGS-->
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="infopath.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Setting Key1="__ALL"></Setting>
+			<Setting Key1="Faulting Application Name" Display="Right"></Setting>
+			<Setting Key1="Faulting Application Version" Display="Right">
+				<Rule Name="nFaultingAppVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Application Timestamp" Display="Right">
+				<Rule Name="faultAppTimeStamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Name" Display="Right">
+				<Rule Name="faultModuleName" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Version" Display="Right">
+				<Rule Name="nFaultingModuleVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Timestamp" Display="Right">
+				<Rule Name="faultModuleTimestamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Exception code" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right">
+				<Rule Name="faultOffset" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Timegenerated" Display="Hide">
+				<Rule Name="TimeOfCrash" Query="$."></Rule>
+			</Setting>
+		</Object>
+		<!--/EVENTLOGS-->
+		
+	</Type>
+
+	<Reference Type="InfoPathCrashes" Name="InfoPathCrashes" File="infopath.crashes.config.xml">
+	</Reference>
+	<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml">
+	</Reference>
+	<Reference Type="MSO" Name="MSO" File="common.config.xml">
+	</Reference>
+	<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+	</Reference>		
+
+	<!--EXTERNALREF-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+
+</ObjectCollector>

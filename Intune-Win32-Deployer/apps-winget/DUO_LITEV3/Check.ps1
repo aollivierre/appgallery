@@ -1,0 +1,1 @@
+if (Test-Path "C:\Program Files\Duo Security\WindowsLogon\DuoCredProv.dll") { Write-Output "F"; exit 0 } else { exit 1 }

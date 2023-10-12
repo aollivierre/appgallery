@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+	<Configuration ConfigName="Visio Crashes"
+								 ChangeDescription="2.0.1608.23"
+								 ConfigVersion="2.0.1608.23"
+								 ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+								 DownloadURL="http://www.microsoft.com/office/offcat"
+								 FixItURL="http://go.microsoft.com/?linkid={0}"
+								 ReferencedFiles="common.config.xml,officeupdates.config.xml"
+								 Symptoms="1">
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">Visio</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"></ExtFormat>
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Visio" Key6="visio" Key7="%MAJORVERSION%">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS">
+			<Rule Name="bitness" Query="$."></Rule>
+		</Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Add" Key2="WOW6432NODECACHE" Key3="%WOW6432NODE%">
+		</Object>
+		<Object Type="Cache" Name="AppBitnessCache" Key1="Add" Key2="APPBITNESSCACHE" Key3="%APPBITNESS%">
+		</Object>
+		<Setting Key1="FullVersion">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+			<Rule Name="nBuild" Query="substring-before(substring-after(string($.),concat($n2DigitVersion,'.0.')),'.')"></Rule>
+			<Rule Name="sFullAppVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Name">
+			<Rule Name="appName" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Path"></Setting>
+		<Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Hide">
+		</Setting>
+		<Setting Key1="Version">
+			<Rule Name="n4DigitSKUVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Type">
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="nInstallType" Query="$."></Rule>
+		</Setting>
+	</Object>
+	<Object Type="Cache" Name="AppBitnessCache" Key1="Dump" Key2="APPBITNESSCACHE" Display="Hide">
+		<Setting Key1="Val" Substitution="APPBITNESS" Display="Hide"></Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Dump" Key2="WOW6432NODECACHE" Display="Hide">
+			<Setting Key1="Val" Substitution="WOW6432NODE" Display="Hide">
+			</Setting>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{5D502092-1543-4D9B-89FE-7B4364417CC6}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+						<Rule Name="SKU2013" Query="substring(string($.),11,4)"></Rule>
+						<Rule Name="ReleaseType2013" Query="substring(string($.),3,1)"></Rule>
+					</Setting>
+					<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+						<Setting Key1="ProductName" Display="Hide">
+						</Setting>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{7069FF90-1D63-4F85-A2AB-6F0D01C78D83}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+						<Rule Name="SKU201364" Query="substring(string($.),11,4)"></Rule>
+						<Rule Name="ReleaseType201364" Query="substring(string($.),3,1)"></Rule>
+					</Setting>
+					<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+						<Setting Key1="ProductName" Display="Hide">
+						</Setting>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+	</Object>
+	
+	<Type Name="VisioCrashes">
+
+		<!--EVENTLOGS-->
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="visio.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Setting Key1="__ALL"></Setting>
+			<Setting Key1="Faulting Application Name" Display="Right"></Setting>
+			<Setting Key1="Faulting Application Version" Display="Right">
+				<Rule Name="nFaultingAppVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Application Timestamp" Display="Right">
+				<Rule Name="faultAppTimeStamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Name" Display="Right">
+				<Rule Name="faultModuleName" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Version" Display="Right">
+				<Rule Name="nFaultingModuleVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Timestamp" Display="Right">
+				<Rule Name="faultModuleTimestamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Exception code" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right">
+				<Rule Name="faultOffset" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Timegenerated" Display="Hide">
+				<Rule Name="TimeOfCrash" Query="$."></Rule>
+			</Setting>
+		</Object>
+		<!--/EVENTLOGS-->
+		
+	</Type>
+
+	<Reference Type="VisioCrashes" Name="VisioCrashes" File="visio.crashes.config.xml">
+	</Reference>
+	<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml">
+	</Reference>
+	<Reference Type="MSO" Name="MSO" File="common.config.xml">
+	</Reference>
+	<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+	</Reference>	
+
+	<!--EXTERNALREFS-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+</ObjectCollector>

@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+  <Configuration ConfigName="Project Configuration"
+				         ChangeDescription="2.0.1503.28"
+				          ConfigVersion="2.0.1503.28"
+				         ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+				         DownloadURL="http://www.microsoft.com/office/offcat"
+				         FixItURL="http://go.microsoft.com/?linkid={0}"
+                 ReferencedFiles="common.config.xml">
+    <!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+    <Substitution Name="MAJORVERSION"></Substitution>
+    <Substitution Name="INSTALLTYPE"></Substitution>
+    <ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+    <!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+    <ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+    <ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+    <ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+    <ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+    <ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+    <ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+    <ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+    <ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+    <ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+    <ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+    <ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+    <ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+    <ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+    <ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+    <ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+    <ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+  </Configuration>
+  <Object Type="Group" Name="Project Scan" Class="Scan Type" GroupingClass="True">
+    <!--INSTALLED UPDATES-->
+    <Object Type="If" Key1="'%INSTALLTYPE%'='MSI'">
+      <Object Type="Group" Name="Installed Updates" Class="Office Update" GroupingClass="True" Display="Right" TrackProgress="TrackProgress">
+        <Reference Type="Office_Updates" Name="OfficeUpdates" File="common.config.xml"></Reference>
+      </Object>
+    </Object>
+    <!--/INSTALLED UPDATES-->
+    <!--SKU-->
+    <Object Type="Group" Name="Office SKU">
+      <Object Type="If" Key1="'%MAJORVERSION%'='11'">
+        <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="">
+          <Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+          <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+            <Setting Key1="ProductName" Display="Right"></Setting>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="If" Key1="'%MAJORVERSION%'='12'">
+        <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="">
+          <Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+          <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+            <Setting Key1="ProductName" Display="Right"></Setting>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="If" Key1="'%MAJORVERSION%'='14'">
+        <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="">
+          <Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+          <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+            <Setting Key1="ProductName" Display="Right"></Setting>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="If" Key1="'%MAJORVERSION%'='15'">
+        <Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="">
+          <Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+          <Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+            <Setting Key1="ProductName" Display="Right"></Setting>
+          </Object>
+        </Object>
+      </Object>
+    </Object>
+    <!--/SKU-->
+    <!--MACHINE INFO-->
+    <Object Type="Group" Name="Machine details">
+      <Reference Type="MachineDetails" Name="MachineDetails" File="common.config.xml"></Reference>
+    </Object>
+    <!--MACHINE INFO-->
+    <!--EVENTLOGS-->
+    <Object Type="Group" Name="Application Event Logs" Class="Event Logs" GroupingClass="True">
+      <Object Type="Group" Name="Application Event Log Entries for Last Project crashes" Class="Application Event Logs" GroupingClass="True" TrackProgress="TrackProgress">
+        <Object Type="EventLog" Key1="Application" Key3="1000" Key4="msproject.exe" Key7="14" Key8="10000">
+          <Setting Key1="__ALL"></Setting>
+        </Object>
+        <Object Type="EventLog" Key1="Application" Key3="1000" Key4="winproj.exe" Key7="14" Key8="10000">
+          <Setting Key1="__ALL"></Setting>
+        </Object>
+      </Object>
+    </Object>
+    <!--/EVENTLOGS-->
+  </Object>
+</ObjectCollector>

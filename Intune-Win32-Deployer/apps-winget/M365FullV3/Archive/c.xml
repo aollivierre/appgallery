@@ -1,0 +1,24 @@
+﻿<Configuration ID="0334c2b5-4d23-4dc9-9264-c42b7c68d160">
+  <Info Description="GlebeM365AppsSharedComputerActivation" />
+  <Add OfficeClientEdition="64" Channel="Current" MigrateArch="TRUE">
+    <Product ID="O365BusinessRetail">
+      <Language ID="MatchOS" />
+      <ExcludeApp ID="Access" />
+      <ExcludeApp ID="Groove" />
+      <ExcludeApp ID="Lync" />
+      <ExcludeApp ID="Publisher" />
+    </Product>
+  </Add>
+  <Property Name="SharedComputerLicensing" Value="1" />
+  <Property Name="FORCEAPPSHUTDOWN" Value="TRUE" />
+  <Property Name="DeviceBasedLicensing" Value="0" />
+  <Property Name="SCLCacheOverride" Value="0" />
+  <Property Name="TenantId" Value="9bf01198-4a80-42b2-b334-5587c6861658" />
+  <Updates Enabled="TRUE" />
+  <Remove All="TRUE" />
+  <RemoveMSI />
+  <AppSettings>
+    <Setup Name="Company" Value="GlebeM365Apps" />
+  </AppSettings>
+  <Display Level="None" AcceptEULA="TRUE" />
+</Configuration>

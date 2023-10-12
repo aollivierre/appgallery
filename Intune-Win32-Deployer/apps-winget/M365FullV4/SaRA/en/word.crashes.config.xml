@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+	<Configuration ConfigName="Word Crashes" ChangeDescription="2.0.1703.19" ConfigVersion="2.0.1703.19" ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}" DownloadURL="http://www.microsoft.com/office/offcat" FixItURL="http://go.microsoft.com/?linkid={0}" ReferencedFiles="common.config.xml,officeupdates.config.xml" Symptoms="1">
+		<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryDataPostprocessor" />
+		<!--!!! GLOBAL SUBSTITUTIONS SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">Word</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor" />
+		<ExtFormat Name="DsFlags" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" Convert="ConvertReturnFlags" />
+		<ExtFormat Name="Unicode" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ExtFormat" Convert="ConvertBinaryToUnicode" />
+		<ExtFormat Name="Ascii" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ExtFormat" Convert="ConvertBinaryToAscii" />
+		<ExtFormat Name="Int" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertBinaryToInt" />
+		<ExtFormat Name="Hex" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertBinaryToHex" />
+		<ExtFormat Name="Hex2" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertIntToHex" />
+		<ExtFormat Name="HexInt" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertBinaryToHexInt" />
+		<ExtFormat Name="HexStrToIntStr" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertHexStringToIntString" />
+		<ExtFormat Name="DateTime" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertBinaryToDateTime" />
+		<ExtFormat Name="String2" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertBinaryStringToString" />
+		<ExtFormat Name="RTimeToDate" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ConvertRTimeToDateTime" />
+		<ExtFormat Name="CNFromDN" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ExtractCNFromDN" />
+		<ExtFormat Name="UndotVersion" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="UndotVersion" />
+		<ExtFormat Name="ExtractSNFromEid" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ExtractServerShortnameFromStoreEID" />
+		<ExtFormat Name="ExtractMailboxDNFromEid" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Outlook_Common" Convert="ExtractMailboxDNFromStoreEID" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"></ExtFormat>
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Word" Key6="winword" Key7="%MAJORVERSION%" Display="Hide">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide"></Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS" Display="Hide">
+			<Rule Name="bitness" Query="$."></Rule>
+		</Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Add" Key2="WOW6432NODECACHE" Key3="%WOW6432NODE%">
+		</Object>
+		<Object Type="Cache" Name="AppBitnessCache" Key1="Add" Key2="APPBITNESSCACHE" Key3="%APPBITNESS%">
+		</Object>
+		<Setting Key1="FullVersion" Display="Hide">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+			<Rule Name="sFullAppVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Name" Display="Hide">
+			<Rule Name="appName" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Version" Display="Hide">
+			<Rule Name="n4DigitSKUVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Type" Display="Hide">
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="nInstallType" Query="$."></Rule>
+		</Setting>
+	</Object>
+	<Object Type="Cache" Name="AppBitnessCache" Key1="Dump" Key2="APPBITNESSCACHE" Display="Hide">
+		<Setting Key1="Val" Substitution="APPBITNESS" Display="Hide"></Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Dump" Key2="WOW6432NODECACHE" Display="Hide">
+			<Setting Key1="Val" Substitution="WOW6432NODE" Display="Hide">
+			</Setting>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{09D07EFC-505F-4D9C-BFD5-ACE3217F6654}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName2013" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{6FF09BDF-B087-4E23-A9B9-272DBFD64099}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName201364" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+				<Reference Type="WordCrashes" Name="WordCrashes" File="word.crashes.config.xml" />
+			</Object>
+		</Object>
+	</Object>
+
+	<Type Name="WordCrashes">
+		
+		<!--EVENTLOGS-->
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="winword.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Rule Name="nCrashCount" Query="count(../Instance)" />
+			<Setting Key1="Faulting Application Name" Display="Right"></Setting>
+			<Setting Key1="Faulting Application Version" Display="Right">
+				<Rule Name="nFaultingAppVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Application Timestamp" Display="Right">
+				<Rule Name="faultAppTimeStamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Name" Display="Right">
+				<Rule Name="faultModuleName" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Version" Display="Right">
+				<Rule Name="nFaultingModuleVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Timestamp" Display="Right">
+				<Rule Name="faultModuleTimestamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Exception code" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right">
+				<Rule Name="faultOffset" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Timegenerated" Display="Hide">
+				<Rule Name="TimeOfCrash" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Message" Display="Hide">
+				<Rule Name="sCrashMessage" Query="$."></Rule>
+				<Rule Name="crashLookup" Query="true()" Title="Event 1000" Text="{8}" Error="Error" Internal="True" P0="if($bitness='x86','Crash32','Crash64')" P1="'winword.exe'" P2="$nFaultingAppVersion" P3="$faultAppTimeStamp" P4="$faultModuleName" P5="$nFaultingModuleVersion" P6="$faultModuleTimestamp" P7="$faultOffset" P8="$sCrashMessage" P9="$TimeOfCrash" Symptoms="Crash event lookup"></Rule>
+			</Setting>
+			<Rule Name="n73109411026Crash" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4569.1504')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00015c8b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='osf.dll')]])"></Rule>
+			<Rule Name="n85935812310Crash" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4609.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000006d89')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='osf.dll')]])"></Rule>
+			<Rule Name="n73317526977Crash" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4609.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00015fa1')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='osf.dll')]])"></Rule>
+			<Rule Name="n73260618461Crash" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4615.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00015fc9')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='osf.dll')]])"></Rule>
+			<Rule Name="s3424702OsfCrashWord" Query="$n2DigitVersion=15 and ($n73109411026Crash&gt;0 or $n85935812310Crash&gt;0 or $n73317526977Crash&gt;0 or $n73260618461Crash&gt;0)" Error="Error" P0="$n73109411026Crash + $n85935812310Crash + $n73317526977Crash + $n73260618461Crash" Title="Known crashing issue when you exit Word with the Insert tab active on the Ribbon" Text="The issue where Word crashes when you exit the program with the Insert tab active has been detected {0} times. Please click the 'Click here...' link to see the most recent details on this issue." GUID="403547" SSID="d19a2445-5c66-4b01-9b5a-4cebd8b81de3" Symptoms="Crash"></Rule>
+
+			<Rule Name="n_mrmapiCrash" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='6.1.7601.18409')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='kernelbase.dll')]])"></Rule>
+			<Rule Name="s_mrmapiCrash" Query="$nInstallType='MSI' and $n2DigitVersion=15 and $n_mrmapiCrash&gt;0" Error="Error" P0="$n_mrmapiCrash" Title="A known crashing issue in offcat_rts.exe was detected in the application event log" Text="A known crashing issue was detected in your application event log {0} times. This issue is fixed in Office 2013 Service Pack 1. Please click the 'Click here...' link to download Service Pack 1." GUID="392663" SSID="9d7c6369-df0d-49d2-85bb-0ffee3c4fa62" Symptoms="Crash,Event Log"></Rule>
+
+			<Rule Name="nCrashIgd10umd32Word" Query="count(../Instance[Setting[@Key1='Faulting Module Name' and (lower-case(Value)='igd10umd32.dll')]])"></Rule>
+			<Rule Name="sCrashIgd10umd32Word" Query="$n2DigitVersion=15 and $nCrashIgd10umd32Word&gt;0" Error="Error" P0="$nCrashIgd10umd32Word" Title="Word crashing issue with Igd10mud32.dll found" Text="A crashing issue in Winword.exe that was caused by Igd10umd32.dll was found {0} times in the application event log. This problem has been known to be caused by an outdated Intel graphics accelerator driver.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details." GUID="404005" SSID="86d69c55-43b5-4b8b-92ec-00bf4dc4c0f8" Symptoms="Crash,Error message,Event Log"></Rule>
+
+			<Rule Name="n3459258MsoCrashWord00003ABC" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4631.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00003abc')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="n3459258MsoCrashWord0000329C" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='0.0.0.0')] and Setting[@Key1='Fault offset' and (lower-case(Value)='0000329c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="s3459258MsoCrashWordX86" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='MSI' and $n2DigitVersion=15 and $bitness='x86' and ($n3459258MsoCrashWord00003ABC&gt;0 or $n3459258MsoCrashWord0000329C&gt;0)" Error="Error" P0="$n3459258MsoCrashWord00003ABC + $n3459258MsoCrashWord0000329C" Title="Known crashing issue when Word stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when Word stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506813" SSID="bafca95e-396e-4dec-afad-a938b57746d7" Symptoms="Crash"></Rule>
+			<Rule Name="n3459258MsoCrashWord00000000013F766E" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4631.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00000000013f766e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="n3459258MsoCrashWord00000000013EB86E" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='0.0.0.0')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00000000013eb86e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="s3459258MsoCrashWordX64" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='MSI' and $n2DigitVersion=15 and $bitness='x64' and ($n3459258MsoCrashWord00000000013F766E&gt;0 or $n3459258MsoCrashWord00000000013EB86E&gt;0)" Error="Error" P0="$n3459258MsoCrashWord00000000013F766E + $n3459258MsoCrashWord00000000013EB86E" Title="Known crashing issue when Word stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when Word stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506818" SSID="4f6e2e99-952e-49f1-98d4-239ae1f16ab9" Symptoms="Crash"></Rule>
+			<Rule Name="s3459258MsoCrashWordC2R" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='ClickToRun' and $n2DigitVersion=15 and ($n3459258MsoCrashWord00003ABC&gt;0 or $n3459258MsoCrashWord0000329C&gt;0)" Error="Error" P0="$n3459258MsoCrashWord00003ABC + $n3459258MsoCrashWord0000329C" Title="Known crashing issue when Word stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when Word stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506861" SSID="a74c4406-98ca-4bfe-a389-2366c8be7af6" Symptoms="Crash"></Rule>
+
+			<Rule Name="n3507209Crash74072277045" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00043bbd')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='fm20.dll')]])"></Rule>
+			<Rule Name="n3507209Crash74301344235" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00043bdf')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='fm20.dll')]])"></Rule>
+			<Rule Name="n3507209Crash120261842184" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000002d892')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='fm20.dll')]])"></Rule>
+			<Rule Name="sWord15Crash3507209Msi" Query="$nInstallType='MSI' and $n2DigitVersion=15 and not($OfficeUpdates_sKB3023052Installed) and ($n3507209Crash74072277045&gt;0 or $n3507209Crash74301344235&gt;0 or $n3507209Crash120261842184&gt;0)" Error="Error" P0="$n3507209Crash74072277045 + $n3507209Crash74301344235 + $n3507209Crash120261842184" P1="if($bitness='x86','32-bit','64-bit')" Title="Known crash in Word has been detected" Text="A Word crashing issue that is fixed by the July 14, 2015 update in KB 3023052 (and any subsequent update for FM20.dll) has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details on the July 14, 2015 update for FM20.dll and then install the {1} update from the article." GUID="619844" SSID="1ff3e95f-5f49-4c2c-82e0-7460ea819380" Symptoms="Crash"></Rule>
+			<Rule Name="sWord15Crash3507209C2R" Query="$nInstallType='ClickToRun' and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4737.1003')&lt;0 and ($n3507209Crash74072277045&gt;0 or $n3507209Crash74301344235&gt;0 or $n3507209Crash120261842184&gt;0)" Error="Error" P0="$n3507209Crash74072277045 + $n3507209Crash74301344235 + $n3507209Crash120261842184" Title="Known crash in Word has been detected" Text="A Word crashing issue that is fixed by the July 14, 2015 update for Office 2013 has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;To resolve this problem, click the 'Click here...' link and then update Office using the steps in the 'Get the latest version of Office' section of the article." GUID="619848" SSID="349d7e62-485b-4edc-8ae7-64c23d650c02" Symptoms="Crash"></Rule>
+
+			<Rule Name="n2264340Crash0018873f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0018873f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash001591c2" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='001591c2')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0000000000208e9a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000208e9a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0015a2d6" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0015a2d6')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec8f2" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec8f2')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00183891" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00183891')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001f9652" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001f9652')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001efa6a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001efa6a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0000000000208d1e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000208d1e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00188357" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00188357')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00183a4d" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00183a4d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158118" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158118')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001f978e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001f978e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ebd4a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ebd4a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec0ba" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec0ba')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ebe0a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ebe0a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00158397" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00158397')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001efa8e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001efa8e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0000000000211d72" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000211d72')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec2da" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec2da')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0000000000200832" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000200832')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash001887fa" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='001887fa')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec502" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec502')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001eb912" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001eb912')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0015a383" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0015a383')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000002125e6" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000002125e6')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00000000001ec53a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ec53a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash00181757" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00181757')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="n2264340Crash0015903d" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0015903d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso30win32client.dll')]])" />
+			<Rule Name="sWord16Crash2264340" Query="$n2DigitVersion=16 and ($n2264340Crash0018873f&gt;0 or $n2264340Crash001591c2&gt;0 or $n2264340Crash0000000000208e9a&gt;0 or $n2264340Crash0015a2d6&gt;0 or $n2264340Crash00000000001ec8f2&gt;0 or $n2264340Crash00183891&gt;0 or $n2264340Crash00000000001f9652&gt;0 or $n2264340Crash00000000001efa6a&gt;0 or $n2264340Crash0000000000208d1e&gt;0 or $n2264340Crash00188357&gt;0 or $n2264340Crash00183a4d&gt;0 or $n2264340Crash00158118&gt;0 or $n2264340Crash00000000001f978e&gt;0 or $n2264340Crash00000000001ebd4a&gt;0 or $n2264340Crash00000000001ec0ba&gt;0 or $n2264340Crash00000000001ebe0a&gt;0 or $n2264340Crash00158397&gt;0 or $n2264340Crash00000000001efa8e&gt;0 or $n2264340Crash0000000000211d72&gt;0 or $n2264340Crash00000000001ec2da&gt;0 or $n2264340Crash0000000000200832&gt;0 or $n2264340Crash001887fa&gt;0 or $n2264340Crash00000000001ec502&gt;0 or $n2264340Crash00000000001eb912&gt;0 or $n2264340Crash0015a383&gt;0 or $n2264340Crash00000000002125e6&gt;0 or $n2264340Crash00000000001ec53a&gt;0 or $n2264340Crash00181757&gt;0 or $n2264340Crash0015903d&gt;0)" Error="Error" P0="$n2264340Crash0018873f + $n2264340Crash001591c2 + $n2264340Crash0000000000208e9a + $n2264340Crash0015a2d6 + $n2264340Crash00000000001ec8f2 + $n2264340Crash00183891 + $n2264340Crash00000000001f9652 + $n2264340Crash00000000001efa6a + $n2264340Crash0000000000208d1e + $n2264340Crash00188357 + $n2264340Crash00183a4d + $n2264340Crash00158118 + $n2264340Crash00000000001f978e + $n2264340Crash00000000001ebd4a + $n2264340Crash00000000001ec0ba + $n2264340Crash00000000001ebe0a + $n2264340Crash00158397 + $n2264340Crash00000000001efa8e + $n2264340Crash0000000000211d72 + $n2264340Crash00000000001ec2da + $n2264340Crash0000000000200832 + $n2264340Crash001887fa + $n2264340Crash00000000001ec502 + $n2264340Crash00000000001eb912 + $n2264340Crash0015a383 + $n2264340Crash00000000002125e6 + $n2264340Crash00000000001ec53a + $n2264340Crash00181757 + $n2264340Crash0015903d" Title="Known crashing issue in Word" Text="A crashing issue that occurs in Word has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please click the 'Click here...' link for details on this issue." GUID="787610" SSID="12b9a7c3-bfa5-46bd-ae1a-efa08a59d923" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash" />
+
+			<Rule Name="n3233794Crash000f1a6e" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f1a6e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d1ff" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d1ff')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000feaee" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000feaee')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000f1064" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f1064')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fe76c" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fe76c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d4bf" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d4bf')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d57f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d57f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000f1f7b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f1f7b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000f1880" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f1880')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fd20a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fd20a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d40f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d40f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000ef915" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000ef915')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000f7b8b" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f7b8b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fe35d" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fe35d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d50f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d50f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fd1fa" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fd1fa')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d20f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d20f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d59f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d59f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000f1885" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f1885')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash00000000000836df" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000836df')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000f174a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f174a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fc9b0" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fc9b0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d34f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d34f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d32f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d32f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d2df" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d2df')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d6af" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d6af')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fef84" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fef84')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fd24a" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fd24a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fe2bf" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fe2bf')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d1ef" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d1ef')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash0000000000082f6f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000082f6f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d54f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d54f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008d53f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008d53f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fd1ea" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fd1ea')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000ffcbc" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000ffcbc')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000fa0e2" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000fa0e2')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash00000000000860ff" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000860ff')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000f7b6c" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000f7b6c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3233794Crash000000000008609f" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000008609f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="sWord16Crash3233794MSI" Query="$n2DigitVersion=16 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'16.0.4471.1000')&lt;0 and ($n3233794Crash000f1a6e&gt;0 or $n3233794Crash000000000008d1ff&gt;0 or $n3233794Crash000feaee&gt;0 or $n3233794Crash000f1064&gt;0 or $n3233794Crash000fe76c&gt;0 or $n3233794Crash000000000008d4bf&gt;0 or $n3233794Crash000000000008d57f&gt;0 or $n3233794Crash000f1f7b&gt;0 or $n3233794Crash000f1880&gt;0 or $n3233794Crash000fd20a&gt;0 or $n3233794Crash000000000008d40f&gt;0 or $n3233794Crash000ef915&gt;0 or $n3233794Crash000f7b8b&gt;0 or $n3233794Crash000fe35d&gt;0 or $n3233794Crash000000000008d50f&gt;0 or $n3233794Crash000fd1fa&gt;0 or $n3233794Crash000000000008d20f&gt;0 or $n3233794Crash000000000008d59f&gt;0 or $n3233794Crash000f1885&gt;0 or $n3233794Crash00000000000836df&gt;0 or $n3233794Crash000f174a&gt;0 or $n3233794Crash000fc9b0&gt;0 or $n3233794Crash000000000008d34f&gt;0 or $n3233794Crash000000000008d32f&gt;0 or $n3233794Crash000000000008d2df&gt;0 or $n3233794Crash000000000008d6af&gt;0 or $n3233794Crash000fef84&gt;0 or $n3233794Crash000fd24a&gt;0 or $n3233794Crash000fe2bf&gt;0 or $n3233794Crash000000000008d1ef&gt;0 or $n3233794Crash0000000000082f6f&gt;0 or $n3233794Crash000000000008d54f&gt;0 or $n3233794Crash000000000008d53f&gt;0 or $n3233794Crash000fd1ea&gt;0 or $n3233794Crash000ffcbc&gt;0 or $n3233794Crash000fa0e2&gt;0 or $n3233794Crash00000000000860ff&gt;0 or $n3233794Crash000f7b6c&gt;0 or $n3233794Crash000000000008609f&gt;0)" Error="Error" P0="$n3233794Crash000f1a6e + $n3233794Crash000000000008d1ff + $n3233794Crash000feaee + $n3233794Crash000f1064 + $n3233794Crash000fe76c + $n3233794Crash000000000008d4bf + $n3233794Crash000000000008d57f + $n3233794Crash000f1f7b + $n3233794Crash000f1880 + $n3233794Crash000fd20a + $n3233794Crash000000000008d40f + $n3233794Crash000ef915 + $n3233794Crash000f7b8b + $n3233794Crash000fe35d + $n3233794Crash000000000008d50f + $n3233794Crash000fd1fa + $n3233794Crash000000000008d20f + $n3233794Crash000000000008d59f + $n3233794Crash000f1885 + $n3233794Crash00000000000836df + $n3233794Crash000f174a + $n3233794Crash000fc9b0 + $n3233794Crash000000000008d34f + $n3233794Crash000000000008d32f + $n3233794Crash000000000008d2df + $n3233794Crash000000000008d6af + $n3233794Crash000fef84 + $n3233794Crash000fd24a + $n3233794Crash000fe2bf + $n3233794Crash000000000008d1ef + $n3233794Crash0000000000082f6f + $n3233794Crash000000000008d54f + $n3233794Crash000000000008d53f + $n3233794Crash000fd1ea + $n3233794Crash000ffcbc + $n3233794Crash000fa0e2 + $n3233794Crash00000000000860ff + $n3233794Crash000f7b6c + $n3233794Crash000000000008609f" Title="Known crashing issue in Word" Text="A crashing issue that occurs in Word has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest update for Word 2016 to fix this issue." GUID="626741" SSID="cf624b2b-91c6-46c8-8515-63431091180a" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash" />
+
+			<Rule Name="n3280452Crash00000000000432a0_120471797185" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000432a0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000000551d0_120358175626" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000551d0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0000000000060700_120512272279" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000060700')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash000000000006aa10_120702867453" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000006aa10')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000000a05b0_120402278903" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000a05b0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000000a05e0_120616297132" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000a05e0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000000a05f0_120512268012" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000a05f0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000000a4b20_120338077634" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000a4b20')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000000adbf0_120616344873" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000adbf0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000001a3e34_120525704143" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001a3e34')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000001a3f94_120562461705" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001a3f94')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000001a4064_120681617975" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001a4064')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash000000000023dd3f_120576727796" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000023dd3f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash000000000023dd47_120712164289" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000023dd47')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00000000002b0e69_120698888040" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000002b0e69')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0021bf0d_108207902880" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0021bf0d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0021bf1d_107669320114" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0021bf1d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0021bf3e_108765642049" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0021bf3e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0021bf4e_108682894590" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0021bf4e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0022e408_108674475166" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0022e408')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0022e41a_108411930961" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0022e41a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00234a2d_108028659760" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00234a2d')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00245128_108703554033" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00245128')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0024513a_107627342636" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0024513a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252dc8_108709906852" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252dc8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252dda_107782584452" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252dda')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e18_108551754111" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e18')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e2a_108153859035" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e2a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e38_108554222627" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e38')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e48_108361899403" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e48')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e4a_108402623414" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e4a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e5a_107926931267" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e5a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e88_108349663738" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e88')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash00252e9a_108282294512" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00252e9a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash0028ca6a_108335061018" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0028ca6a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash002c6578_108677647014" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='002c6578')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash002c658a_108678007345" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='002c658a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash002c65b8_108306702143" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='002c65b8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash002c65ca_108307869023" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='002c65ca')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash002f9c72_108252603804" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='002f9c72')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash002f9e07_108474009103" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='002f9e07')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash002f9e12_108011518190" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='002f9e12')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash003abf5b_108721841201" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='003abf5b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash003b181b_108758004006" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='003b181b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3280452Crash003b1826_108752999168" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='003b1826')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="sWord16Crash3280452MSI" Query="$n2DigitVersion=16 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'16.0.4510.1000')&lt;0 and ($n3280452Crash00000000000432a0_120471797185&gt;0 or $n3280452Crash00000000000551d0_120358175626&gt;0 or $n3280452Crash0000000000060700_120512272279&gt;0 or $n3280452Crash000000000006aa10_120702867453&gt;0 or $n3280452Crash00000000000a05b0_120402278903&gt;0 or $n3280452Crash00000000000a05e0_120616297132&gt;0 or $n3280452Crash00000000000a05f0_120512268012&gt;0 or $n3280452Crash00000000000a4b20_120338077634&gt;0 or $n3280452Crash00000000000adbf0_120616344873&gt;0 or $n3280452Crash00000000001a3e34_120525704143&gt;0 or $n3280452Crash00000000001a3f94_120562461705&gt;0 or $n3280452Crash00000000001a4064_120681617975&gt;0 or $n3280452Crash000000000023dd3f_120576727796&gt;0 or $n3280452Crash000000000023dd47_120712164289&gt;0 or $n3280452Crash00000000002b0e69_120698888040&gt;0 or $n3280452Crash0021bf0d_108207902880&gt;0 or $n3280452Crash0021bf1d_107669320114&gt;0 or $n3280452Crash0021bf3e_108765642049&gt;0 or $n3280452Crash0021bf4e_108682894590&gt;0 or $n3280452Crash0022e408_108674475166&gt;0 or $n3280452Crash0022e41a_108411930961&gt;0 or $n3280452Crash00234a2d_108028659760&gt;0 or $n3280452Crash00245128_108703554033&gt;0 or $n3280452Crash0024513a_107627342636&gt;0 or $n3280452Crash00252dc8_108709906852&gt;0 or $n3280452Crash00252dda_107782584452&gt;0 or $n3280452Crash00252e18_108551754111&gt;0 or $n3280452Crash00252e2a_108153859035&gt;0 or $n3280452Crash00252e38_108554222627&gt;0 or $n3280452Crash00252e48_108361899403&gt;0 or $n3280452Crash00252e4a_108402623414&gt;0 or $n3280452Crash00252e5a_107926931267&gt;0 or $n3280452Crash00252e88_108349663738&gt;0 or $n3280452Crash00252e9a_108282294512&gt;0 or $n3280452Crash0028ca6a_108335061018&gt;0 or $n3280452Crash002c6578_108677647014&gt;0 or $n3280452Crash002c658a_108678007345&gt;0 or $n3280452Crash002c65b8_108306702143&gt;0 or $n3280452Crash002c65ca_108307869023&gt;0 or $n3280452Crash002f9c72_108252603804&gt;0 or $n3280452Crash002f9e07_108474009103&gt;0 or $n3280452Crash002f9e12_108011518190&gt;0 or $n3280452Crash003abf5b_108721841201&gt;0 or $n3280452Crash003b181b_108758004006&gt;0 or $n3280452Crash003b1826_108752999168&gt;0)" Error="Error" P0="$n3280452Crash00000000000432a0_120471797185 + $n3280452Crash00000000000551d0_120358175626 + $n3280452Crash0000000000060700_120512272279 + $n3280452Crash000000000006aa10_120702867453 + $n3280452Crash00000000000a05b0_120402278903 + $n3280452Crash00000000000a05e0_120616297132 + $n3280452Crash00000000000a05f0_120512268012 + $n3280452Crash00000000000a4b20_120338077634 + $n3280452Crash00000000000adbf0_120616344873 + $n3280452Crash00000000001a3e34_120525704143 + $n3280452Crash00000000001a3f94_120562461705 + $n3280452Crash00000000001a4064_120681617975 + $n3280452Crash000000000023dd3f_120576727796 + $n3280452Crash000000000023dd47_120712164289 + $n3280452Crash00000000002b0e69_120698888040 + $n3280452Crash0021bf0d_108207902880 + $n3280452Crash0021bf1d_107669320114 + $n3280452Crash0021bf3e_108765642049 + $n3280452Crash0021bf4e_108682894590 + $n3280452Crash0022e408_108674475166 + $n3280452Crash0022e41a_108411930961 + $n3280452Crash00234a2d_108028659760 + $n3280452Crash00245128_108703554033 + $n3280452Crash0024513a_107627342636 + $n3280452Crash00252dc8_108709906852 + $n3280452Crash00252dda_107782584452 + $n3280452Crash00252e18_108551754111 + $n3280452Crash00252e2a_108153859035 + $n3280452Crash00252e38_108554222627 + $n3280452Crash00252e48_108361899403 + $n3280452Crash00252e4a_108402623414 + $n3280452Crash00252e5a_107926931267 + $n3280452Crash00252e88_108349663738 + $n3280452Crash00252e9a_108282294512 + $n3280452Crash0028ca6a_108335061018 + $n3280452Crash002c6578_108677647014 + $n3280452Crash002c658a_108678007345 + $n3280452Crash002c65b8_108306702143 + $n3280452Crash002c65ca_108307869023 + $n3280452Crash002f9c72_108252603804 + $n3280452Crash002f9e07_108474009103 + $n3280452Crash002f9e12_108011518190 + $n3280452Crash003abf5b_108721841201 + $n3280452Crash003b181b_108758004006 + $n3280452Crash003b1826_108752999168" P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" P2="if($bitness='x86',626694,626695)" Title="Known crashing issue in Word" Text="A crashing issue that occurs in Word has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest {1} update for Word 2016 to fix this issue." GUID="626741" PATCH="{2}" SSID="5f489006-3165-4f24-bf7d-7d4a51f0903a" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash (with a fix)" />
+
+			<Rule Name="n3281028Crash000000000019ad63_120683322584" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000019ad63')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash00000000001c6457_120358510900" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001c6457')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash00000000001c957b_120544948852" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001c957b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash00000000001caa4b_120684892781" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001caa4b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash00000000001caa5b_120688301770" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001caa5b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash00000000001caeab_120503853871" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001caeab')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash00000000001cf0ab_120578320067" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001cf0ab')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash00000000001e1c5b_120712339233" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001e1c5b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash001183cb_108675389149" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='001183cb')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0011af3a_108718634296" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0011af3a')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0012bcc8_108564763944" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0012bcc8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0012f13b_108679285671" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0012f13b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0013316b_108687553768" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0013316b')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0013b36c_107684710558" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0013b36c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0013b4a5_108166873999" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0013b4a5')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0013bde5_108654258763" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0013bde5')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="n3281028Crash0013c0b0_108400435181" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0013c0b0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='wwlib.dll')]])" />
+			<Rule Name="sWord16Crash3281028MSI" Query="$n2DigitVersion=16 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'16.0.4510.1000')&lt;0 and ($n3281028Crash000000000019ad63_120683322584&gt;0 or $n3281028Crash00000000001c6457_120358510900&gt;0 or $n3281028Crash00000000001c957b_120544948852&gt;0 or $n3281028Crash00000000001caa4b_120684892781&gt;0 or $n3281028Crash00000000001caa5b_120688301770&gt;0 or $n3281028Crash00000000001caeab_120503853871&gt;0 or $n3281028Crash00000000001cf0ab_120578320067&gt;0 or $n3281028Crash00000000001e1c5b_120712339233&gt;0 or $n3281028Crash001183cb_108675389149&gt;0 or $n3281028Crash0011af3a_108718634296&gt;0 or $n3281028Crash0012bcc8_108564763944&gt;0 or $n3281028Crash0012f13b_108679285671&gt;0 or $n3281028Crash0013316b_108687553768&gt;0 or $n3281028Crash0013b36c_107684710558&gt;0 or $n3281028Crash0013b4a5_108166873999&gt;0 or $n3281028Crash0013bde5_108654258763&gt;0 or $n3281028Crash0013c0b0_108400435181&gt;0)" Error="Error" P0="$n3281028Crash000000000019ad63_120683322584 + $n3281028Crash00000000001c6457_120358510900 + $n3281028Crash00000000001c957b_120544948852 + $n3281028Crash00000000001caa4b_120684892781 + $n3281028Crash00000000001caa5b_120688301770 + $n3281028Crash00000000001caeab_120503853871 + $n3281028Crash00000000001cf0ab_120578320067 + $n3281028Crash00000000001e1c5b_120712339233 + $n3281028Crash001183cb_108675389149 + $n3281028Crash0011af3a_108718634296 + $n3281028Crash0012bcc8_108564763944 + $n3281028Crash0012f13b_108679285671 + $n3281028Crash0013316b_108687553768 + $n3281028Crash0013b36c_107684710558 + $n3281028Crash0013b4a5_108166873999 + $n3281028Crash0013bde5_108654258763 + $n3281028Crash0013c0b0_108400435181" P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" P2="if($bitness='x86',626694,626695)" Title="Known crashing issue in Word" Text="A crashing issue that occurs in Word has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest {1} update for Word 2016 to fix this issue." GUID="626741" PATCH="{2}" SSID="22b7b431-72c2-406b-b68a-0e904fe546db" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash (with a fix)" />
+			
+			<Reference Type="CommonCrashes" Name="CommonCrashes" File="common.config.xml"></Reference>
+
+		</Object>
+
+		<Object Type="EventLog" Key1="Application" Key2="emet" Key3="2" Key4="word.exe" Key7="14" Key8="10000">
+			<Setting Key1="Message"></Setting>
+			<Rule Name="nEmetEvent2CountWord" Query="count(../Instance)"></Rule>
+			<Rule Name="sEmetMitigationWord" Query="$nEmetEvent2CountWord&gt;0" Error="Error" P0="$nEmetEvent2CountWord" P1="'%APPNAME%'" Title="{1} was closed by the Enhanced Mitigation Experience Toolkit (EMET)" Text="The Application Event log indicates the Enhanced Mitigation Experience Toolkit forced {1} to close {0} times in the last 14 days.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details on this type of event." GUID="623505" SSID="d41a7cbc-c7e5-4bed-99df-acd37f4c6e6d" Symptoms="Crash"></Rule>
+		</Object>
+
+		<Reference Type="NonOfficeAppCrashes" Name="NonOfficeAppCrashes" File="common.config.xml"></Reference>
+
+		<Reference Type="DisplayLinkUMD" Name="DisplayLinkUMD" File="common.config.xml">
+		</Reference>
+
+	</Type>
+
+	<Reference Type="WordCrashes" Name="WordCrashes" File="word.crashes.config.xml">
+	</Reference>
+	<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml">
+	</Reference>
+	<Reference Type="MSO" Name="MSO" File="common.config.xml">
+	</Reference>
+	<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+	</Reference>
+	<Reference Type="MachineDetails" Name="MachineDetails" File="common.config.xml">
+	</Reference>
+	
+	<!--EXTERNALREFS-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+
+</ObjectCollector>

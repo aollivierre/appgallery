@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?><ObjectCollector>
+	<Configuration ConfigName="PowerPoint Crashes"
+								 ChangeDescription="2.0.1608.23"
+								 ConfigVersion="2.0.1608.23" 
+								 ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}" 
+								 DownloadURL="http://www.microsoft.com/office/offcat" 
+								 FixItURL="http://go.microsoft.com/?linkid={0}" 
+								 ReferencedFiles="common.config.xml,officeupdates.config.xml" 
+								 Symptoms="1">
+		<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryDataPostprocessor"/>
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"/>
+		<Substitution Name="INSTALLTYPE"/>
+		<Substitution Name="APPNAME">PowerPoint</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor"/>
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor"/>
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor"/>
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor"/>
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor"/>
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog"/>
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor"/>
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor"/>
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor"/>
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor"/>
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor"/>
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI"/>
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor"/>
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor"/>
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor"/>
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor"/>
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"/>
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="PowerPoint" Key6="powerpnt" Key7="%MAJORVERSION%">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS">
+			<Rule Name="bitness" Query="$.">
+			</Rule>
+		</Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Add" Key2="WOW6432NODECACHE" Key3="%WOW6432NODE%">
+		</Object>
+		<Object Type="Cache" Name="AppBitnessCache" Key1="Add" Key2="APPBITNESSCACHE" Key3="%APPBITNESS%">
+		</Object>
+		<Setting Key1="FullVersion" Display="Hide">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))">
+			</Rule>
+			<Rule Name="sFullAppVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Name">
+			<Rule Name="appName" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Hide">
+		</Setting>
+		<Object Type="File" Key2="%INSTALLPATH%\powerpnt.exe">
+				<Setting Key1="Version"></Setting>
+		</Object>
+		<Object Type="File" Key2="%INSTALLPATH%\PpCore.dll">
+				<Setting Key1="Version">
+						<Rule Name="sPpCoreVersion" Query="$."></Rule>
+						</Setting>
+		</Object>
+		<Setting Key1="Version">
+			<Rule Name="n4DigitSKUVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Reference Type="InstalledServicePack" Name="InstalledServicePack" File="common.config.xml"></Reference>
+		<Setting Key1="Type">
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="nInstallType" Query="$."></Rule>
+		</Setting>
+	</Object>
+	<Object Type="Cache" Name="AppBitnessCache" Key1="Dump" Key2="APPBITNESSCACHE" Display="Hide">
+		<Setting Key1="Val" Substitution="APPBITNESS" Display="Hide"></Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Dump" Key2="WOW6432NODECACHE" Display="Hide">
+			<Setting Key1="Val" Substitution="WOW6432NODE" Display="Hide">
+			</Setting>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{258D5292-6DDA-4B39-B301-58405FA16638}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName2013" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{8C1B8825-A280-4657-A7B8-8172C553A4C4}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName201364" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+	</Object>
+	
+	<Type Name="PowerPointCrashes">
+
+		<Object Type="WMI" Key3="Win32_ComputerSystem" Display="Hide">
+			<Setting Key1="Manufacturer" Display="Hide">
+				<Rule Name="sComputerManufacturer" Query="$.">
+				</Rule>
+			</Setting>
+		</Object>
+				
+		<!--EVENTLOGS-->
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="powerpnt.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Rule Name="nCrashCount" Query="count(../Instance)"/>
+			<Setting Key1="__ALL"/>
+			<Setting Key1="Faulting Application Name" Display="Right"></Setting>
+			<Setting Key1="Faulting Application Version" Display="Right">
+				<Rule Name="nFaultingAppVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Application Timestamp" Display="Right">
+				<Rule Name="faultAppTimeStamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Name" Display="Right">
+				<Rule Name="faultModuleName" Query="$."></Rule>
+				<Rule Name="sPPTBootcampCrash" Query="lower-case($.)='kernelbase.dll' and $n2DigitVersion=14 and $sComputerManufacturer='Apple Inc.'" Error="Warning" Title="PowerPoint is crashing due to keyboard configuration on a Macintosh computer" Text="The application event log indicates a crash caused by a misconfiguration of the keyboard, and it appears you are using an Apple computer. Please click the 'Click here to see possible solutions ...' link." GUID="282606" SSID="39f2322d-4191-4afb-9ce8-2423f249a9e0" Symptoms="Crash,Macintosh"></Rule>
+				<Rule Name="sPPTParallelsCrash" Query="lower-case($.)='kernelbase.dll' and $n2DigitVersion=14 and $sComputerManufacturer='Parallels Software International Inc.'" Error="Warning" Title="PowerPoint is crashing due to keyboard configuration (Windows on Parallels)" Text="The application event log indicates a crash that may be caused by a keyboard misconfiguration. It appears you are running Windows on Parallels, so if you are using an Apple computer, please click the 'Click here to see possible solutions ...' link." GUID="282606" SSID="3833a948-4a59-472a-b0f3-d6fb7ad41dd4" Symptoms="Crash,Macintosh,Parallels"></Rule>
+				<Rule Name="sPPPVMWareCrash" Query="lower-case($.)='kernelbase.dll' and $n2DigitVersion=14 and $sComputerManufacturer='VMware, Inc.'" Error="Warning" Title="PowerPoint is crashing due to keyboard configuration (Windows on VMWare)" Text="The application event log indicates a crash that may be caused by a keyboard misconfiguration. It appears you are running Windows on VMWare, so if you are using an Apple computer, please click the 'Click here to see possible solutions ...' link." GUID="282606" SSID="4372abc9-1107-431d-a9c7-51f2b35b81d9" Symptoms="Crash,Macintosh,VMWare"></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Version" Display="Right">
+				<Rule Name="nFaultingModuleVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Timestamp" Display="Right">
+				<Rule Name="faultModuleTimestamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Exception code" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right">
+				<Rule Name="faultOffset" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Timegenerated" Display="Hide">
+				<Rule Name="TimeOfCrash" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Message" Display="Hide">
+				<Rule Name="sCrashMessage" Query="$."></Rule>
+				<Rule Name="crashLookup" Query="true()" Title="Event 1000 ({9})" Text="{8}" Error="Error" Internal="True" P0="if($bitness='x86','Crash32','Crash64')" P1="'powerpnt.exe'" P2="$nFaultingAppVersion" P3="$faultAppTimeStamp" P4="$faultModuleName" P5="$nFaultingModuleVersion" P6="$faultModuleTimestamp" P7="$faultOffset" P8="$sCrashMessage" P9="$TimeOfCrash" Symptoms="Crash event lookup"></Rule>
+			</Setting>
+				 
+			<Rule Name="n3459258MsoCrashPowerPoint00003ABC" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4631.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00003abc')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="n3459258MsoCrashPowerPoint0000329C" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='0.0.0.0')] and Setting[@Key1='Fault offset' and (lower-case(Value)='0000329c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="s3459258MsoCrashPowerPointX86" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='MSI' and $n2DigitVersion=15 and $bitness='x86' and ($n3459258MsoCrashPowerPoint00003ABC&gt;0 or $n3459258MsoCrashPowerPoint0000329C&gt;0)" Error="Error" P0="$n3459258MsoCrashPowerPoint00003ABC + $n3459258MsoCrashPowerPoint0000329C" Title="Known crashing issue when PowerPoint stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when PowerPoint stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506811" SSID="7e9ab1ee-a121-4a53-8a1d-ea18efb3be38" Symptoms="Crash"></Rule>
+			<Rule Name="n3459258MsoCrashPowerPoint00000000013F766E" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='15.0.4631.1000')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00000000013f766e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="n3459258MsoCrashPowerPoint00000000013EB86E" Query="count(../Instance[Setting[@Key1='Faulting Module Version' and (Value='0.0.0.0')] and Setting[@Key1='Fault offset' and (lower-case(Value)='00000000013eb86e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')]])"></Rule>
+			<Rule Name="s3459258MsoCrashPowerPointX64" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='MSI' and $n2DigitVersion=15 and $bitness='x64' and ($n3459258MsoCrashPowerPoint00000000013F766E&gt;0 or $n3459258MsoCrashPowerPoint00000000013EB86E&gt;0)" Error="Error" P0="$n3459258MsoCrashPowerPoint00000000013F766E + $n3459258MsoCrashPowerPoint00000000013EB86E" Title="Known crashing issue when PowerPoint stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when PowerPoint stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506819" SSID="83a7cde4-2e1e-4461-a291-7e2fc2266b5b" Symptoms="Crash"></Rule>
+			<Rule Name="s3459258MsoCrashPowerPointC2R" Query="not($MSO_fMsoAug2014UpdateInstalled) and $nInstallType='ClickToRun' and $n2DigitVersion=15 and ($n3459258MsoCrashPowerPoint00003ABC&gt;0 or $n3459258MsoCrashPowerPoint0000329C&gt;0)" Error="Error" P0="$n3459258MsoCrashPowerPoint00003ABC + $n3459258MsoCrashPowerPoint0000329C" Title="Known crashing issue when PowerPoint stops responding or crashes (KB 2987489)" Text="The crashing issue that occurs when PowerPoint stops responding or crashes (documented in KB 2987489) has been detected {0} time(s). Please click the 'Click here...' link to see how to resolve this issue." GUID="506862" SSID="7831a97d-36f7-4588-8060-47b2e7d81dfd" Symptoms="Crash"></Rule>
+
+			<Reference Type="CommonCrashes" Name="CommonCrashes" File="common.config.xml"></Reference>
+
+		</Object>
+
+		<Object Type="EventLog" Key1="Application" Key2="emet" Key3="2" Key4="powerpnt.exe" Key7="14" Key8="10000">
+			<Setting Key1="Message"></Setting>
+			<Rule Name="nEmetEvent2CountPowerPoint" Query="count(../Instance)"></Rule>
+			<Rule Name="sEmetMitigationPowerPoint" Query="$nEmetEvent2CountPowerPoint&gt;0" Error="Error" P0="$nEmetEvent2CountPowerPoint" P1="'%APPNAME%'" Title="{1} was closed by the Enhanced Mitigation Experience Toolkit (EMET)" Text="The Application Event log indicates the Enhanced Mitigation Experience Toolkit forced {1} to close {0} times in the last 14 days.&#xd;&#xa;&#xd;&#xa;Please click the 'Click here ...' link for details on this type of event." GUID="623505" SSID="27577dd7-d71c-4a15-be45-1202a0dde9cd" Symptoms="Crash"></Rule>
+		</Object>
+
+		<Reference Type="NonOfficeAppCrashes" Name="NonOfficeAppCrashes" File="common.config.xml"></Reference>
+
+		<Reference Type="DisplayLinkUMD" Name="DisplayLinkUMD" File="common.config.xml"></Reference>
+			
+	</Type>
+
+	<Reference Type="PowerPointCrashes" Name="PowerPointCrashes" File="PowerPoint.crashes.config.xml">
+	</Reference>
+	<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml">
+	</Reference>
+	<Reference Type="MSO" Name="MSO" File="common.config.xml">
+	</Reference>
+	<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+	</Reference>
+	
+	<!--EXTERNALREFS-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+
+</ObjectCollector>

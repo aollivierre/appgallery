@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?><ObjectCollector>
+	<Configuration ConfigName="OneDrive Crashes"
+								 ChangeDescription="2.0.1703.19"
+								 ConfigVersion="2.0.1703.19" 
+								 ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}" 
+								 DownloadURL="http://www.microsoft.com/office/offcat" 
+								 FixItURL="http://go.microsoft.com/?linkid={0}" 
+		ReferencedFiles="common.config.xml,officeupdates.config.xml" Symptoms="1">
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">InfoPath</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor"/>
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor"/>
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor"/>
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor"/>
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor"/>
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog"/>
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor"/>
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor"/>
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor"/>
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor"/>
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor"/>
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI"/>
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor"/>
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor"/>
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor"/>
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor"/>
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"/>
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="OneDrive" Key6="onedrive" Key7="%MAJORVERSION%">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS">
+			<Rule Name="bitness" Query="$.">            
+			</Rule>
+		</Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Add" Key2="WOW6432NODECACHE" Key3="%WOW6432NODE%">
+		</Object>
+		<Object Type="Cache" Name="AppBitnessCache" Key1="Add" Key2="APPBITNESSCACHE" Key3="%APPBITNESS%">
+		</Object>
+		<Setting Key1="FullVersion">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))">            
+			</Rule>
+			<Rule Name="sFullAppVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Name">
+			<Rule Name="appName" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Path"></Setting>
+		<Setting Key1="Version">
+			<Rule Name="n4DigitSKUVersion" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Type">
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="nInstallType" Query="$."></Rule>
+		</Setting>
+	</Object>
+	<Object Type="Cache" Name="AppBitnessCache" Key1="Dump" Key2="APPBITNESSCACHE" Display="Hide">
+		<Setting Key1="Val" Substitution="APPBITNESS" Display="Hide"></Setting>
+		<Object Type="Cache" Name="Wow6432NodeCache" Key1="Dump" Key2="WOW6432NODECACHE" Display="Hide">
+			<Setting Key1="Val" Substitution="WOW6432NODE" Display="Hide">
+			</Setting>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{3741355B-72CF-4CEE-948E-CC9FBDBB8E7A}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName2013" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+				<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{19AF7201-09A2-4C73-AB50-FCEF94CB2BA9}">
+					<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+					<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+					<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+						<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+						<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+
+						<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+						<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+								<Setting Key1="ProductVersion" Display="Hide">
+									<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+								</Setting>
+							</Object>
+							<Setting Key1="ProductName" Display="Hide">
+								<Rule Name="SKUName201364" Query="$."></Rule>
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+	</Object>
+	
+	<Type Name="OneDriveCrashes">
+		
+		<!--EVENTLOGS-->
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="groove.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Setting Key1="__ALL"></Setting>
+			<Setting Key1="Faulting Application Name" Display="Right"></Setting>
+			<Setting Key1="Faulting Application Version" Display="Right">
+				<Rule Name="nFaultingAppVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Application Timestamp" Display="Right">
+				<Rule Name="faultAppTimeStamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Name" Display="Right">
+				<Rule Name="faultModuleName" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Version" Display="Right">
+				<Rule Name="nFaultingModuleVersion" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Faulting Module Timestamp" Display="Right">
+				<Rule Name="faultModuleTimestamp" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Exception code" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right">
+				<Rule Name="faultOffset" Query="$."></Rule>
+			</Setting>
+			<Setting Key1="Timegenerated" Display="Hide">
+				<Rule Name="TimeOfCrash" Query="$."></Rule>
+			</Setting>
+		</Object>
+		<Object Type="EventLog" Key1="Application" Key3="1000" Key4="msouc.exe" Key5="%MAXEVENTS%" Key7="%DAYS%" Key8="10000">
+			<Setting Key1="Faulting Module Name" Display="Right"></Setting>
+			<Setting Key1="Fault offset" Display="Right"></Setting>
+			<Rule Name="n3510688CrashMsoucExe107480972695" Query="count(../Instance[Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')] and Setting[@Key1='Fault offset' and (lower-case(Value)='01392410')]])"></Rule>
+			<Rule Name="n3510688CrashMsoucExe107599155764" Query="count(../Instance[Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')] and Setting[@Key1='Fault offset' and (lower-case(Value)='0139ca00')]])"></Rule>
+			<Rule Name="n3510688CrashMsoucExe107460718293" Query="count(../Instance[Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')] and Setting[@Key1='Fault offset' and (lower-case(Value)='013959c8')]])"></Rule>
+			<Rule Name="n3510688CrashMsoucExe107553866718" Query="count(../Instance[Setting[@Key1='Faulting Module Name' and (lower-case(Value)='mso.dll')] and Setting[@Key1='Fault offset' and (lower-case(Value)='013914c0')]])"></Rule>
+			<Rule Name="sMsoucExeCrash3510688MSI" Query="$nInstallType='MSI' and $n2DigitVersion=15 and versioncompare($MSO_sMso2013Version,'15.0.4763.1000')&lt;0 and ($n3510688CrashMsoucExe107480972695&gt;0 or $n3510688CrashMsoucExe107599155764&gt;0 or $n3510688CrashMsoucExe107460718293&gt;0 or $n3510688CrashMsoucExe107553866718&gt;0)" Error="Error" P0="$n3510688CrashMsoucExe107480972695 + $n3510688CrashMsoucExe107599155764 + $n3510688CrashMsoucExe107460718293 + $n3510688CrashMsoucExe107553866718" Title="Known crashing issue (with a fix) was detected" Text="A crashing issue that was fixed in the October 13, 2015 update for Office 2013 (Mso.dll) has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for details on the issue. Or, click the 'Download the update ...' link to access the very latest update for Mso.dll." P1="if($bitness='x86','690895','690896')" GUID="690894" PATCH="{1}" SSID="51848e33-a25b-4512-9641-e6d4fc693e77" Symptoms="Crash (with a fix)" />
+			<Rule Name="sMsoucExeCrash3510688C2R" Query="$nInstallType='ClickToRun' and $n2DigitVersion=15 and versioncompare($MSO_sMso2013Version,'15.0.4763.1000')&lt;0 and ($n3510688CrashMsoucExe107480972695&gt;0 or $n3510688CrashMsoucExe107599155764&gt;0 or $n3510688CrashMsoucExe107460718293&gt;0 or $n3510688CrashMsoucExe107553866718&gt;0)" Error="Error" P0="$n3510688CrashMsoucExe107480972695 + $n3510688CrashMsoucExe107599155764 + $n3510688CrashMsoucExe107460718293 + $n3510688CrashMsoucExe107553866718" Title="Known crashing issue (with a fix) was detected" Text="A crashing issue that is fixed in the October 13, 2015 update for Office 2013 (Mso.dll) has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;To resolve this problem, click the 'Click here ...' link and then update Office using the steps in the 'Get the latest version of Office' section of the article." GUID="690893" SSID="e56d3c5c-4cca-41a2-b096-9312caf7ea84" Symptoms="Crash (with a fix)" />
+
+			<Rule Name="n3263611Crash0000000000054728_120326224359" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000054728')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000054ea8_120546402195" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000054ea8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash00000000000569e0_120610220908" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000000569e0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000056de0_120451198220" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000056de0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000057010_120698172351" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000057010')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000057550_120529474373" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000057550')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000123ae3_120560729419" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000123ae3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000124322_120452289851" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000124322')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash00000000001261e3_120616026790" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001261e3')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000126263_120683247522" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000126263')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000133625_120409278088" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000133625')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000137f38_120660201356" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000137f38')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000138b44_120682390352" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000138b44')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000000000013997e_120512919375" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000013997e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash0000000000139aa4_120498029085" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000139aa4')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000000000013a8eb_120550674948" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000000000013a8eb')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash00000000006bef75_120615271946" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000006bef75')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000d4011_108734351597" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000d4011')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000d4018_108767767551" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000d4018')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000d4580_108609440420" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000d4580')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000d76e9_108792349436" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000d76e9')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000d76ed_108444169665" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000d76ed')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000d9217_108427621490" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000d9217')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000d9f4f_108504115686" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000d9f4f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000da802_108341066693" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000da802')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000db22c_107946865275" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000db22c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000dd45e_108280085505" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000dd45e')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000de668_108398483863" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000de668')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000de669_108218466377" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000de669')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000ed302_108126956730" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000ed302')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000edc3f_108205253656" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000edc3f')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000edc56_108776573119" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000edc56')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash000eef06_108139292589" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='000eef06')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3263611Crash00512a66_108549468478" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00512a66')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="sOneDriveForBusiness16Crash3263611MSI" Query="$n2DigitVersion=16 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'16.0.4504.1000')&lt;0 and ($n3263611Crash0000000000054728_120326224359&gt;0 or $n3263611Crash0000000000054ea8_120546402195&gt;0 or $n3263611Crash00000000000569e0_120610220908&gt;0 or $n3263611Crash0000000000056de0_120451198220&gt;0 or $n3263611Crash0000000000057010_120698172351&gt;0 or $n3263611Crash0000000000057550_120529474373&gt;0 or $n3263611Crash0000000000123ae3_120560729419&gt;0 or $n3263611Crash0000000000124322_120452289851&gt;0 or $n3263611Crash00000000001261e3_120616026790&gt;0 or $n3263611Crash0000000000126263_120683247522&gt;0 or $n3263611Crash0000000000133625_120409278088&gt;0 or $n3263611Crash0000000000137f38_120660201356&gt;0 or $n3263611Crash0000000000138b44_120682390352&gt;0 or $n3263611Crash000000000013997e_120512919375&gt;0 or $n3263611Crash0000000000139aa4_120498029085&gt;0 or $n3263611Crash000000000013a8eb_120550674948&gt;0 or $n3263611Crash00000000006bef75_120615271946&gt;0 or $n3263611Crash000d4011_108734351597&gt;0 or $n3263611Crash000d4018_108767767551&gt;0 or $n3263611Crash000d4580_108609440420&gt;0 or $n3263611Crash000d76e9_108792349436&gt;0 or $n3263611Crash000d76ed_108444169665&gt;0 or $n3263611Crash000d9217_108427621490&gt;0 or $n3263611Crash000d9f4f_108504115686&gt;0 or $n3263611Crash000da802_108341066693&gt;0 or $n3263611Crash000db22c_107946865275&gt;0 or $n3263611Crash000dd45e_108280085505&gt;0 or $n3263611Crash000de668_108398483863&gt;0 or $n3263611Crash000de669_108218466377&gt;0 or $n3263611Crash000ed302_108126956730&gt;0 or $n3263611Crash000edc3f_108205253656&gt;0 or $n3263611Crash000edc56_108776573119&gt;0 or $n3263611Crash000eef06_108139292589&gt;0 or $n3263611Crash00512a66_108549468478&gt;0)" Error="Error" P0="$n3263611Crash0000000000054728_120326224359 + $n3263611Crash0000000000054ea8_120546402195 + $n3263611Crash00000000000569e0_120610220908 + $n3263611Crash0000000000056de0_120451198220 + $n3263611Crash0000000000057010_120698172351 + $n3263611Crash0000000000057550_120529474373 + $n3263611Crash0000000000123ae3_120560729419 + $n3263611Crash0000000000124322_120452289851 + $n3263611Crash00000000001261e3_120616026790 + $n3263611Crash0000000000126263_120683247522 + $n3263611Crash0000000000133625_120409278088 + $n3263611Crash0000000000137f38_120660201356 + $n3263611Crash0000000000138b44_120682390352 + $n3263611Crash000000000013997e_120512919375 + $n3263611Crash0000000000139aa4_120498029085 + $n3263611Crash000000000013a8eb_120550674948 + $n3263611Crash00000000006bef75_120615271946 + $n3263611Crash000d4011_108734351597 + $n3263611Crash000d4018_108767767551 + $n3263611Crash000d4580_108609440420 + $n3263611Crash000d76e9_108792349436 + $n3263611Crash000d76ed_108444169665 + $n3263611Crash000d9217_108427621490 + $n3263611Crash000d9f4f_108504115686 + $n3263611Crash000da802_108341066693 + $n3263611Crash000db22c_107946865275 + $n3263611Crash000dd45e_108280085505 + $n3263611Crash000de668_108398483863 + $n3263611Crash000de669_108218466377 + $n3263611Crash000ed302_108126956730 + $n3263611Crash000edc3f_108205253656 + $n3263611Crash000edc56_108776573119 + $n3263611Crash000eef06_108139292589 + $n3263611Crash00512a66_108549468478" P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" P2="if($bitness='x86',626708,626709)" Title="Known crashing issue in OneDrive" Text="A crashing issue that occurs in OneDrive for Business has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest {1} update for OneDrive for Business 2016 to fix this issue." GUID="626731" PATCH="{2}" SSID="e73bcf2b-585a-4498-aaec-3322513ec7a1" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash (with a fix)" />
+
+			<Rule Name="n3632501Crash00000000001dca2c" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001dca2c')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001e2858" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001e2858')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001e5bb8" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001e5bb8')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001e64d0" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001e64d0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001ed724" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ed724')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001edef0" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001edef0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001edff4" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001edff4')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001ee418" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ee418')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001ee630" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001ee630')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001eed64" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001eed64')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001efbf4" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001efbf4')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001f06e0" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001f06e0')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001fd2fc" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001fd2fc')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash00000000001fde48" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='00000000001fde48')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash0000000000200050" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000200050')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="n3632501Crash0000000000350d28" Query="count(../Instance[Setting[@Key1='Fault offset' and (lower-case(Value)='0000000000350d28')] and Setting[@Key1='Faulting Module Name' and (lower-case(Value)='groove.exe')]])" />
+			<Rule Name="sOneDriveForBusiness15Crash3632501MSI" Query="$n2DigitVersion=15 and $nInstallType='MSI' and versioncompare($sFullAppVersion,'15.0.4907.1000')&lt;0 and ($n3632501Crash00000000001dca2c&gt;0 or $n3632501Crash00000000001e2858&gt;0 or $n3632501Crash00000000001e5bb8&gt;0 or $n3632501Crash00000000001e64d0&gt;0 or $n3632501Crash00000000001ed724&gt;0 or $n3632501Crash00000000001edef0&gt;0 or $n3632501Crash00000000001edff4&gt;0 or $n3632501Crash00000000001ee418&gt;0 or $n3632501Crash00000000001ee630&gt;0 or $n3632501Crash00000000001eed64&gt;0 or $n3632501Crash00000000001efbf4&gt;0 or $n3632501Crash00000000001f06e0&gt;0 or $n3632501Crash00000000001fd2fc&gt;0 or $n3632501Crash00000000001fde48&gt;0 or $n3632501Crash0000000000200050&gt;0 or $n3632501Crash0000000000350d28&gt;0)" Error="Error" P0="$n3632501Crash00000000001dca2c + $n3632501Crash00000000001e2858 + $n3632501Crash00000000001e5bb8 + $n3632501Crash00000000001e64d0 + $n3632501Crash00000000001ed724 + $n3632501Crash00000000001edef0 + $n3632501Crash00000000001edff4 + $n3632501Crash00000000001ee418 + $n3632501Crash00000000001ee630 + $n3632501Crash00000000001eed64 + $n3632501Crash00000000001efbf4 + $n3632501Crash00000000001f06e0 + $n3632501Crash00000000001fd2fc + $n3632501Crash00000000001fde48 + $n3632501Crash0000000000200050 + $n3632501Crash0000000000350d28" P1="if($bitness='x86','32-bit (x86)','64-bit (x64)')" P2="if($bitness='x86',532782,532783)" Title="Known crashing issue in OneDrive for Business" Text="A crashing issue that occurs in OneDrive for Business has been detected {0} time(s).&#xD;&#xA;&#xD;&#xA;Please install the latest {1} update for OneDrive for Business 2013 to fix this issue." GUID="532781" PATCH="{2}" SSID="5f669d66-524b-4abc-8024-b8be437795f2" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" SaraSvc="True" Symptoms="Crash (with a fix)" />
+			
+		</Object>
+		<!--/EVENTLOGS-->
+		
+	</Type>
+
+	<Reference Type="OneDriveCrashes" Name="OneDriveCrashes" File="onedrive.crashes.config.xml">
+	</Reference>
+	<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml">
+	</Reference>
+	<Reference Type="MSO" Name="MSO" File="common.config.xml">
+	</Reference>
+	<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+	</Reference>		
+
+	<!--EXTERNALREF-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+
+</ObjectCollector>

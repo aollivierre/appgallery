@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+	<Configuration  ConfigName="Lync Configuration"
+									ChangeDescription="2.0.1611.25"
+									ConfigVersion="2.0.1611.25"
+									ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+									DownloadURL="http://www.microsoft.com/office/offcat"
+									FixItURL="http://go.microsoft.com/?linkid={0}"
+									ReferencedFiles="common.config.xml,officeupdates.config.xml,lync.crashes.config.xml"
+									Symptoms="1">
+		<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryGenerator" />
+		<!--!!! GLOBAL SUBSTITUTIONS SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">Lync</Substitution>
+		<Substitution Name="DAYS">14</Substitution>
+		<Substitution Name="MAXEVENTS">10</Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="IfThenElse" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfThenElseObjectProcessor"/>
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"></ExtFormat>
+	</Configuration>
+	<Object Type="Group" Name="Skype for Business Scan" Class="Scan Type" GroupingClass="True">
+		<!--OFFICE DETAILS-->
+		<Object Type="Group" Name="Install details">
+			<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Skype for Business" Key6="lync" Key7="%MAJORVERSION%">
+				<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+				</Setting>
+				<Object Type="IfThenElse" Key1="'%WOW6432NODE%'=''" Key2="emptyval" Key3="%WOW6432NODE%">
+					<Setting Key1="wowcacheval" Substitution="WOWCACHEVAL" Display="Hide" />
+					<Object Type="Cache" Name="wowcache" Key1="Add" Key2="wowcache" Key3="%WOWCACHEVAL%">
+					</Object>
+				</Object>
+				<Setting Key1="Bitness" Substitution="APPBITNESS">
+					<Rule Name="bitness" Query="$."></Rule>
+				</Setting>
+				<Setting Key1="FullVersion">
+					<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+					<Rule Name="sFullAppVersion" Query="$.">
+					</Rule>
+				</Setting>
+				<Setting Key1="Name">
+					<Rule Name="appName" Query="$."></Rule>
+				</Setting>
+				<Setting Key1="Path">
+				</Setting>
+				<Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Hide">
+				</Setting>
+				<Setting Key1="Version">
+					<Rule Name="n4DigitSKUVersion" Query="$.">
+					</Rule>
+				</Setting>
+				<Rule Name="nInstallType" Query="'%INSTALLTYPE%'"></Rule>
+				<Reference Type="InstalledServicePack" Name="InstalledServicePack" File="common.config.xml"></Reference>
+				<Setting Key1="Type">
+					<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+					<Rule Name="f2016MSI" Query="$n4DigitSKUVersion='2016' and $.='MSI'"></Rule>
+				</Setting>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\15.0\ClickToRun" Display="Hide">
+					<Setting Key1="PackageFolder" Substitution="C2RPATH15" Display="Hide"></Setting>
+					<Object Type="File" Key2="%C2RPATH15%\root\office15\ucaddin.dll" Display="Hide">
+						<Setting Key1="Exists" Display="Hide">
+							<Rule Name="fUcaddinC2rFound" Query="$.=1"></Rule>
+						</Setting>
+					</Object>
+				</Object>
+				<Rule Name="sOutlook15MsiPlusSfbC2R" Query="$n2DigitVersion=15 and $nInstallType='MSI' and $fUcaddinC2rFound" Error="Error" Title="Outlook crashes and errors with Lync/Skype for Business" Text="You have an 'MSI' installation of Outlook 2013 but your Skype for Business (formerly Lync) installation is 'Click-to-run'. This is an unsupported configuration and you can expect to see either crashes in Outlook or errors related to Outlook in Skype for Business.&#xd;&#xa;&#xd;&#xa;Click the 'Click here ...' link for details on how to fix this issue." GUID="616888" SSID="31e9d242-960c-4150-88bc-b0aa90f005d7" Symptoms="Crash,Configuration (unsupported or problematic),Skype for Business integration"></Rule>
+				<!--SKU-->
+				<Object Type="Group" Name="Office SKU">
+					<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{F8D36F1C-6196-4FFA-94AA-736644D458E3}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right"></Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+
+					<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{D5B16A67-9FA6-4B77-AE2A-3B1F49CE9D3B}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right"></Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="number('%MAJORVERSION%')&gt;14 and '%INSTALLTYPE%'='ClickToRun'">
+						<Object Type="C2RSKU" Key1="Lync" Key2="%APPBITNESS%" Key3="%MAJORVERSION%">
+							<Setting Key1="ProductName" Display="Right">
+							</Setting>
+						</Object>
+						<Object Type="If" Key1="'%MAJORVERSION%'='15'">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\15.0\ClickToRun\ProductReleaseIDs\Active" Key5="OneLevel" Display="Hide" >
+								<Setting Key1="__KEYNAME" Substitution="LIC" Display="Hide"></Setting>
+								<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\15.0\ClickToRun\ProductReleaseIDs\Active\%LIC%\x-none" Key5="Subtree" Display="Hide">
+									<Setting Key1="__KEYNAME" Key2="lync.%APPBITNESS%.x-none.zip" Substitution="C2RAPPFOUND" Display="Hide"></Setting>
+									<Object Type="If" Key1="'%C2RAPPFOUND%'='lync.%APPBITNESS%.x-none.zip'">
+										<Object Type="Group" Name="ClickToRun License Family=%LIC%" Display="Right">
+											<Setting Key1="" Display="Hide"></Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+						<Object Type="If" Key1="number('%MAJORVERSION%')&gt;15">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\ClickToRun\ProductReleaseIDs\Active" Key5="OneLevel" Display="Hide" >
+								<Setting Key1="__KEYNAME" Substitution="LIC" Display="Hide"></Setting>
+								<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\ClickToRun\ProductReleaseIDs\Active\%LIC%\x-none" Key5="Subtree" Display="Hide">
+									<Setting Key1="__KEYNAME" Key2="lync.%APPBITNESS%.x-none.zip" Substitution="C2RAPPFOUND" Display="Hide"></Setting>
+									<Object Type="If" Key1="'%C2RAPPFOUND%'='lync.%APPBITNESS%.x-none.zip'">
+										<Object Type="Group" Name="ClickToRun License Family=%LIC%" Display="Right">
+											<Setting Key1="" Display="Hide"></Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='16' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{E1AFBCD9-12F0-4FC0-9177-BFD3148AEC74}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKUV16x86" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseTypeV16x86" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Rule Name="fProPlusV16x86" Query="$SKUV16x86='0011'"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\16.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersionV16x86" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUNameV16x86" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='16' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{3CFF5AB2-9B16-4A31-BC3F-FAD761D92780}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKUV16x64" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseTypeV16x64" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Rule Name="fProPlusV16x64" Query="$SKUV16x64='0011'"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\16.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersionV16x64" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUNameV16x64" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+				</Object>
+				<!--/SKU-->
+				<!--MSO-->
+				<Reference Type="MSO" Name="MSO" File="common.config.xml">
+				</Reference>
+				<!--/MSO-->
+				<!--Emsmdb32-->
+				<Reference Type="Emsmdb32DllInfo" Name="Emsmdb32DllInfo" File="outlook.config.xml">
+				</Reference>
+				<!--/Emsmdb32-->
+				<!--Outlook-->
+				<Object Type="File" Key2="%INSTALLPATH%\outlook.exe" Display="Right">
+					<Setting Key1="Exists" Substitution="OUTLOOKFOUND" Display="Hide">
+					</Setting>
+					<Setting Key1="Version" Substitution="OUTLOOKVERSIONFOUND" Display="Hide">
+					</Setting>
+					<Object Type="Cache" Name="OlVersionCache" Key1="Add" Key2="OLVCACHE" Key3="%OUTLOOKVERSIONFOUND%">
+					</Object>
+					<Object Type="If" Key1="%OUTLOOKFOUND%=1">
+						<Object Type="Group" Name="Version  =%OUTLOOKVERSIONFOUND%" Display="Right">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="%OUTLOOKFOUND%=0">
+						<Object Type="Group" Name="Outlook.exe not found in this path" Display="Right">
+							<Setting Key1="" Display="Hide"></Setting>
+						</Object>
+					</Object>
+				</Object>
+				<!--/Outlook-->
+			</Object>
+			<!--INSTALLED UPDATES-->
+			<Object Type="If" Key1="'%INSTALLTYPE%'='MSI'">
+				<Object Type="Group" Name="Installed Updates" Class="Office Update" GroupingClass="True" Display="Right" TrackProgress="TrackProgress" LogText="Collecting Installed Updates">
+					<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml"/>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%INSTALLTYPE%'='ClickToRun'">
+				<Object Type="Group" Name="ClickToRun Details" GroupingClass="True" Class="Office Update" Display="Right">
+					<Object Type="Cache" Name="wowcache" Key1="Dump" Key2="wowcache" Display="Hide">
+						<Setting Key1="WowVal" Substitution="WOW6432NODE" Display="Hide"></Setting>
+						<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+						</Reference>
+					</Object>
+				</Object>
+			</Object>
+			<!--/INSTALLED UPDATES-->
+		</Object>
+		<!--/OFFICE DETAILS-->
+		<!--USER DETAILS-->
+		<Object Type="Group" Name="User Details" Display="Right">
+			<Reference Type="UserDetails" Name="UserDetails" File="common.config.xml"></Reference>
+		</Object>
+		<!--/USER DETAILS-->
+		<!--MACHINE DETAILS-->
+		<Object Type="Group" Name="Machine Details">
+			<Reference Type="MachineDetails" Name="MachineDetails" File="common.config.xml"></Reference>
+			<Reference Type="ServicesRunning" Name="ServicesRunning" File="common.config.xml"></Reference>
+			<Reference Type="OSDetails" Name="OSDetails" File="common.config.xml"></Reference>
+		</Object>
+		<!--/MACHINE DETAILs-->
+		<!--REG SETTINGS-->
+		<Object Type="Group" Name="Lync/Skype Registry Settings" Class="Lync Settings" GroupingClass="True" TrackProgress="TrackProgress" LogText="Collecting Office Registry Settings">
+			<!--Lync HKCU settings-->
+			<Object Type="Group" Name="HKEY_CURRENT_USER">
+				<!--Associations-->
+				<Object Type="Group" Name="HKCU\Software\Classes\sip">
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Classes\sip" Display="Right">
+						<Setting Key1="__VALUES"></Setting>
+					</Object>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Classes\sip" Key4="" Key5="Subtree" Key6="True" Display="Right">
+						<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+						</Setting>
+						<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+							<Setting Key1="__VALUES">
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+				<!--IM Providers-->
+				<Object Type="Group" Name="HKCU\Software\IM Providers">
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\IM Providers" Display="Right">
+						<Setting Key1="__VALUES"></Setting>
+						<Rule Name="nDefaultIMProvider" Query="if(../Instance/Setting[@Key1='DefaultIMApp']=true(),../Instance/Setting[@Key1='DefaultIMApp']/Value,-1)"></Rule>
+						<Rule Name="sLyncSfbNotDefaultIMProvider" Query="not(lower-case($nDefaultIMProvider)='lync' or lower-case($nDefaultIMProvider)='communicator' or lower-case($nDefaultIMProvider)='skype')" Error="None" P0="$nDefaultIMProvider" Title="Non-Microsoft Instant Messaging client '{0}' is configured as the default IM provider" Text="The '{0}' client is configured as the default Instant Messaging provider. This is not necessarily a problem configuration. But, if you are using a Microsoft IM client (Skype, Lync, or Communicator) as your IM client you may need to modify the DefaultIMApp value under 'HKCU\Software\IM Providers' in the registry.&#xd;&#xa;&#xd;&#xa;Click the 'Tell me more ...' link for details." GUID="396847" SSID="20827122-9760-4300-98a0-5d7869b39cd6" Symptoms="Contacts,Presence missing"></Rule>
+					</Object>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\IM Providers" Key4="" Key5="Subtree" Key6="True" Display="Right">
+						<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+						</Setting>
+						<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+							<Setting Key1="__VALUES">
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+				<!--Lync HKCU settings-->
+				<Object Type="Group" Name="HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Lync">
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Lync" Display="Right">
+						<Setting Key1="__VALUES"></Setting>
+						<Setting Key1="AllowSavePassword"></Setting>
+						<Rule Name="fAllowSavePassword" Query="if((../Instance/Setting/@Key1='AllowSavePassword')=true(),../Instance/Setting[@Key1='AllowSavePassword']/Value,-1)"></Rule>
+						<Setting Key1="SavePassword">
+							<Rule Name="sSavePasswordNoSept2015Update" Query="$fSavePasswordPol=-1 and $.=0 and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&lt;=0" Error="Warning" P0="if($bitness='x86' and $nInstallType='MSI','624364',if($bitness='x64' and $nInstallType='MSI','624365','624366'))" P1="if($nInstallType='MSI','and then install the update from the Microsoft Download site','and then update Office using the steps in the &quot;Get the latest version of Office&quot; section of the article')" P2="'%MAJORVERSION%'" Title="The SavePassword registry value is not being used (as expected) by Skype for Business" Text="The SavePassword value was found in the registry under HKCU\Software\Microsoft\Office\{2}.0\Lync but it is not being used by Skype for Business because you do not have the update from September 8, 2015 (or a later update) installed.&#xd;&#xa;&#xd;&#xa;After installing the September 8, 2015 update (or later update), you will also want to add the AllowSavePassword registry value. Please click the 'Click here ...' link for complete details.&#xd;&#xa;&#xd;&#xa;To install the latest update for Skype for Business, click the 'Download the update ...' link {1}." GUID="624358" PATCH="{0}" SSID="a358069b-4393-4efc-951d-03d40857ca70" Symptoms="Password prompt"></Rule>
+							<Rule Name="sSavePasswordNoAllowSavePassword" Query="$fSavePasswordPol=-1 and ($.=0 or $.=1) and $fAllowSavePassword=-1 and $fAllowSavePasswordPol=-1 and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&gt;0" Error="Warning" P2="'%MAJORVERSION%'" Title="The SavePassword registry value is not being used (as expected) by Skype for Business" Text="The SavePassword value was found in the registry under HKCU\Software\Microsoft\Office\{2}.0\Lync but it is not being used (as expected) by Skype for Business because you do not also have the AllowSavePassword registry value.&#xd;&#xa;&#xd;&#xa;Please click the 'Click here ...' link for complete details on this issue." GUID="624367" SSID="e8091eec-4187-4fc4-bc24-86b4454d9a15" Symptoms="Password prompt"></Rule>
+						</Setting>
+					</Object>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Lync" Key4="^((?!ConfAddin)(?!GroupStateCacheU).)*$" Key5="Subtree" Key6="True" Display="Right">
+						<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+						</Setting>
+						<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+							<Setting Key1="__VALUES">
+							</Setting>
+						</Object>
+					</Object>
+				</Object>
+				<!--Office Common HKCU settings-->
+				<Object Type="Group" Name="HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Common">
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Display="Right">
+						<Setting Key1="__VALUES"></Setting>
+						<Setting Key1="TurnOffPhotograph"></Setting>
+						<Rule Name="fTurnOffPhotograph" Query="if(../Instance/Setting[@Key1='TurnOffPhotograph']=true(),../Instance/Setting[@Key1='TurnOffPhotograph']/Value,-1)"></Rule>
+						<Rule Name="sTurnOffPhotographLync" Query="($fTurnOffPhotographPol=-1 and $fTurnOffPhotograph=1) or $fTurnOffPhotographPol=1" Error="Warning" P0="if($fTurnOffPhotographPol=-1,'in the registry','by group policy')" P1="if($fTurnOffPhotographPol=-1,'HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Common','HKCU\Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Common')" Title="Photographs for contacts are not displayed" Text="Your contacts do not have their photographs displayed because the 'Show user photographs when available' option (in Outlook) is disabled. It is disabled because TurnOffPhotograph=1 {0} under '{1}'.&#xD;&#xA;&#xD;&#xA;Click the 'Click here ...' link for steps to re-enable this option." GUID="691539" SSID="d14740db-adf7-4a85-8aa4-7e6bd5671db8" Symptoms="Contacts,Photo"></Rule>
+					</Object>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Key5="Subtree" Key6="True" Display="Right">
+						<Setting Key1="__VALUES"></Setting>
+					</Object>
+				</Object>
+				<!--Outlook 16.0 HKCU settings -->
+				<Object Type="Group" Name="HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Outlook">
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Outlook" Display="Right">
+						<Setting Key1="DefaultProfile" Substitution="DEFPROF" Display="Hide"></Setting>
+						<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\16.0\Outlook\Profiles\%DEFPROF%\0a0d020000000000c000000000000046" Display="Hide">
+							<Setting Key1="01023d15" Substitution="KGUID" Display="Hide" ></Setting>
+							<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\16.0\Outlook\Profiles\%DEFPROF%\%KGUID%" Display="Right">
+								<Setting Key1="001e6603">
+								</Setting>
+							</Object>
+						</Object>
+						<Object Type="Cache" Name="OlVersionCache" Key1="Dump" Key2="OLVCACHE" Display="Hide">
+							<Setting Key1="Value" Substitution="OUTLOOKVERSIONFOUND" Display="Hide">
+								<Rule Name="nOutlookMV" Query="substring('%OUTLOOKVERSIONFOUND%',1,2)">
+								</Rule>
+							</Setting>
+						</Object>
+						<Rule Name="fOL16LegDnExists" Query="if((../Instance/Object/Instance/Object/Instance/Setting/@Key1='001e6603')=true(),1,-1)"></Rule>
+						<Rule Name="sMissing001e6603PropSkypeIssue" Query="$nOutlookMV=16 and $fOL16LegDnExists=-1 and (($nInstallType='ClickToRun' and (($C2R_Updates_sC2R2016ChannelShortName='CC' and versioncompare($C2R_Updates_fInstalledC2RVersion16,'16.0.7167.2040')&lt;0) or ($C2R_Updates_sC2R2016ChannelShortName='FRDC' and versioncompare($C2R_Updates_fInstalledC2RVersion16,'16.0.6965.2078')&lt;0) or ($C2R_Updates_sC2R2016ChannelShortName='DC' and versioncompare($C2R_Updates_fInstalledC2RVersion16,'16.0.6965.2092')&lt;0))) or ($nInstallType='MSI' and versioncompare($sFullAppVersion,'16.0.4405.1000')&lt;0))" Error="Warning" Title="Possible problems with the MAPI connection to Exchange Server" Text="The MAPI connection to Exchange Server may not be available to Skype for Business 2016 clients due to missing information in the Windows Registry. When this issue occurs, the Skype for Business Configuration Information feature shows 'MAPI Unavailable.' Additionally, if you click the 'Conversations' tab and then click 'View more in Outlook,' you receive an error message that states 'Your Outlook profile is not configured correctly...' Delegate functionality may also be broken. &#xD;&#xA;&#xD;&#xA;Click the 'Click here ...' link to see the solution to this problem." GUID="798487" SSID="96fca1e6-8a9e-4871-b064-cb83be19b364" Symptoms="Outlook profile,MAPI Unavailable,Delegation">
+						</Rule>
+					</Object>
+				</Object>
+				<!--/Outlook 16.0 HKCU settings -->
+			</Object>
+			<!--Lync HKLM settings-->
+			<Object Type="Group" Name="HKEY_LOCAL_MACHINE">
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Lync" Display="Right">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Lync" Key4="" Key5="Subtree" Key6="True" Display="Right">
+					<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+					</Setting>
+					<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+						<Setting Key1="__VALUES">
+						</Setting>
+					</Object>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\%MAJORVERSION%.0\Lync" Display="Right">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\%MAJORVERSION%.0\Lync" Key4="" Key5="Subtree" Key6="True" Display="Right">
+					<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+					</Setting>
+					<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+						<Setting Key1="__VALUES">
+						</Setting>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+		<!--/REG SETTINGS-->
+		<!--Lync/Skype POLICIES-->
+		<Object Type="Group" Name="Lync/Skype Client Policies" Class="Policies" GroupingClass="True" TrackProgress="TrackProgress" LogText="Collecting Office Policies">
+			<!--Lync HKCU policies-->
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Lync" Display="Right">
+				<Setting Key1="__VALUES">
+				</Setting>
+				<Setting Key1="DisableHttpConnect">
+					<Rule Name="sDisableHttpConnectHKCU" Query="$.=1" Error="Warning" P2="'%MAJORVERSION%'" Title="Possible connection problems because DisableHttpConnect=1 under HKCU\Software\Policies\Microsoft\Office\{2}.0\Lync" Text="When DisableHttpConnect=1, Lync/Skype does not try to connect to the server by using HTTP if TLS or TCP are unavailable. By default, Lync/Skpe first attempts to connect to the server by using TLS or TCP and, if neither of these transport methods is successful, Lync/Skype tries to connect by using HTTP.&#xD;&#xA;&#xD;&#xA;This is a non-default configuration. Click the 'Click here ...' link for details on this setting." GUID="618953" SSID="ba7dfa06-4f1a-4e87-8def-8ff049a463ec" Symptoms="Connection issues" />
+				</Setting>
+				<Setting Key1="AllowSavePassword"></Setting>
+				<Rule Name="fAllowSavePasswordPol" Query="if((../Instance/Setting/@Key1='AllowSavePassword')=true(),../Instance/Setting[@Key1='AllowSavePassword']/Value,-1)"></Rule>
+				<Setting Key1="SavePassword">
+					<Rule Name="sSavePasswordNoSept2015UpdatePol" Query="$.=0 and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&lt;=0" Error="Warning" P0="if($bitness='x86' and $nInstallType='MSI','624364',if($bitness='x64' and $nInstallType='MSI','624365','624366'))" P1="if($nInstallType='MSI','and then install the update from the Microsoft Download site','and then update Office using the steps in the &quot;Get the latest version of Office&quot; section of the article')" P2="'%MAJORVERSION%'" Title="The SavePassword registry value is not being used (as expected) by Skype for Business" Text="The SavePassword value was found in the registry under HKCU\Software\Policies\Microsoft\Office\{2}.0\Lync but it is not being used by Skype for Business because you do not have the update from September 8, 2015 (or a later update) installed.&#xd;&#xa;&#xd;&#xa;After installing the September 8, 2015 update (or later update), you will also want to add the AllowSavePassword registry value. Please click the 'Click here ...' link for complete details.&#xd;&#xa;&#xd;&#xa;To install the latest update for Skype for Business, click the 'Download the update ...' link {1}." GUID="624358" PATCH="{0}" SSID="83e7ab7d-af6c-4359-a289-7c070263087c" Symptoms="Password prompt"></Rule>
+					<Rule Name="sSavePasswordNoAllowSavePasswordPol" Query="($.=0 or $.=1) and $fAllowSavePasswordPol=-1 and $fAllowSavePassword=-1 and $n2DigitVersion=15 and versioncompare($sFullAppVersion,'15.0.4745.1000')&gt;0" Error="Warning" P2="'%MAJORVERSION%'" Title="The SavePassword registry value is not being used (as expected) by Skype for Business" Text="The SavePassword value was found in the registry under HKCU\Software\Policies\Microsoft\Office\{2}.0\Lync but it is not being used (as expected) by Skype for Business because you do not also have the AllowSavePassword registry value.&#xd;&#xa;&#xd;&#xa;Please click the 'Click here ...' link for complete details on this issue." GUID="624367" SSID="53636e1d-d659-4368-be95-948c60d5c228" Symptoms="Password prompt"></Rule>
+				</Setting>
+				<Rule Name="fSavePasswordPol" Query="if((../Instance/Setting/@Key1='SavePassword')=true(),../Instance/Setting[@Key1='SavePassword']/Value,-1)"></Rule>
+				<Rule Name="fPolicies" Query="count(../Instance[contains(lower-case(@Name),'lync')]/Setting)&gt;0"></Rule>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Lync" Key4="" Key5="Subtree" Key6="True" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+				</Setting>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Right">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+			</Object>
+			<!--Office Common policies-->
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Common" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+				<Setting Key1="TurnOffPhotograph">
+				</Setting>
+				<Rule Name="fTurnOffPhotographPol" Query="if(../Instance/Setting[@Key1='TurnOffPhotograph']=true(),../Instance/Setting[@Key1='TurnOffPhotograph']/Value,-1)"></Rule>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Common" Key5="Subtree" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+			<!--Lync HKLM policies-->
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Lync" Display="Right">
+				<Setting Key1="__VALUES">
+				</Setting>
+				<Setting Key1="DisableHttpConnect">
+					<Rule Name="sDisableHttpConnectHKLM" Query="$.=1" Error="Warning" P2="'%MAJORVERSION%'" Title="Possible connection problems because DisableHttpConnect=1 under HKLM\Software\Policies\Microsoft\Office\{2}.0\Lync" Text="When DisableHttpConnect=1, Lync/Skype does not try to connect to the server by using HTTP if TLS or TCP are unavailable. By default, Lync/Skpe first attempts to connect to the server by using TLS or TCP and, if neither of these transport methods is successful, Lync/Skype tries to connect by using HTTP.&#xD;&#xA;&#xD;&#xA;This is a non-default configuration. Click the 'Click here ...' link for details on this setting." GUID="618953" SSID="e4352863-f04e-4e06-8d92-b9441389a798" Symptoms="Connection issues" />
+				</Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Lync" Key4="" Key5="Subtree" Key6="True" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+				</Setting>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Right">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+			</Object>
+			<!--Lync HKLM WOW policies-->
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Policies\Microsoft\Office\%MAJORVERSION%.0\Lync" Display="Right">
+				<Setting Key1="__VALUES">
+				</Setting>
+				<Setting Key1="DisableHttpConnect">
+					<Rule Name="sDisableHttpConnectHKLMWow" Query="$.=1" Error="Warning" P2="'%MAJORVERSION%'" Title="Possible connection problems because DisableHttpConnect=1 under HKLM\Software\Wow6432Node\Policies\Microsoft\Office\{2}.0\Lync" Text="When DisableHttpConnect=1, Lync/Skype does not try to connect to the server by using HTTP if TLS or TCP are unavailable. By default, Lync/Skpe first attempts to connect to the server by using TLS or TCP and, if neither of these transport methods is successful, Lync/Skype tries to connect by using HTTP.&#xD;&#xA;&#xD;&#xA;This is a non-default configuration. Click the 'Click here ...' link for details on this setting." GUID="618953" SSID="7f063cc1-cd0b-4e2c-9697-a9b2862a25ed" Symptoms="Connection issues" />
+				</Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Policies\Microsoft\Office\%MAJORVERSION%.0\Lync" Key4="" Key5="Subtree" Key6="True" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+				</Setting>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Right">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+			</Object>
+		</Object>
+		<!--/Lync/Skype POLICIES-->
+		<!--EVENTLOGS-->
+		<Object Type="Group" Name="Application Event Logs" Class="Event Logs" GroupingClass="True">
+			<Object Type="Group" Name="Application Event Log Entries for the last Skype for Business crashes" Class="Application Event Logs" GroupingClass="True" TrackProgress="TrackProgress" LogText="Collecting Application Event Log Entries for Last Lync crashes">
+				<Reference Type="LyncCrashes" Name="LyncCrashes" File="lync.crashes.config.xml"></Reference>
+				<Object Type="EventLog" Key1="Application" Key3="1001" Key4="lync.exe" Key7="14" Key8="10000" Task="Offline scan">
+					<Setting Key1="Message">
+						<Rule Name="event1001Message" Query="$."></Rule>
+					</Setting>
+					<Setting Key1="Fault Bucket">
+						<Rule Name="bucketNumber" Query="$."></Rule>
+						<!--P0 must be 'BUCKET', P1 and P2 are mandatory-->
+						<Rule Name="bucketLookup" Error="Error" Query="$bucketNumber!=''" P0="'BUCKET'" P1="$bucketNumber" P2="$bucketType" P3="'lync.exe'" P4="$event1001Message" Title="Event 1001" Text="{4}" Internal="True" Symptoms="Crash/Not Responding event lookup"></Rule>
+					</Setting>
+					<Setting Key1="Type">
+						<Rule Name="bucketType" Query="$."></Rule>
+					</Setting>
+				</Object>
+			</Object>
+		</Object>
+		<!--/EVENTLOGS-->
+		<!--MISCELLANEOUS-->
+		<Object Type="Group" Name="Miscellaneous" GroupingClass="True" Class="Miscellaneous" TrackProgress="TrackProgress">
+			<Reference Type="OffCATVersionInfo" Name="OffCATVersionInfo" File="common.config.xml">
+			</Reference>
+			<!--IM Providers-->
+			<Object Type="Group" Name="Instant Messaging settings" Class="Miscellaneous" GroupingClass="True">
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="SOFTWARE\Microsoft\Office\%MAJORVERSION%.0\Common">
+					<Setting Key1="TurnOffPhotograph"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="SOFTWARE\Microsoft\Office\%MAJORVERSION%.0\Common\IM">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="SOFTWARE\Policies\Microsoft\Office\%MAJORVERSION%.0\Common\IM">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="SOFTWARE\IM Providers">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="SOFTWARE\IM Providers" Key5="Subtree">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+			</Object>
+			<!--/IM Providers-->
+			<Reference Type="GPResult" Name="GPResult" File="common.config.xml">
+			</Reference>
+		</Object>
+		<!--/MISCELLANEOUS-->
+	</Object>
+	<!--EXTERNALREFS-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="fMapiHttpConnected14"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+	<!--Rule Name="OUTLOOKVERSION_sOutlookExeVersion"></Rule-->
+</ObjectCollector>

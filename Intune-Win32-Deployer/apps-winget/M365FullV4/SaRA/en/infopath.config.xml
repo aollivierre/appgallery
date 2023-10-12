@@ -1,0 +1,479 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+	<Configuration  ConfigName="Infopath Configuration"
+									ChangeDescription="2.0.1611.13"
+									ConfigVersion="2.0.1611.13"
+									ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+									DownloadURL="http://www.microsoft.com/office/offcat"
+									FixItURL="http://go.microsoft.com/?linkid={0}"
+									ReferencedFiles="common.config.xml,officeupdates.config.xml,infopath.crashes.config.xml"
+									Symptoms="1">
+		<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryGenerator" />
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">InfoPath</Substitution>
+		<Substitution Name="DAYS">14</Substitution>
+		<Substitution Name="MAXEVENTS">10</Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="IfThenElse" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfThenElseObjectProcessor"/>
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"/>
+	</Configuration>
+	<Object Type="Group" Name="InfoPath Scan" Class="Scan Type" GroupingClass="True">
+		<!--OFFICE DETAILS-->
+		<Object Type="Group" Name="Install details">
+			<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="InfoPath" Key6="infopath" Key7="%MAJORVERSION%">
+				<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+				</Setting>
+				<Object Type="IfThenElse" Key1="'%WOW6432NODE%'=''" Key2="emptyval" Key3="%WOW6432NODE%">
+					<Setting Key1="wowcacheval" Substitution="WOWCACHEVAL" Display="Hide" />
+					<Object Type="Cache" Name="wowcache" Key1="Add" Key2="wowcache" Key3="%WOWCACHEVAL%">
+					</Object>
+				</Object>
+				<Setting Key1="Bitness" Substitution="APPBITNESS">
+					<Rule Name="bitness" Query="$.">            
+					</Rule>
+				</Setting>
+				<Setting Key1="FullVersion">
+					<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))">            
+					</Rule>
+					<!--Rule Name="sInfoPath16Scanned" Query="$n2DigitVersion&gt;15" Error="Warning" Title="OffCAT scan results may be inaccurate with InfoPath %MAJORVERSION%" Text="Your scan results may not be completely accurate as the scanned version of InfoPath (%MAJORVERSION%) is not yet supported by OffCAT. Please send feedback to the OffCAT team if you discover a rule or configuration setting that is inaccurately reported by OffCAT." SSID="a4bbc824-3c66-44df-a116-bcf6cbb6f5a3" Symptoms="_Alert from OffCAT"></Rule-->
+					<Rule Name="sFullAppVersion" Query="$."></Rule>
+					<!--<Rule Name="sInfoPathPR" Query="number(substring($.,11,1))=3" Error="None" Title="The build number for InfoPath.exe indicates a Private Release (PR) build" Text="The build number for InfoPath.exe indicates a Private Release (PR) build. PR builds are intended only for testing and not production use." SSID="">
+					</Rule>-->
+				</Setting>
+				<Setting Key1="Name">
+					<Rule Name="appName" Query="$."></Rule>
+				</Setting>
+				<Setting Key1="Path"></Setting>
+				<Setting Key1="Version">
+					<Rule Name="n4DigitSKUVersion" Query="$.">
+					</Rule>
+				</Setting>
+				<Rule Name="nInstallType" Query="'%INSTALLTYPE%'"></Rule>
+				<Reference Type="InstalledServicePack" Name="InstalledServicePack" File="common.config.xml"></Reference>
+				<Setting Key1="Type">
+					<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+					<Rule Name="f2016MSI" Query="$n4DigitSKUVersion='2016' and $.='MSI'"></Rule>
+				</Setting>
+				<!--SKU-->
+				<Object Type="Group" Name="Office SKU">
+					<Object Type="If" Key1="'%MAJORVERSION%'='11'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{1A66B512-C4BE-4347-9F0C-8638F8D1E6E4}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Display="Right"></Setting>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='12'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{0638C49D-BB8B-4CD1-B191-058E8F325736}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+								<Rule Name="SKU2007" Query="substring(string($.),11,4)"></Rule>
+								<Rule Name="ReleaseType2007" Query="substring(string($.),3,1)"></Rule>
+								<Rule Name="sNoIRMInfoPath2007" Query="$n2DigitVersion=12 and not($SKU2007='0011' or $SKU2007='0044' or $SKU2007='002E' or $SKU2007='0030') and not($SKU2007='')" P0="$SKUName2007" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="275709" SSID="67c61860-2d76-4f5c-b4f2-a751a86772b6" Symptoms="Information Rights Management"></Rule>
+							</Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Display="Right">
+									<Rule Name="SKUName2007" Query="$."></Rule>
+								</Setting>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='14' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{E3898C62-6EC3-4491-8194-9C88AD716468}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+								<Rule Name="SKU2010" Query="substring(string($.),11,4)"></Rule>
+								<Rule Name="ReleaseType2010" Query="substring(string($.),3,1)"></Rule>
+								<Rule Name="sNoIRMInfoPath2010" Query="$n2DigitVersion=14 and not($SKU2010='0011' or $SKU2010='0044') and not($SKU2010='')" P0="$SKUName2010" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="275719" SSID="80a563df-db46-4370-859f-b0735ca5587c" Symptoms="Information Rights Management"></Rule>
+							</Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Substitution="PN" Display="Right">
+									<Rule Name="SKUName2010" Query="if(contains($.,'Single Image') and $sSingleImageSKU2010!='',$sSingleImageSKU2010,$.)" AlwaysEvaluate="True"></Rule>
+								</Setting>
+								<Setting Key1="ProductID" Substitution="PID" SubstitutionFormat="(.....)-(...-......).*----$2" Display="Hide">
+								</Setting>
+								<Object Type="If" Key1="contains('%PN%','Single Image')">
+									<Object Type="WMI" Key3="OfficeSoftwareProtectionProduct" Key4="Name LIKE '%Office 14, Office%' AND ProductKeyID LIKE '%%PID%%'" Display="Hide">
+										<Setting Key1="ID" Substitution="REGID" Display="Hide">
+										</Setting>
+										<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\14.0\Registration\{%REGID%}" Display="Hide">
+											<Setting Key1="ProductName">
+												<Rule Name="sSingleImageSKU2010" Query="$."></Rule>
+											</Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='14' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{28B2FBA8-B95F-47CB-8F8F-0885ACDAC69B}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+								<Rule Name="SKU201064" Query="substring(string($.),11,4)"></Rule>
+								<Rule Name="ReleaseType201064" Query="substring(string($.),3,1)"></Rule>
+								<Rule Name="sNoIRMInfoPath201064" Query="$n2DigitVersion=14 and not($SKU201064='0011' or $SKU201064='0044') and not($SKU201064='')" P0="$SKUName201064" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="275719" SSID="35527b98-8c77-4254-a069-9c09826f499c" Symptoms="Information Rights Management"></Rule>
+							</Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Substitution="PN" Display="Right">
+									<Rule Name="SKUName201064" Query="if(contains($.,'Single Image') and $sSingleImageSKU201064!='',$sSingleImageSKU201064,$.)"></Rule>
+								</Setting>
+								<Setting Key1="ProductID" Substitution="PID" SubstitutionFormat="(.....)-(...-......).*----$2" Display="Hide">
+								</Setting>
+								<Object Type="If" Key1="contains('%PN%','Single Image')">
+									<Object Type="WMI" Key3="OfficeSoftwareProtectionProduct" Key4="Name LIKE '%Office 14, Office%' AND ProductKeyID LIKE '%%PID%%'" Display="Hide">
+										<Setting Key1="ID" Substitution="REGID" Display="Hide">
+										</Setting>
+										<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\14.0\Registration\{%REGID%}" Display="Hide">
+											<Setting Key1="ProductName">
+												<Rule Name="sSingleImageSKU201064" Query="$."></Rule>
+											</Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{3741355B-72CF-4CEE-948E-CC9FBDBB8E7A}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Rule Name="sNoIRMInfoPath2013" Query="contains('%PRODUCTCODE%','0FF1CE') and $n2DigitVersion=15 and not(($SKU2013='0011' and ($ReleaseType2013='1' or $ReleaseType2013='0')) or $SKU2013='0044')" P0="$SKUName2013" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="302311" SSID="65959e4c-e447-4ecb-9b5f-2cda824648a1" Symptoms="Information Rights Management"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUName2013" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{19AF7201-09A2-4C73-AB50-FCEF94CB2BA9}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Rule Name="sNoIRMInfoPath201364" Query="contains('%PRODUCTCODE%','0FF1CE') and $n2DigitVersion=15 and not(($SKU201364='0011' and ($ReleaseType201364='1' or $ReleaseType201364='0')) or $SKU201364='0044')" P0="$SKUName201364" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="302311" SSID="44882790-e2fe-4758-8999-981db5b73514" Symptoms="Information Rights Management"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUName201364" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="number('%MAJORVERSION%')&gt;14 and '%INSTALLTYPE%'='ClickToRun'">
+						<Object Type="C2RSKU" Key1="infopath" Key2="%APPBITNESS%" Key3="%MAJORVERSION%">
+							<Setting Key1="ProductName">
+								<Rule Name="SKUNameC2R" Query="$."></Rule>
+							</Setting>
+						</Object>
+						<Object Type="If" Key1="'%MAJORVERSION%'='15'">
+						<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\15.0\ClickToRun\ProductReleaseIDs\Active" Key5="OneLevel" Display="Hide" >
+							<Setting Key1="__KEYNAME" Substitution="LIC" Display="Hide"></Setting>
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\15.0\ClickToRun\ProductReleaseIDs\Active\%LIC%\x-none" Key5="Subtree" Display="Hide">
+								<Setting Key1="__KEYNAME" Key2="infopath.%APPBITNESS%.x-none.zip" Substitution="C2RAPPFOUND" Display="Hide"></Setting>
+								<Object Type="If" Key1="'%C2RAPPFOUND%'='infopath.%APPBITNESS%.x-none.zip'">
+									<Object Type="Group" Name="ClickToRun License Family=%LIC%" Display="Right">
+										<Setting Key1="" Display="Hide"></Setting>
+											<Rule Name="sC2RLicense2013" Query="'%LIC%'"></Rule>
+											<Rule Name="sNoIRMC2RInfoPath2013" Query="not(contains($sC2RLicense2013,'ProPlus') or contains($sC2RLicense2013,'InfoPath'))" Error="Warning" P0="$SKUNameC2R" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." GUID="302311" SSID="2b4b8bbd-59dd-4456-a8f6-92d5c96061dc" Symptoms="Information Rights Management"></Rule>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+						<Object Type="If" Key1="number('%MAJORVERSION%')&gt;15">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\ClickToRun\ProductReleaseIDs\Active" Key5="OneLevel" Display="Hide" >
+								<Setting Key1="__KEYNAME" Substitution="LIC" Display="Hide"></Setting>
+								<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\ClickToRun\ProductReleaseIDs\Active\%LIC%\x-none" Key5="Subtree" Display="Hide">
+									<Setting Key1="__KEYNAME" Key2="infopath.%APPBITNESS%.x-none.zip" Substitution="C2RAPPFOUND" Display="Hide"></Setting>
+									<Object Type="If" Key1="'%C2RAPPFOUND%'='infopath.%APPBITNESS%.x-none.zip'">
+										<Object Type="Group" Name="ClickToRun License Family=%LIC%" Display="Right">
+											<Setting Key1="" Display="Hide"></Setting>
+											<!--<Rule Name="sC2RLicense2013" Query="'%LIC%'"></Rule>
+											<Rule Name="sNoIRMC2RInfoPath2013" Query="not(contains($sC2RLicense2013,'ProPlus') or contains($sC2RLicense2013,'InfoPath'))" Error="Warning" P0="$SKUNameC2R" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." GUID="302311" SSID="2b4b8bbd-59dd-4456-a8f6-92d5c96061dc" Symptoms="Information Rights Management"></Rule>-->
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='16' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{BC9813F0-C83C-4CC8-AEE1-8F9892C0C625}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKUV16x86" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseTypeV16x86" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<!--Rule Name="sNoIRMInfoPathV16x86" Query="contains('%PRODUCTCODE%','0FF1CE') and $n2DigitVersion=16 and not(($SKUV16x86='0011' and ($ReleaseTypeV16x86='1' or $ReleaseTypeV16x86='0')) or $SKUV16x86='0016')" P0="$SKUNameV16x86" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="" SSID="" Symptoms="Information Rights Management"></Rule-->
+								<Rule Name="fProPlusV16x86" Query="$SKUV16x86='0011'"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\16.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersionV16x86" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUNameV16x86" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='16' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{2774AAC0-1433-46BE-993F-8088018C3B09}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKUV16x64" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseTypeV16x64" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<!--Rule Name="sNoIRMInfoPathV16x64" Query="contains('%PRODUCTCODE%','0FF1CE') and $n2DigitVersion=16 and not(($SKUV16x64='0011' and ($ReleaseTypeV16x64='1' or $ReleaseTypeV16x64='0')) or $SKUV16x64='0016')" P0="$SKUNameV16x64" Title="{0} doesn't support Information Rights Management" Text="You have {0} installed. It does not support the Information Rights Management feature." Error="Warning" GUID="" SSID="8c9455d0-4613-4d46-aaa9-b4674cea159f" Symptoms="Information Rights Management"></Rule-->
+								<Rule Name="fProPlusV16x64" Query="$SKUV16x64='0011'"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\16.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersionV16x64" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUNameV16x64" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+
+				</Object>
+				<!--/SKU-->
+				<!--MSO-->
+				<Reference Type="MSO" Name="MSO" File="common.config.xml">
+				</Reference>
+				<!--/MSO-->
+				<!--OART.dll-->
+				<Reference Type="OART" Name="OART" File="common.config.xml">
+				</Reference>
+				<!--/OART.dll-->
+			</Object>
+			<!--INSTALLED UPDATES-->
+			<Object Type="If" Key1="'%INSTALLTYPE%'='MSI'">
+				<Object Type="Group" Name="Installed Updates" Class="Office Update" GroupingClass="True" Display="Right" TrackProgress="TrackProgress">
+					<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml"></Reference>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%INSTALLTYPE%'='ClickToRun'">
+				<Object Type="Group" Name="ClickToRun Details" GroupingClass="True" Class="Office Update" Display="Right">
+					<Object Type="Cache" Name="wowcache" Key1="Dump" Key2="wowcache" Display="Hide">
+						<Setting Key1="WowVal" Substitution="WOW6432NODE" Display="Hide"></Setting>
+						<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml"></Reference>
+					</Object>
+				</Object>
+			</Object>
+			<!--/INSTALLED UPDATES-->
+		</Object>
+		<!--/OFFICE DETAILS-->
+		<!--USER DETAILS-->
+		<Object Type="Group" Name="User Details" Display="Right">
+			<Reference Type="UserDetails" Name="UserDetails" File="common.config.xml"></Reference>
+		</Object>
+		<!--/USER DETAILS-->
+		<!--MACHINE DETAILS-->
+		<Object Type="Group" Name="Machine Details">
+			<Reference Type="MachineDetails" Name="MachineDetails" File="common.config.xml"></Reference>
+			<Reference Type="ServicesRunning" Name="ServicesRunning" File="common.config.xml"></Reference>
+			<Reference Type="OSDetails" Name="OSDetails" File="common.config.xml"></Reference>
+		</Object>
+		<!--/MACHINE DETAILS-->
+		<!--ADD-INS-->
+		<Object Type="Group" Name="Registered add-ins" GroupingClass="True">
+			<!--HKCU addins-->
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\InfoPath\Addins" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+				</Setting>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+			</Object>
+			<!--/HKCU addins-->
+			<!--HKLM addins-->
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\InfoPath\Addins" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+				</Setting>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+			</Object>
+			<!--/HKLM addins-->
+			<!--HKLM WOW addins-->
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\InfoPath\Addins" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide">
+				</Setting>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+			</Object>
+			<!--/HKLM WOW addins-->
+			<!--RESILIENCY-->
+			<Object Type="Group" Name="Resiliency" Class="Add-ins" Display="Right">
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\InfoPath\Resiliency" Display="Right">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+				<Object Type="Group" Name="HKEY_CURRENT_USER\Software\Microsoft\Office\%MAJORVERSION%.0\InfoPath\Resiliency\DisabledItems" Display="Right">
+					<Object Type="Group" Name="Disabled Add-ins" Display="Right">
+						<Object Type="DisabledItems" Key1="InfoPath" Key2="%MAJORVERSION%" Display="Right">
+							<Setting Key1="Type" Display="Right">
+							</Setting>
+							<Setting Key1="Module" Display="Right">
+							</Setting>
+							<Setting Key1="FriendlyName" Display="Right">
+							</Setting>
+						</Object>
+						<Rule Name="sDisabledAddins" Query="count(../Instance/Object/Instance)&gt;0 and $nRestrictToList&lt;1 and $n2DigitVersion&gt;14" Error="Warning" Title="InfoPath add-ins have been automatically disabled" Text="InfoPath add-ins have been disabled due to performance or stability issues. Please see 'Registered add-ins' under Configuration Details for the list of disabled add-ins." GUID="272802" SSID="c332da07-f0b9-458d-89cd-6c27045ecdda" Symptoms="Add-ins"></Rule>
+					</Object>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\InfoPath\Resiliency\DoNotDisableAddinList" Display="Right">
+					<Setting Key1="__VALUES">
+					</Setting>
+				</Object>
+				<!--O15 resiliency policy-->
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\InfoPath\Resiliency" Key4="" Key5="Base" Display="Right">
+					<Setting Key1="RestrictToList">
+					</Setting>
+					<Rule Name="nRestrictToList" Query="if(../Instance/Setting[@Key1='RestrictToList']=true(),../Instance/Setting[@Key1='RestrictToList']/Value,-1)">
+					</Rule>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\InfoPath\Resiliency\AddinList" Key4="" Key5="Base" Display="Right">
+						<Setting Key1="__VALUES">
+						</Setting>
+					</Object>
+				</Object>
+			</Object>
+			<!--/RESILIENCY-->
+		</Object>
+		<!--/ADD-INS-->
+		<!--REG SETTINGS-->
+		<Object Type="Group" Name="Office Registry Settings" Class="InfoPath Settings" GroupingClass="True" TrackProgress="TrackProgress">
+			<Object Type="Group" Name="HKEY_CURRENT_USER">
+				<!--app specific-->
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\InfoPath" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\InfoPath" Key4="^((?!File MRU)(?!Place MRU).)*$" Key5="Subtree" Key6="True" Display="Right">
+					<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+						<Setting Key1="__VALUES"></Setting>
+					</Object>
+				</Object>
+				<!--common-->
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Key4="^((?!Identity)(?!Internet)(?!Logging)(?!OfficeStart)(?!Open Find)(?!Research)(?!Roaming)(?!ServicesManagerCache).)*$" Key5="Subtree" Key6="True" Display="Right">
+					<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+						<Setting Key1="__VALUES"></Setting>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="HKEY_LOCAL_MACHINE">
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\InfoPath" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\InfoPath" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\InfoPath" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\%MAJORVERSION%.0\InfoPath" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+			</Object>
+		</Object>
+		<!--/REG SETTINGS-->
+		<!--OFFICE POLICIES-->
+		<Object Type="Group" Name="Office Policies" Class="Policies" GroupingClass="True" TrackProgress="TrackProgress">
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES"></Setting>
+					<Rule Name="fPolicies" Query="count(../Instance[contains(lower-case(@Name),'infopath')]/Setting)&gt;0"></Rule>
+				</Object>
+			</Object>
+		</Object>
+		<!--/OFFICE POLICIES-->
+		<!--EVENTLOGS-->
+		<Object Type="Group" Name="Application Event Logs" Class="Event Logs" GroupingClass="True">
+			<Object Type="Group" Name="Application Event Log Entries for Last InfoPath crashes" Class="Application Event Logs" GroupingClass="True" TrackProgress="TrackProgress">
+				<Reference Type="InfoPathCrashes" Name="InfoPathCrashes" File="infopath.crashes.config.xml">
+				</Reference>
+			</Object>
+		</Object>
+		<!--/EVENTLOGS-->
+		<!--MISCELLANEOUS-->
+		<Object Type="Group" Name="Miscellaneous" Class="Miscellaneous" GroupingClass="True" TrackProgress="TrackProgress">
+			<Reference Type="OffCATVersionInfo" Name="OffCATVersionInfo" File="common.config.xml">
+			</Reference>
+			<Reference Type="CommonMisc" Name="CommonMisc" File="common.config.xml">
+			</Reference>
+			<Reference Type="GPResult" Name="GPResult" File="common.config.xml">
+			</Reference>
+		</Object>
+		<!--/MISCELLANEOUS-->
+	</Object>
+	<!--EXTERNALREF-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="fMapiHttpConnected14"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+	<Rule Name="OUTLOOKVERSION_sOutlookExeVersion"></Rule>
+</ObjectCollector>

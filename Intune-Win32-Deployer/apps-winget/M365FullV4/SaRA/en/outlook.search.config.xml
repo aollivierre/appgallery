@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ObjectCollector>
+	<Configuration ConfigName="Outlook Search"
+					 ChangeDescription="2.0.1705.24"
+					 ConfigVersion="2.0.1705.24"
+					 ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+					 DownloadURL="http://www.microsoft.com/office/offcat"
+					 FixItURL="http://go.microsoft.com/?linkid={0}"
+					 ReferencedFiles ="common.config.xml"
+					 Symptoms="1">
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">Outlook</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryDataPostprocessor" />
+		<ConfigPreprocessor Name="0 OutlookGlobalSubstitutionConfigPreprocessor Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.OutlookGlobalSubstitutionConfigPreprocessor" />
+		<ConfigPreprocessor Name="1 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Outlook" Assembly="BPA.OutlookCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.OutlookObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor"/>
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor"/>
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor"/>
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"></ExtFormat>
+		<RestrictionType Name="Task">
+			<Option Name="Offline Scan" Text="RestrictionText" Title="RestrictionTitle" Filter="True" />
+		</RestrictionType>
+	</Configuration>
+	
+<Type Name="OutlookSearch">
+	<!--SEARCH-->
+	<Object Type="Group" Name="Search" Class="Search" GroupingClass="True">
+		<Object Type="Group" Name="Outlook registry">
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search" Display="Right">
+				<Setting Key1="SearchResultsCap"></Setting>
+				<Rule Name="fSearchResultsCap" Query="if((../Instance/Setting/@Key1='SearchResultsCap')=true(),../Instance/Setting[@Key1='SearchResultsCap']/Value,-1)"></Rule>
+				<Rule Name="sSearchResultsCap1214" Query="(($n2DigitVersion=12 or $n2DigitVersion=14) and (($fSearchResultsCapPol&gt;0 and $fSearchResultsCapPol&lt;200) or ($fSearchResultsCapPol=-1 and ($fSearchResultsCap&gt;0 and $fSearchResultsCap&lt;200))))" Error="Warning" P0="if($fSearchResultsCapPol&gt;0 and $fSearchResultsCapPol&lt;200,'Group Policy','non-policy')" Title="Your search results are limited for Cached mode profiles due to the SearchResultsCap registry value" Text="The default maximum number of results returned by a search in Outlook is 200 items when your profile is in Cached mode. Your search results are limited due to the {0} SearchResultsCap registry value.&#xd;&#xa;&#xd;&#xa;Please click the 'Click here ...' link for details on the {0} registry path for the 'SearchResultsCap' value." GUID="313119" SSID="4ecb75a6-1649-4cf6-b35d-f1a723227748" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+				<Rule Name="sSearchResultsCap15LT30Items" Query="versioncompare($sFullAppVersion,'15.0.4641.1001')&lt;0 and $n2DigitVersion=15 and $fSearchResultsCapPol=-1 and $fSearchResultsCap=-1" Error="Warning" Title="Search results limited to 30 items for Cached mode profiles" Text="With your build of Outlook.exe, the default maximum number of results returned by a search in Outlook 2013 is 30 items when you are using a Cached mode profile. You can install a more recent build of Outlook.exe that provides a higher default limit (250).&#xd;&#xa;&#xd;&#xa;Please click the 'Click here ...' link for details." GUID="313119" SSID="88ec080b-93b7-42d0-abbc-3007e41df10c" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+				<Rule Name="sSearchResultsCap15Plus" Query="$n2DigitVersion&gt;=15 and $fSearchResultsCapPol=-1 and $fSearchResultsCap&gt;0 and $fSearchResultsCap&lt;=250" Error="Warning" P0="$fSearchResultsCap"
+							Title="Search results limited to {0} items" Text="For Cached mode profiles, the maximum number of results returned by a search in Outlook is configured in the registry at {0} items. To return more items in a search, disable the the 'Improve search speed by limiting the number of results shown' setting (on the File tab click Options and then click Search)." 
+							GUID="820552" SSID="c63d53d0-f5d7-4e14-8a73-3a8586145143" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+
+				<Setting Key1="DisableServerAssistedSearch"></Setting>
+				<Rule Name="fDisableServerAssistedSearch" Query="if((../Instance/Setting/@Key1='DisableServerAssistedSearch')=true(),../Instance/Setting[@Key1='DisableServerAssistedSearch']/Value,-1)"></Rule>
+				<Rule Name="sDisableServerAssistedSearch" Query="$n2DigitVersion&gt;15 and $fDisableServerAssistedSearchPol=-1 and $fDisableServerAssistedSearch=1" Error="Warning" Title="Non-default search configuration with DisableServerAssistedSearch registry value" Text="In the registry, DisableServerAssistedSearch=1 under the 'HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. This is a non-default configuration for Outlook and you may see unexpected search results." GUID="820563" SSID="71ade8d2-70cd-4896-9f24-b875ba21d57b" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+
+				<Setting Key1="AllowPhraseMatch"></Setting>
+				<Rule Name="fAllowPhraseMatch" Query="if((../Instance/Setting/@Key1='AllowPhraseMatch')=true(),../Instance/Setting[@Key1='AllowPhraseMatch']/Value,-1)"></Rule>
+				<Rule Name="sAllowPhraseMatchCached15" Query="$n2DigitVersion=15 and $fAllowPhraseMatchPol=-1 and ($fAllowPhraseMatch=0 or $fAllowPhraseMatch=-1) and $sExConnMode!='olOnline' and $nProfSyncWindowSetting15!=0" 
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="890a9430-3699-41e2-af70-48c92829f802" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+				<Rule Name="sAllowPhraseMatchOnline15" Query="$n2DigitVersion=15 and $fAllowPhraseMatchPol=-1 and ($fAllowPhraseMatch=0 or $fAllowPhraseMatch=-1) and $sExConnMode='olOnline'" 
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="7ae4157f-142b-4258-bd9e-8cc5345b9c55" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+				<Rule Name="sAllowPhraseMatchCached16" Query="$n2DigitVersion=16 and $fAllowPhraseMatchPol=-1 and ($fAllowPhraseMatch=0 or $fAllowPhraseMatch=-1) and $sExConnMode!='olOnline' and $nProfSyncWindowSetting16!=0" 
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="00f64ebf-d654-4a2c-8d4b-df969e1ce643" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+				<Rule Name="sAllowPhraseMatchOnline16" Query="$n2DigitVersion=16 and $fAllowPhraseMatchPol=-1 and ($fAllowPhraseMatch=0 or $fAllowPhraseMatch=-1) and $sExConnMode='olOnline'" 
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="dc72c08b-50ae-485d-813d-6559b3461f50" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search" Display="Right">
+				<Setting Key1="SearchResultsCap"></Setting>
+				<Rule Name="fSearchResultsCapPol" Query="if((../Instance/Setting/@Key1='SearchResultsCap')=true(),../Instance/Setting[@Key1='SearchResultsCap']/Value,-1)"></Rule>
+				<Rule Name="sSearchResultsCap15PlusPol" Query="$n2DigitVersion&gt;=15 and $fSearchResultsCapPol&gt;0 and $fSearchResultsCapPol&lt;=250" Error="Warning" P0="$fSearchResultsCapPol"
+							Title="Search results limited to {0} items" Text="For Cached mode profiles, the maximum number of results returned by a search in Outlook is configured in the registry (as a group policy setting) at {0} items. To return more items in a search, please speak with your administrator to have them disable the the policy controlling the 'Improve search speed by limiting the number of results shown' setting." GUID="820552" SSID="89a3d515-7e40-4663-9036-0faed2d8839a" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+
+				<Setting Key1="DisableServerAssistedSearch"></Setting>
+				<Rule Name="fDisableServerAssistedSearchPol" Query="if((../Instance/Setting/@Key1='DisableServerAssistedSearch')=true(),../Instance/Setting[@Key1='DisableServerAssistedSearch']/Value,-1)"></Rule>
+				<Rule Name="sDisableServerAssistedSearchPol" Query="$n2DigitVersion&gt;15 and $fDisableServerAssistedSearchPol=1" Error="Warning" Title="Non-default search configuration with DisableServerAssistedSearch group policy value" Text="In the registry, DisableServerAssistedSearch=1 under the 'HKCU\Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. This is a non-default configuration for Outlook and you may see unexpected search results." GUID="820563" SSID="00e93b9e-48ab-417e-b815-2dff779669f6" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+
+				<Setting Key1="AllowPhraseMatch"></Setting>
+				<Rule Name="fAllowPhraseMatchPol" Query="if((../Instance/Setting/@Key1='AllowPhraseMatch')=true(),../Instance/Setting[@Key1='AllowPhraseMatch']/Value,-1)"></Rule>
+				<Rule Name="sAllowPhraseMatchCachedPol15" Query="$n2DigitVersion=15 and $fAllowPhraseMatchPol=0 and $sExConnMode!='olOnline' and $nProfSyncWindowSetting15!=0" 
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="c68c2856-edba-4db0-93ed-672fe1118760" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+				<Rule Name="sAllowPhraseMatchOnlinePol15" Query="$n2DigitVersion=15 and $fAllowPhraseMatchPol=0 and $sExConnMode='olOnline'" 
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="d77d6ba2-5304-4176-b3b6-6053769bae2b" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+				<Rule Name="sAllowPhraseMatchCachedPol16" Query="$n2DigitVersion=15 and $fAllowPhraseMatchPol=0 and $sExConnMode!='olOnline' and $nProfSyncWindowSetting16!=0"
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="dc87e564-a909-4d6c-815d-4ce3b55e46d7" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+				<Rule Name="sAllowPhraseMatchOnlinePol16" Query="$n2DigitVersion=16 and $fAllowPhraseMatchPol=0 and $sExConnMode='olOnline'"
+							Error="Warning" Title="Incomplete or incorrect search results because AllowPhraseMatch is not 1 in the registry" Text="In the registry, AllowPhraseMatch doesn't equal 1 under the 'HKCU\Software\Policies\Microsoft\Office\%MAJORVERSION%.0\Outlook\Search key. You may see unexpected search results if you are using quotes in your search query." GUID="838321" SSID="0a64b8b9-fde3-4c57-af51-998c2cce3d2b" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search" Task="Full Scan"></Rule>
+			</Object>
+		</Object>
+		
+		<Object Type="Group" Name="Windows Desktop Search">
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Windows Desktop Search">
+				<Setting Key1="__VALUES">
+				</Setting>
+			</Object>
+		</Object>
+		<Object Type="Group" Name="Windows Search">
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Windows Search">
+				<Setting Key1="__VALUES" />
+				<Setting Key1="UseLowPriorityConfiguration">
+					<Rule Name="sSearchLowPriorityConfigOff" Query="$.=0" Error="Warning" Title="Possible computer performance issue with UseLowPriorityConfiguration=0 in the registry" Text="The UseLowPriorityConfiguration registry value = 0. This is a non-default configuration and you may see computer performance issues due to higher priority indexing." GUID="329028" SSID="ee1e5675-b8bd-49e0-9be2-f126b48f2d54" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Slowness,Application not responding,Search,Indexing,Administration"></Rule>
+				</Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Windows Search\Gathering Manager" Display="Right">
+				<Setting Key1="DisableBackoff">
+					<Rule Name="sSearchIndexingBackoffNotEnabled" Query="$.=1" Error="Warning" Title="Possible computer performance issue with DisableBackoff=1 in the registry" Text="The DisableBackoff registry value = 1. This is a non-default configuration and you may see computer performance issues due to higher priority indexing." GUID="329029" SSID="5f773f35-2210-45e6-9a7d-a6799a3eaa5c" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Slowness,Application not responding,Search,Indexing,Administration"></Rule>
+				</Setting>
+			</Object>
+			<Object Type="Group" Name="Windows Search Policies" Display="Right">
+				<!--THINK WE CUT THAT IN 2010-->
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Policies\Microsoft\Windows\Windows Search">
+					<Setting Key1="EnableIndexingDelegateMailboxes">
+						<Rule Name="sEnableIndexingDelegateMailboxes" Error="Warning" Query="($.=1) and ($n2DigitVersion=12)" Title="EnableIndexingDelegateMailboxes=1" Text="If you have a shared Exchange mailbox in your profile, you may see performance issues as the folders in this shared mailbox are being indexed. More information: http://blogs.technet.com/mikelag/archive/2009/05/04/windows-desktop-search-and-the-implications-on-wan-performance.aspx" GUID="285784" SSID="f504bb4a-2619-4b70-ac82-44c1a382c9c3" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Slowness,Application not responding,Search,Indexing,Administration">
+						</Rule>
+					</Setting>
+					<Setting Key1="PreventIndexingOutlook">
+						<Rule Name="sPreventIndexingOutlook" Query="$.=1" Error="Warning" Title="Indexing has been disabled using a policy setting in the registry" Text="Indexing for Windows Desktop Search has been disabled in the registry. Consequently, searching for items in Outlook will take longer.&#xd;&#xa;&#xd;&#xa;This group policy configures the following registry data:&#xd;&#xa;Key: HKLM\Software\Policies\Microsoft\Windows\Windows Search&#xd;&#xa;DWORD: PreventIndexingOutlook&#xd;&#xa;Value: 1&#xd;&#xa;&#xd;&#xa;Click the 'Click here ...' link for details on group policies for Windows Search." GUID="267393" SSID="A4D4CD56-C450-4B96-9827-2FA39EF090B2" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search,Indexing"></Rule>
+					</Setting>
+					<Setting Key1="PreventIndexingEmailAttachments">
+						<Rule Name="sPreventIndexingAttachments" Query="$.=1" Error="Warning" Title="Indexing of email attachments has been disabled by a group policy setting" Text="The indexing of email attachments has been disabled by the 'Prevent indexing e-mail attachments' policy configured by your administrator. Consequently, searching for items in Outlook may not give the expected results.&#xd;&#xa;&#xd;&#xa;This group policy configures the following registry data:&#xd;&#xa;Key: HKLM\Software\Policies\Microsoft\Windows\Windows Search&#xd;&#xa;DWORD: PreventIndexingEmailAttachments&#xd;&#xa;Value: 1&#xd;&#xa;&#xd;&#xa;Click the 'Click here ...' link for details on group policies for Windows Search." GUID="620742" SSID="21d50e30-c16b-4ee4-a1da-4b18b25abd30" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search,Email attachments"></Rule>
+					</Setting>
+					<Setting Key1="PreventIndexingUncachedExchangeFolders">
+						<Rule Name="sPreventIndexingUncachedExchangeFolders" Query="($.=0) and ($n2DigitVersion=12)" Title="PreventIndexingUncachedExchangeFolders=0 in the registry" Text="The PreventIndexingUncachedExchangeFolders value is set to 0 in the registry. This configuration can cause performance issues with an Online mode profile." Error="Warning" GUID="275726" SSID="35649439-14f7-483a-9daf-d5ab28ec2a64" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Slowness,Application not responding,Search,Indexing,Administration">
+						</Rule>
+					</Setting>
+				</Object>
+			</Object>
+		</Object>
+		<Object Type="Group" Name="Windows Search Service Office Outlook Protocol Handler">
+			<Object Type="Registry" Key2="HKEY_CLASSES_ROOT" Key3="CLSID\{9E175BAF-F52A-11D8-B9A5-505054503030}">
+				<Setting Key1="KeyExists">
+					<Rule Name="sSearchFailureWin7x64OLx86" Query="$.='True' and $OSDetails_fWin7Installed and $OSDetails_OSArchitecture='x64' and ($n2DigitVersion=12 or $n2DigitVersion=14) and $bitness='x86'" Error="Warning" Title="Outlook search fails to return results due to improper registry data" Text="The Windows registry contains a subkey that is in the wrong hive. This configuration causes Outlook searches to fail.&#xd;&#xa;&#xd;&#xa;Click the 'Click here ...' link for detailed steps on how to resolve this problem." GUID="525781" SSID="db40962b-2cdf-45b4-b169-b41d2f172df3" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+				</Setting>
+			</Object>
+		</Object>
+	<Object Type="Group" Name="Search ProtocolHandler keys" Display="Right">
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Classes\Outlook.Search.MAPIHandler.1" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Classes\Outlook.Search.MAPIHandler.1" Key5="Subtree" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Classes\Outlook.Search.MAPI15Handler.1" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+				<Setting Key1="KeyExists" Substitution="MAPI15HANDLER1" Display="Hide">
+					<Rule Name="fMAPI15Handler1Exists" Query="$.='True'"></Rule>
+				</Setting>
+				<Rule Name="sOLK14PlusLync15SearchX86" Query="$fMAPI15Handler1Exists and string-length($OfficeSKU_sProductNameOutlookX86)&gt;0 and string-length($OfficeSKU_sProductNameLyncX86)&gt;0 and versioncompare($OSDetails_WindowsVersion,'6.1.0.0')&gt;=0" Error="Warning" Title="Cannot open Outlook items using Search in Windows" Text="When you use the Search functionality in Windows you are unable to open Outlook items returned in your search results. This occurs because you have Outlook 2010 plus Lync 2013 installed.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for the resolution." GUID="306050" SSID="dc4e38a8-3e5c-4152-a0b0-84ea9b360a06" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+				<Rule Name="sOLK14PlusLync15SearchX64" Query="$fMAPI15Handler1Exists and string-length($OfficeSKU_sProductNameOutlookX64)&gt;0 and string-length($OfficeSKU_sProductNameLyncX64)&gt;0 and versioncompare($OSDetails_WindowsVersion,'6.1.0.0')&gt;=0" Error="Warning" Title="Cannot open Outlook items using Search in Windows" Text="When you use the Search functionality in Windows you are unable to open Outlook items returned in your search results. This occurs because you have Outlook 2010 plus Lync 2013 installed.&#xD;&#xA;&#xD;&#xA;Please click the 'Click here ...' link for the resolution." GUID="306050" SSID="db40899d-0f68-4b2d-984e-60e4c98ae5f7" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Classes\Outlook.Search.MAPI15Handler.1" Key5="Subtree" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+
+		<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Classes\Outlook.Search.MAPI16Handler.1" Display="Right">
+			<Setting Key1="__VALUES"></Setting>
+		</Object>
+		<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Classes\Outlook.Search.MAPI16Handler.1" Key5="Subtree" Display="Right">
+			<Setting Key1="__VALUES"></Setting>
+		</Object>
+		
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Windows Search\ProtocolHandlers\Mapi" Key5="Subtree" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Wow6432Node\Microsoft\Windows Search\ProtocolHandlers\Mapi" Key5="Subtree" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Windows Search\ProtocolHandlers\Mapi15" Key5="Subtree" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Wow6432Node\Microsoft\Windows Search\ProtocolHandlers\Mapi15" Key5="Subtree" Display="Right">
+				<Setting Key1="__VALUES"></Setting>
+			</Object>
+
+		<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Windows Search\ProtocolHandlers\Mapi16" Key5="Subtree" Display="Right">
+			<Setting Key1="__VALUES"></Setting>
+		</Object>
+		<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Wow6432Node\Microsoft\Windows Search\ProtocolHandlers\Mapi16" Key5="Subtree" Display="Right">
+			<Setting Key1="__VALUES"></Setting>
+		</Object>
+
+	</Object>
+		<Object Type="Group" Name="Windows Search Service Status" Class="Search" Display="Right">
+			<Object Type="WMI" Key3="Win32_Service" Key4="Name='WSearch'">
+				<Setting Key1="StartMode">
+					<Rule Name="fWSearchDisabled" Query="$.='Disabled'"></Rule>
+					<Rule Name="sSearchServiceDisabled" Query="$fWSearchDisabled" Error="Warning" Title="The Windows Search service is set to 'Disabled'" Text="The Windows Search service is disabled. This will cause problems with the People Pane and your search results may take longer to appear." GUID="624038" SSID="2f8d34d4-a741-4ae8-8453-3aa03b77eae0" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="People Pane,Search"></Rule>
+				</Setting>
+				<Setting Key1="Started"></Setting>
+				<Setting Key1="DesktopInteract">
+					<Rule Name="sWSearchDesktopInteract" Error="Error" Query="$.='True'" Title="Windows Search Service has &quot;Allow service to interact with Desktop&quot; enabled" Text="If the Windows Search Service has the &quot;Allow service to interact with Desktop&quot; setting enabled, you may not see any search results in Outlook." GUID="268040" SSID="a35fb747-bdef-4c67-89a5-6de8073eab75" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search,Indexing"></Rule>
+				</Setting>
+			</Object>
+		</Object>
+		<Object Type="Group" Name="PDF iFilter" Class="IFilters" GroupingClass="True">
+			<Object Type="Group" Name="Registry data">
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Classes\.pdf\PersistentHandler" Key5="Base">
+					<Setting Key1="(Default)" Substitution="PDFHANDLERCLSID"/>
+					<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Classes\CLSID\%PDFHANDLERCLSID%\PersistentAddinsRegistered\{89BCB740-6119-101A-BCB7-00DD010655AF}">
+						<Setting Key1="(Default)" Substitution="PDFHANDLERADDINCLSID"/>
+						<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Classes\CLSID\%PDFHANDLERADDINCLSID%\InprocServer32" Key5="Base">
+							<Setting Key1="(Default)" Substitution="IFILTERDLLFILEPATH">
+								<Rule Name="iFilterDllPath" Query="$." />
+							</Setting>
+							<Object Type="File" Key2="%IFILTERDLLFILEPATH%" Display="Hide">
+								<Setting Key1="CompanyName" Display="Hide">
+									<Rule Name="siFilterCompanyName" Query="$."></Rule>
+								</Setting>
+								<Setting Key1="Version">
+									<Rule Name="siFilterVersion" Query="$."></Rule>
+								</Setting>
+								<Rule Name="sNoPolicyTipPDFiFilter10Plus" Query="$ExchVersion_fExchange2013 and $OSDetails_fWin7Installed and $n2DigitVersion&gt;=15 and versioncompare($siFilterVersion,'10.0.0.0')&gt;=0 and contains(lower-case('%IFILTERDLLFILEPATH%'),'acrordif')" Error="Warning" Title="Data Loss Prevention policy tips are not displayed for PDF attachments" Text="If you attach a .pdf file to an email message you do not see an expected Data Loss Prevention (DLP) policy tip. This occurs because you have version 10 (or higher) of the PDF iFilter (AcroIF.dll) installed.&#xd;&#xa;&#xd;&#xa;Click the 'Click here ...' link for a resolution to this issue." GUID="513020" SSID="38b0c490-94c2-4991-95d9-94dd78fd7586" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="DLP,Policy Tips">"</Rule>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Classes\Wow6432Node\CLSID\%PDFHANDLERCLSID%\PersistentAddinsRegistered\{89BCB740-6119-101A-BCB7-00DD010655AF}">
+						<Setting Key1="(Default)" Substitution="PDFHANDLERADDINCLSID"/>
+						<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Classes\Wow6432Node\CLSID\%PDFHANDLERADDINCLSID%\InprocServer32" Key5="Base">
+							<Setting Key1="(Default)" Substitution="IFILTERDLLFILEPATHWOW">
+								<Rule Name="iFilterDllPathWow" Query="$." />
+							</Setting>
+							<Object Type="File" Key2="%IFILTERDLLFILEPATHWOW%" Display="Hide">
+								<Setting Key1="CompanyName" Display="Hide">
+									<Rule Name="siFilterCompanyNameWow" Query="$."></Rule>
+								</Setting>
+								<Setting Key1="Version">
+									<Rule Name="siFilterVersionWow" Query="$."></Rule>
+								</Setting>
+								<Rule Name="sNoPolicyTipPDFiFilter10PlusWow" Query="$ExchVersion_fExchange2013 and $OSDetails_fWin7Installed and $n2DigitVersion&gt;=15 and versioncompare($siFilterVersionWow,'10.0.0.0')&gt;=0 and contains(lower-case('%IFILTERDLLFILEPATHWOW%'),'acrordif')" Error="Warning" Title="Data Loss Prevention policy tips are not displayed for PDF attachments" Text="If you attach a .pdf file to an email message you do not see an expected Data Loss Prevention (DLP) policy tip. This occurs because you have version 10 (or higher) of the PDF iFilter (AcroIF.dll) installed.&#xd;&#xa;&#xd;&#xa;Click the 'Click here ...' link for a resolution to this issue." GUID="513020" SSID="20064df0-50d3-43d7-aa1c-f4c579d90b45" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="DLP,Policy Tips">"</Rule>
+							</Object>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="iFilter Dll details">
+				<Object Type="Group" Name="dll">
+					<Rule Name="iFilterDllPathTest" Query="$iFilterDllPath" P0="$iFilterDllPath" Text="Path ={0}"/>
+					<Rule Name="iFilterCompanyName" Query="$siFilterCompanyName" P0="$siFilterCompanyName" Text="Company Name ={0}"></Rule>
+					<Rule Name="iFilterDllPathTestWow" Query="$iFilterDllPathWow" P0="$iFilterDllPathWow" Text="Path (from \Wow6432Node registry data) ={0}"/>
+					<Rule Name="iFilterCompanyNameWow" Query="$siFilterCompanyNameWow" P0="$siFilterCompanyNameWow" Text="Company Name ={0}"></Rule>
+				</Object>
+			</Object>
+		</Object>
+		<Object Type="Group" Name="Application Event Log entries for Search" Class="Event Logs" GroupingClass="True">
+			<Object Type="Group" Name="Event 10023">
+				<Object Type="EventLog" Key1="Application" Key2="Search" Key3="10023" Key5="50" Key7="14" Key8="10000">
+					<Setting Key1="Eventid"></Setting>
+					<Setting Key1="Message"></Setting>
+					<Rule Name="nEvent10023" Query="count(../Instance)">
+					</Rule>
+					<Rule Name="fPDFIndexingIssue10023" Query="$nEvent10023&gt;0 and $iFilterDllPath!=''" AlwaysEvaluate="True">
+					</Rule>
+					<Rule Name="fPDFIndexingIssue10023Wow" Query="$nEvent10023&gt;0 and $iFilterDllPathWow!=''" AlwaysEvaluate="True"></Rule>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="Event 10024">
+				<Object Type="EventLog" Key1="Application" Key2="Search" Key3="10024" Key5="50" Key7="14" Key8="10000">
+					<Setting Key1="Eventid"></Setting>
+					<Setting Key1="Message"></Setting>
+					<Rule Name="nEvent10024" Query="count(../Instance)">
+					</Rule>
+					<Rule Name="fPDFIndexingIssue10024" Query="$nEvent10024&gt;0 and $iFilterDllPath!=''" AlwaysEvaluate="True"></Rule>
+					<Rule Name="fPDFIndexingIssue10024Wow" Query="$nEvent10024&gt;0 and $iFilterDllPathWow!=''" AlwaysEvaluate="True"></Rule>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="Event 29 - Store re-pushed to the indexer">
+				<Object Type="EventLog" Key1="Application" Key2="outlook" Key3="29" Key7="7" Key8="10000">
+					<Setting Key1="Eventid"></Setting>
+					<Setting Key1="Message"></Setting>
+					<Rule Name="sEvent29NewStore"
+								Query="count(../Instance/Setting[@Key1='Message' and contains(lower-case(Value),'newly created store')])&gt;0"
+								Error="None"
+								Title="Store re-pushed to the indexer because a new store was created"
+								Text="A new store was just created, so it was pushed to the indexer for search indexing. Open the application event log (Source: Outlook, Id: 29) for full details." 
+								Symptoms="Search">
+					</Rule>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="Event 30 - Starting reconciliation for a store">
+				<Object Type="EventLog" Key1="Application" Key2="outlook" Key3="30" Key7="7" Key8="10000">
+					<Setting Key1="Eventid"></Setting>
+					<Setting Key1="Message"></Setting>
+					<Rule Name="sEvent30StoreMoved" 
+								Query="count(../Instance/Setting[@Key1='Message' and contains(lower-case(Value),'opened on a different machine')])&gt;0" 
+								Error="None" 
+								Title="Indexing reconciliation done because a store was opened on a different computer" 
+								Text="A store was opened a computer other than this one, so the indexer performed reconciliation. Open the application event log (Source: Outlook, Id: 30) for full details." 
+								Symptoms="Search">
+					</Rule>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="Event 31 - Store has detected a catalog rebuild">
+				<Object Type="EventLog" Key1="Application" Key2="outlook" Key3="31" Key7="7" Key8="10000">
+					<Setting Key1="Eventid"></Setting>
+					<Setting Key1="Message"></Setting>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="Event 38 - Reconciliation completed for a store">
+				<Object Type="EventLog" Key1="Application" Key2="outlook" Key3="38" Key7="7" Key8="10000">
+					<Setting Key1="Eventid"></Setting>
+					<Setting Key1="Message"></Setting>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="10023_24" Display="Hide">
+				<Rule Name="sPDFIndexingIssue10023_24" Query="$fPDFIndexingIssue10023 or $fPDFIndexingIssue10024" Error="Warning" Title="Possible Outlook search or indexing issue (event 10023 or 10024)" Text="The PDF iFilter is registered and Event 10023 or 10024 was found in the Application Event log. This has been known to cause indexing issues in Outlook. Click the 'Click here...' link if you are unable to search for Outlook items or your indexing of Outlook items does not finish." GUID="389860" SSID="6e89317a-19d8-49ac-8571-52bdc9b5af1c" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search,Indexing">
+				</Rule>
+				<Rule Name="sPDFIndexingIssue10023_24Wow" Query="$fPDFIndexingIssue10023Wow or $fPDFIndexingIssue10024Wow" Error="Warning" Title="Possible Outlook search or indexing issue (event 10023 or 10024)" Text="The PDF iFilter is registered (under \Wow6432Node) and Event 10023 or 10024 was found in the Application Event log. This has been known to cause indexing issues in Outlook. Click the 'Click here...' link if you are unable to search for Outlook items or your indexing of Outlook items does not finish." GUID="389860" SSID="61f49972-612c-4a66-a1a8-23ab3eba5b66" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search,Indexing">
+				</Rule>
+			</Object>
+			<Object Type="EventLog" Key1="Application" Key3="1000" Key4="searchprotocolhost.exe" Key5="%MAXEVENTS%" Key7="7" Key8="10000">
+				<Setting Key1="Faulting Module Name" Display="Right"></Setting>
+				<Setting Key1="Fault offset" Display="Right"></Setting>
+				<Rule Name="nSearchProtocolHostMsMapi32DllCrash000017e8" Query="count(../Instance[Setting[@Key1='Faulting Module Name' and (lower-case(Value)='msmapi32.dll')] and Setting[@Key1='Fault offset' and (lower-case(Value)='000017e8')]])"></Rule>
+				<Rule Name="sSearchProtocolHostCrashOL16Act" Query="$n2DigitVersion=16 and $nSearchProtocolHostMsMapi32DllCrash000017e8&gt;0" P0="$nSearchProtocolHostMsMapi32DllCrash000017e8" Error="Error" Title="Search failures in Outlook due to crash in SearchProtocolHost.exe" Text="A crash in SearchProtocolHost.exe has been found {0} time(s) in the Application event log. This indicates a known problem where you do not get any results for a search in Outlook.&#xd;&#xa;&#xd;&#xa;Please click the 'Click here...' link for details on this issue." GUID="722883" SSID="6cc5bc98-bc06-47ac-87eb-b810ef5ab3a5" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search"></Rule>
+			</Object>
+		</Object>
+		<Object Type="File" Key2="%INSTALLPATH%\mapiph.dll" Display="Right">
+			<Setting Key1="Exists">
+				<Rule Name="sMissingMAPIProtocolHandler" Query="$n2DigitVersion&gt;12 and $.=0" Error="Warning" Title="Outlook search may not be functioning properly because Mapiph.dll is missing." Text="Your Outlook search results may be incomplete because the file Mapiph.dll is missing from your Office installation." GUID="275610" SSID="7ba93b3c-2580-4afc-9bee-11e450058825" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search,Indexing"></Rule>
+			</Setting>
+		</Object>
+		<!--ESM-->
+		<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\MMC\NodeTypes" Key5="OneLevel" Display="Hide">
+			<Setting Key1="(Default)" Display="Hide">
+			</Setting>
+			<Rule Name="sESM" Query="count(../Instance/Setting[@Key1='(Default)' and Value='Exchange System Manager Object'])&gt;0" Error="Error" Title="Exchange System Manager is installed" Text="No results are returned when you search for e-mail items using Instant Search." GUID="267394" SSID="c2f9e141-edd5-4d43-99d3-7b9cd473ad6e" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Crash,Startup,Error message,Search">
+			</Rule>
+		</Object>
+		<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" Display="Right">
+			<Setting Key1="Start_SearchComm">
+				<Rule Name="sStartSearchComm" Query="$.=0 and (versioncompare($OSDetails_WindowsVersion,'6.1.0.0')&gt;=0 and versioncompare($OSDetails_WindowsVersion,'6.2.0.0')&lt;0) and $OSDetails_sOSProductType=1" Error="Warning" Title="Search from the Windows Start menu will not locate email messages" Text="Start_SearchComm=0 in the registry. In this configuration, you will not be able to search for email messages using the Windows Search feature. However, you will be able to search for email messages from within Outlook." GUID="389087" SSID="1fb779df-266c-4f5f-b117-a69850affbe4" P9="$CloudMbxRegistry_fCloudMbxDetected" Cloud="{9}" Symptoms="Search">
+				</Rule>
+			</Setting>
+		</Object>
+	</Object>
+	<Reference Type="ExchVersion" Name="ExchVersion" File="outlook.config.xml">
+	</Reference>
+	<!--/SEARCH-->
+ </Type>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Outlook" Key6="outlook" Key7="%MAJORVERSION%" Display="Hide">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS" Display="Hide">
+			<Rule Name="bitness" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="FullVersion" Display="Hide">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+			<Rule Name="sFullAppVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Name" Display="Hide">
+			<Rule Name="appName" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Version" Substitution="APPVERSION" Display="Hide">
+			<Rule Name="n4DigitSKUVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Type" Substitution="INSTALLTYPE" Display="Hide">
+			<Rule Name="nInstallType" Query="$."></Rule>
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+		</Setting>
+		<Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Right">
+		</Setting>
+		
+		<Reference Type="OutlookSearch" Name="OutlookSearch" File="outlook.search.config.xml">
+		</Reference>
+		<Reference Type="OSDetails" Name="OSDetails" File="common.config.xml">
+		</Reference>
+		<Reference Type="MSO" Name="MSO" File="common.config.xml">
+		</Reference>
+		<Reference Type="OfficeSKU" Name="OfficeSKU" File="outlook.config.xml">
+		</Reference>
+		<Reference Type="CloudMbxRegistry" Name="CloudMbxRegistry" File="outlook.config.xml">
+		</Reference>
+	</Object>
+	
+	<!--EXTERNALREFS-->
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="effectiveSlowBitrate"></Rule>
+
+</ObjectCollector>

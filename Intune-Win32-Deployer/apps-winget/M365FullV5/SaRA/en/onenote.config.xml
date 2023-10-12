@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+	<Configuration ConfigName="OneNote Configuration"
+								 ChangeDescription="2.0.1611.13"
+									ConfigVersion="2.0.1611.13"
+								 ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+								 DownloadURL="http://www.microsoft.com/office/offcat"
+								 FixItURL="http://go.microsoft.com/?linkid={0}"
+								 ReferencedFiles="common.config.xml,officeupdates.config.xml,onenote.crashes.config.xml"
+								 Symptoms="1">
+				<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryGenerator" />
+		<!--!!! GLOBAL SUBSTITUTION SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">OneNote</Substitution>
+		<Substitution Name="DAYS">14</Substitution>
+		<Substitution Name="MAXEVENTS">10</Substitution>
+		<ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+		<ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+		<ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+		<ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="IfThenElse" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfThenElseObjectProcessor"/>
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+		<ObjectProcessor Name="DisabledItems" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DisabledItemsObjectProcessor"/>
+		<ObjectProcessor Name="C2RSKU" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.C2RSKUObjectProcessor" />
+		<ObjectProcessor Name="Cache" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node"/>
+	</Configuration>
+	<Object Type="Group" Name="OneNote Scan" Class="Scan Type" GroupingClass="True">
+		<!--OFFICE DETAILS-->
+		<Object Type="Group" Name="Install details">
+			<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="OneNote" Key6="onenote" Key7="%MAJORVERSION%">
+				<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+				</Setting>
+				<Object Type="IfThenElse" Key1="'%WOW6432NODE%'=''" Key2="emptyval" Key3="%WOW6432NODE%">
+					<Setting Key1="wowcacheval" Substitution="WOWCACHEVAL" Display="Hide" />
+					<Object Type="Cache" Name="wowcache" Key1="Add" Key2="wowcache" Key3="%WOWCACHEVAL%">
+					</Object>
+				</Object>
+				<Setting Key1="Bitness" Substitution="APPBITNESS">
+					<Rule Name="bitness" Query="$."></Rule>
+				</Setting>
+				<Setting Key1="FullVersion">
+					<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+					<Rule Name="sFullAppVersion" Query="$.">
+					</Rule>
+					<!--Rule Name="sOneNote16Scanned" Query="$n2DigitVersion&gt;15" Error="Warning" Title="OffCAT scan results may be inaccurate with OneNote %MAJORVERSION%" Text="Your scan results may not be completely accurate as the scanned version of OneNote (%MAJORVERSION%) is not yet supported by OffCAT. Please send feedback to the OffCAT team if you discover a rule or configuration setting that is inaccurately reported by OffCAT." SSID="7dd41c57-372c-49aa-83e8-c78d44b1eb74" Symptoms="_Alert from OffCAT"></Rule-->
+				</Setting>
+				<Setting Key1="Name">
+					<Rule Name="appName" Query="$."></Rule>
+				</Setting>
+				<Setting Key1="Path">          
+				</Setting>
+				<Setting Key1="InstallPath" Substitution="INSTALLPATH" Display="Hide">
+				</Setting>
+				<Object Type="Cache" Name="InstallPathCACHE" Key1="Add" Key2="INSTALLPATHCACHE" Key3="%INSTALLPATH%"/>
+				<Setting Key1="Version">
+					<Rule Name="n4DigitSKUVersion" Query="$.">
+					</Rule>          
+				</Setting>
+				<Rule Name="nInstallType" Query="'%INSTALLTYPE%'"></Rule>
+				<Reference Type="InstalledServicePack" Name="InstalledServicePack" File="common.config.xml"></Reference>
+				<Setting Key1="Type">
+					<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+					<Rule Name="f2016MSI" Query="$n4DigitSKUVersion='2016' and $.='MSI'"></Rule>
+				</Setting>
+				<!--SKU-->
+				<Object Type="Group" Name="Office SKU">
+					<Object Type="If" Key1="'%MAJORVERSION%'='11'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{D2C0E18B-C463-4E90-92AC-CA94EBEC26CE}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Display="Right"></Setting>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='12'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{0638C49D-BB8B-4CD1-B191-057E8F325736}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Display="Right"></Setting>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='14' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{62F8C897-D359-4D8F-9659-CF1E9E3E6B74}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE"></Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Substitution="PN" Display="Right">
+								</Setting>
+								<Setting Key1="ProductID" Substitution="PID" SubstitutionFormat="(.....)-(...-......).*----$2" Display="Hide">
+								</Setting>
+								<Object Type="If" Key1="contains('%PN%','Single Image')">
+									<Object Type="WMI" Key3="OfficeSoftwareProtectionProduct" Key4="Name LIKE '%Office 14, Office%' AND ProductKeyID LIKE '%%PID%%'" Display="Hide">
+										<Setting Key1="ID" Substitution="REGID" Display="Hide">
+										</Setting>
+										<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\14.0\Registration\{%REGID%}" Display="Hide">
+											<Setting Key1="ProductName">
+											</Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='14' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{9542A6E5-2FAF-4191-B525-6ED00F2D0127}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE">
+							</Setting>
+							<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+								<Setting Key1="ProductName" Substitution="PN" Display="Right">
+								</Setting>
+								<Setting Key1="ProductID" Substitution="PID" SubstitutionFormat="(.....)-(...-......).*----$2" Display="Hide">
+								</Setting>
+								<Object Type="If" Key1="contains('%PN%','Single Image')">
+									<Object Type="WMI" Key3="OfficeSoftwareProtectionProduct" Key4="Name LIKE '%Office 14, Office%' AND ProductKeyID LIKE '%%PID%%'" Display="Hide">
+										<Setting Key1="ID" Substitution="REGID" Display="Hide">
+										</Setting>
+										<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\14.0\Registration\{%REGID%}" Display="Hide">
+											<Setting Key1="ProductName">
+											</Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{DACE5A15-C57C-44DE-9AFF-89B4412485AF}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right"></Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='15' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{74F233A9-A17A-477C-905F-853F5FCDAD40}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right"></Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="number('%MAJORVERSION%')&gt;14 and '%INSTALLTYPE%'='ClickToRun'">
+						<Object Type="C2RSKU" Key1="OneNote" Key2="%APPBITNESS%" Key3="%MAJORVERSION%">
+							<Setting Key1="ProductName" Display="Right">
+							</Setting>
+						</Object>
+						<Object Type="If" Key1="'%MAJORVERSION%'='15'">
+						<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\15.0\ClickToRun\ProductReleaseIDs\Active" Key5="OneLevel" Display="Hide" >
+							<Setting Key1="__KEYNAME" Substitution="LIC" Display="Hide"></Setting>
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\15.0\ClickToRun\ProductReleaseIDs\Active\%LIC%\x-none" Key5="Subtree" Display="Hide">
+								<Setting Key1="__KEYNAME" Key2="onenote.%APPBITNESS%.x-none.zip" Substitution="C2RAPPFOUND" Display="Hide"></Setting>
+								<Object Type="If" Key1="'%C2RAPPFOUND%'='onenote.%APPBITNESS%.x-none.zip'">
+									<Object Type="Group" Name="ClickToRun License Family=%LIC%" Display="Right">
+										<Setting Key1="" Display="Hide"></Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+						<Object Type="If" Key1="number('%MAJORVERSION%')&gt;15">
+							<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\ClickToRun\ProductReleaseIDs\Active" Key5="OneLevel" Display="Hide" >
+								<Setting Key1="__KEYNAME" Substitution="LIC" Display="Hide"></Setting>
+								<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="SOFTWARE\Microsoft\Office\ClickToRun\ProductReleaseIDs\Active\%LIC%\x-none" Key5="Subtree" Display="Hide">
+									<Setting Key1="__KEYNAME" Key2="onenote.%APPBITNESS%.x-none.zip" Substitution="C2RAPPFOUND" Display="Hide"></Setting>
+									<Object Type="If" Key1="'%C2RAPPFOUND%'='onenote.%APPBITNESS%.x-none.zip'">
+										<Object Type="Group" Name="ClickToRun License Family=%LIC%" Display="Right">
+											<Setting Key1="" Display="Hide"></Setting>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='16' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{2A8FA8D7-B728-4792-AC02-463FD7A423BD}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKUV16x86" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseTypeV16x86" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Rule Name="fProPlusV16x86" Query="$SKUV16x86='0011'"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\16.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersionV16x86" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUNameV16x86" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object Type="If" Key1="'%MAJORVERSION%'='16' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+						<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{8265A5EF-46C7-4D46-812C-076F2A28F7CB}">
+							<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+							<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+							<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+								<Rule Name="SKUV16x64" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+								<Rule Name="ReleaseTypeV16x64" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+								<Rule Name="fProPlusV16x64" Query="$SKUV16x64='0011'"></Rule>
+								<Object Type="Group" Name="ProductCode =%PRODUCTCODE%">
+									<Setting Key1="" Display="Hide"></Setting>
+								</Object>
+								<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+									<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\%WOW6432NODE%\Microsoft\Office\16.0\Common\InstalledPackages\%REGPRODUCTCODE%" Display="Hide">
+										<Setting Key1="ProductVersion" Display="Hide">
+											<Rule Name="fOfficeProductVersionV16x64" Query="$." AlwaysEvaluate="True"></Rule>
+										</Setting>
+									</Object>
+									<Setting Key1="ProductName" Display="Right">
+										<Rule Name="SKUNameV16x64" Query="$."></Rule>
+									</Setting>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+				</Object>
+				<!--/SKU-->
+				<!--MSO-->
+				<Reference Type="MSO" Name="MSO" File="common.config.xml">
+				</Reference>
+				<!--/MSO-->
+				<!--ADALCSIDLL-->
+				<Reference Type="ADALCSIDLL" Name="ADALCSIDLL" File="common.config.xml">
+				</Reference>
+				<!--/ADALCSI-->
+				<!--OART.dll-->
+				<Reference Type="OART" Name="OART" File="common.config.xml">
+				</Reference>
+				<!--/OART.dll-->
+			</Object>
+			<!--INSTALLED UPDATES-->
+			<Object Type="If" Key1="'%INSTALLTYPE%'='MSI'">
+				<Object Type="Group" Name="Installed Updates" Class="Office Update" GroupingClass="True" Display="Right" TrackProgress="TrackProgress" LogText="Collecting Installed Updates">
+					<Reference Type="Office_Updates" Name="OfficeUpdates" File="officeupdates.config.xml"/>
+				</Object>
+			</Object>
+			<Object Type="If" Key1="'%INSTALLTYPE%'='ClickToRun'">
+				<Object Type="Group" Name="ClickToRun Details" GroupingClass="True" Class="Office Update" Display="Right">
+					<Object Type="Cache" Name="wowcache" Key1="Dump" Key2="wowcache" Display="Hide">
+						<Setting Key1="WowVal" Substitution="WOW6432NODE" Display="Hide"></Setting>
+						<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+						</Reference>
+					</Object>
+				</Object>
+			</Object>
+			<!--INSTALLED UPDATES-->
+			<!--ADAL updates-->
+			<Object Type="If" Key1="number('%MAJORVERSION%')=15">
+				<Object Type="Group" Name="Office 2013 Modern Authentication support">
+					<Object Type="Group" Name="Prerequisites" Display="Right">
+						<Object Type="Group" Name="%APPNAME%" Display="Right">
+							<Object Type="Group" Name="Hidden">
+								<Rule Name="fKB2956165Installed" Query="versioncompare($sFullAppVersion,'15.0.4701.1000')"
+											P0="if($fKB2956165Installed&gt;=0,' ',' not ')" P1="if($nInstallType='MSI','KB2956165','Click-to-run March 2015 build')"
+											Text="{1} (or later) is{0}installed" GUID="615090"></Rule>
+							</Object>
+						</Object>
+						<Object Type="Cache" Name="InstallPathCACHE" Key1="Dump" Key2="INSTALLPATHCACHE" Display="Hide">
+							<Setting Key1="Val" Substitution="INSTALLPATH" Display="Hide"></Setting>
+						<Reference Type="ADAL" Name="ADAL" File="common.config.xml">
+						</Reference>
+						</Object>
+						<Rule Name="sAdalEnabled" Query="true()" Error="None" 
+									P0="if($fKB2956165Installed&gt;=0 and $ADAL_fKB2956151Installed&gt;=0,' ',' not ')"
+									P2="if($fKB2956165Installed&gt;=0,'Installed','Not Installed')"
+									P3="if($ADAL_fKB2956151Installed&gt;=0,'Installed','Not Installed')"
+									P4="'%APPNAME%'"
+									Title="All prerequisites for ADAL are{0}installed"
+									Text="All prerequisites for ADAL are{0}installed:&#xD;&#xA;{4} 2013 March 2015 update - {2}&#xD;&#xA;Mso.dll 2013 March 2015 update - {3}"
+								 GUID="615090" SSID="14ca4fdf-9720-456d-8dfa-a788c59c22c8" Symptoms="Modern Authentication for Office"></Rule>
+					</Object>
+				</Object>
+			</Object>
+			<!--/ADAL updates-->
+		</Object>
+		<!--/OFFICE DETAILS-->
+		<!--USER DETAILS-->
+		<Object Type="Group" Name="User Details" Display="Right">
+			<Reference Type="UserDetails" Name="UserDetails" File="common.config.xml"></Reference>
+		</Object>
+		<!--/USER DETAILS-->
+		<!--MACHINE DETAILS-->
+		<Object Type="Group" Name="Machine Details">
+			<Reference Type="MachineDetails" Name="MachineDetails" File="common.config.xml"></Reference>
+			<Reference Type="ServicesRunning" Name="ServicesRunning" File="common.config.xml"></Reference>
+			<Reference Type="OSDetails" Name="OSDetails" File="common.config.xml"></Reference>
+		</Object>
+		<!--/MACHINE DETAILS-->
+		<!--ADD-INS-->
+		<Object Type="Group" Name="Registered add-ins" GroupingClass="True">
+			<!--HKCU addins-->
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\OneNote\Addins" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+			</Object>
+			<!--/HKCU addins-->
+			<!--HKLM addins-->
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\OneNote\Addins" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+			</Object>
+			<!--/HKLM addins-->
+			<!--HKLM WOW addins-->
+			<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\OneNote\Addins" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+			</Object>
+			<!--/HKLM WOW addins-->
+			<!--RESILIENCY-->
+			<Object Type="Group" Name="Resiliency" Class="Add-ins" Display="Right">
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\OneNote\Resiliency" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Group" Name="HKEY_CURRENT_USER\Software\Microsoft\Office\%MAJORVERSION%.0\OneNote\Resiliency\DisabledItems" Display="Right">
+					<Object Type="Group" Name="Disabled Add-ins" Display="Right">
+						<Object Type="DisabledItems" Key1="OneNote" Key2="%MAJORVERSION%" Display="Right">
+							<Setting Key1="Type" Display="Right"></Setting>
+							<Setting Key1="Module" Display="Right"></Setting>
+							<Setting Key1="FriendlyName" Display="Right"></Setting>
+						</Object>
+						<Rule Name="sDisabledAddins" Query="count(../Instance/Object/Instance)&gt;0 and $nRestrictToList&lt;1 and $n2DigitVersion&gt;14" Error="Warning" Title="OneNote add-ins have been automatically disabled" Text="OneNote add-ins have been disabled due to performance or stability issues. Please see 'Registered add-ins' under Configuration Details for the list of disabled add-ins." GUID="272802" SSID="39fa02a6-f79b-4bc4-8824-e37be1ee3994" Symptoms="Add-ins"></Rule>
+					</Object>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\OneNote\Resiliency\DoNotDisableAddinList" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<!--O15 and above resiliency policy-->
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\OneNote\Resiliency" Key4="" Key5="Base" Display="Right">
+					<Setting Key1="RestrictToList"></Setting>
+					<Rule Name="nRestrictToList" Query="if(../Instance/Setting[@Key1='RestrictToList']=true(),../Instance/Setting[@Key1='RestrictToList']/Value,-1)"></Rule>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0\OneNote\Resiliency\AddinList" Key4="" Key5="Base" Display="Right">
+						<Setting Key1="__VALUES"></Setting>
+					</Object>
+				</Object>
+			</Object>
+			<!--/RESILIENCY-->
+		</Object>
+		<!--/ADD-INS-->
+		<!--REG SETTINGS-->
+		<Object Type="Group" Name="Office Registry Settings" Class="OneNote Settings" GroupingClass="True" TrackProgress="TrackProgress">
+			<Object Type="Group" Name="HKEY_CURRENT_USER">
+				<!--app specific-->
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\OneNote" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\OneNote" Key4="^((?!File MRU)(?!Place MRU).)*$" Key5="Subtree" Key6="True" Display="Right">
+					<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+						<Setting Key1="__VALUES"></Setting>
+					</Object>
+				</Object>
+				<!--common-->
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\Common" Key4="^((?!Identity)(?!Internet)(?!Logging)(?!OfficeStart)(?!Open Find)(?!Research)(?!Roaming)(?!ServicesManagerCache)(?!UserSidEmailMapping).)*$" Key5="Subtree" Key6="True" Display="Right">
+					<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+					<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+						<Setting Key1="__VALUES"></Setting>
+					</Object>
+				</Object>
+			</Object>
+			<Object Type="Group" Name="HKEY_LOCAL_MACHINE">
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\OneNote" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\OneNote" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Microsoft\Office\%MAJORVERSION%.0\OneNote" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+				<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE" Key3="Software\Wow6432Node\Microsoft\Office\%MAJORVERSION%.0\OneNote" Key5="Subtree" Display="Right">
+					<Setting Key1="__VALUES"></Setting>
+				</Object>
+			</Object>
+		</Object>
+		<!--/REG SETTINGS-->
+		<!--OFFICE POLICIES-->
+		<Object Type="Group" Name="Office Policies" Class="Policies" GroupingClass="True" TrackProgress="TrackProgress">
+			<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="Software\Policies\Microsoft\Office\%MAJORVERSION%.0" Key5="Subtree" Display="Right">
+				<Setting Key1="__KEYPATH" Substitution="KP" Display="Hide"></Setting>
+				<Object Type="Registry" Key2="HKEY_CURRENT_USER" Key3="%KP%" Display="Hide">
+					<Setting Key1="__VALUES"></Setting>
+					<Rule Name="fPolicies" Query="count(../Instance[contains(lower-case(@Name),'onenote')]/Setting)&gt;0"></Rule>
+				</Object>
+			</Object>
+		</Object>
+		<!--/OFFICE POLICIES-->
+		<!--EVENTLOGS-->
+		<Object Type="Group" Name="Application Event Logs" Class="Event Logs" GroupingClass="True">
+			<Object Type="Group" Name="Application Event Log Entries for Last OneNote crashes" Class="Application Event Logs" GroupingClass="True" TrackProgress="TrackProgress">
+				<Reference Type="OneNoteCrashes" Name="OneNoteCrashes" File="onenote.crashes.config.xml">
+				</Reference>
+				<Object Type="EventLog" Key1="Application" Key3="1001" Key4="onenote.exe" Key7="14" Key8="10000" Task="Offline scan">
+					<Setting Key1="Message">
+						<Rule Name="event1001Message" Query="$."></Rule>
+					</Setting>
+					<Setting Key1="Fault Bucket">
+						<Rule Name="bucketNumber" Query="$."></Rule>
+						<!--P0 must be 'BUCKET', P1 and P2 are mandatory-->
+						<Rule Name="bucketLookup" Error="Error" Query="$bucketNumber!=''" P0="'BUCKET'" P1="$bucketNumber" P2="$bucketType" P3="'onenote.exe'" P4="$event1001Message" Title="Event 1001" Text="{4}" Internal="True" Symptoms="Crash/Not Responding event lookup"></Rule>
+					</Setting>
+					<Setting Key1="Type">
+						<Rule Name="bucketType" Query="$."></Rule>
+					</Setting>
+				</Object>
+				<Object Type="EventLog" Key1="Application" Key3="1000" Key4="onenotem.exe" Key7="14" Key8="10000">
+					<Setting Key1="__ALL"></Setting>
+				</Object>
+			</Object>
+		</Object>
+		<!--/EVENTLOGS-->
+		<!--MISCELLANEOUS-->
+		<Object Type="Group" Name="Miscellaneous" GroupingClass="True" Class="Miscellaneous" TrackProgress="TrackProgress">
+			<Reference Type="OffCATVersionInfo" Name="OffCATVersionInfo" File="common.config.xml">
+			</Reference>
+			<Reference Type="GPResult" Name="GPResult" File="common.config.xml">
+			</Reference>
+			<Reference Type="CommonMisc" Name="CommonMisc" File="common.config.xml"></Reference>
+		</Object>
+		<!--/MISCELLANEOUS-->
+	</Object>
+	<!--EXTERNALREFS-->
+	<Rule Name="effectiveSlowBitrate"></Rule>
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="HKCUAddinRegistry_fLync2013AddinFoundHKCU"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundHKLM"></Rule>
+	<Rule Name="HKLMAddinRegistry_fLync2013AddinFoundWow"></Rule>
+	<Rule Name="fMapiHttpConnected14"></Rule>
+	<Rule Name="CloudMbxRegistry_fCloudMbxDetected"></Rule>
+	<Rule Name="OUTLOOKVERSION_sOutlookExeVersion"></Rule>
+</ObjectCollector>

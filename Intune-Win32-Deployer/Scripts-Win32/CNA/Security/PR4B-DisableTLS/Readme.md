@@ -1,0 +1,1 @@
+To remediate the system by disabling TLS 1.0 and 1.1, you can set the appropriate registry keys using PowerShell.

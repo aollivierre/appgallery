@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectCollector>
+  <Configuration  ConfigName="Communicator Configuration"
+				          ChangeDescription="2.0.1503.28"
+				          ConfigVersion="2.0.1503.28"
+				          ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+				          DownloadURL="http://www.microsoft.com/office/offcat"
+				          FixItURL="http://go.microsoft.com/?linkid={0}"
+                  ReferencedFiles="common.config.xml">
+    <!--!!! GLOBAL SUBSTITUTIONS SET AT RUN TIME WHEN THE USER SELECTS WHICH VERSION OF THE APP TO SCAN - DO NOT REMOVE !!!-->
+    <Substitution Name="MAJORVERSION"></Substitution>
+    <Substitution Name="INSTALLTYPE"></Substitution>
+    <ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+    <!-- HERE YOU CAN ADD WHATEVER ObjectProcessor YOU WANT-->
+    <ObjectProcessor Name="CommandLine" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.CommandLineObjectProcessor" />
+    <ObjectProcessor Name="Directory" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DirectoryObjectProcessor" />
+    <ObjectProcessor Name="DsGet" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.DsGetObjectProcessor" />
+    <ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+    <ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+    <ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+    <ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+    <ObjectProcessor Name="GetUserNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetUserNameExObjectProcessor" />
+    <ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+    <ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+    <ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+    <ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+    <ObjectProcessor Name="XML" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.XmlObjectProcessor" />
+    <ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+    <ObjectProcessor Name="NICS" Assembly="BPA.NetworkCollectorOffCAT.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.NetworkInterfaceObjectProcessor"/>
+  </Configuration>
+  <Object Type="Group" Name="Communicator/Lync Scan" Class="Scan Type" GroupingClass="True">
+
+    <!--OFFICE DETAILS-->
+    <Object Type="Group" Name="Communicator details">
+      <Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="LYNC" Key6="" Key7="%MAJORVERSION%" Key8="%INSTALLTYPE%">
+        <Setting Key1="Bitness">
+          <Rule Name="bitness" Query="$."></Rule>
+        </Setting>
+        <Setting Key1="FullVersion">
+          <Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+        </Setting>
+        <Setting Key1="Name">
+          <Rule Name="appName" Query="$."></Rule>
+        </Setting>
+        <Setting Key1="Path"></Setting>
+        <Setting Key1="Version"></Setting>
+        <Setting Key1="Type"></Setting>
+      </Object>
+      <Object Type="If" Key1="'%INSTALLTYPE%'='MSI'">
+        <Object Type="Group" Name="Installed Updates" Class="Office Update" GroupingClass="True" Display="Right" TrackProgress="TrackProgress">
+          <Object Type="MSI" Key1="UPDATE" Key2="" Key3="" Key9="LYNC">
+            <Setting Key1="DisplayName">
+              <Rule Name="sPatchDN" Query="if($.='',$sPatchFamily,$.)"></Rule>
+              <Rule Name="sPatch" P0="$sPatchDN" P1="$sInstallDate" P2="$sPatchUninstallable" P3="$sPatchTargets" P4="$sMoreInfo" Query="$sState='MSIPATCHSTATE_APPLIED'" Error="None" Title="{0}" Text="Installed on {1}.&#xd;&#xa;Uninstallable: {2}.&#xd;&#xa;Targets: {3}.&#xd;&#xa;More info: {4}"></Rule>
+            </Setting>
+            <Setting Key1="Targets">
+              <Rule Name="sPatchTargets" Query="$."></Rule>
+            </Setting>
+            <Setting Key1="Context"></Setting>
+            <Setting Key1="State">
+              <Rule Name="sState" Query="$."></Rule>
+            </Setting>
+            <Setting Key1="Uninstallable">
+              <Rule Name="sPatchUninstallable" Query="$."></Rule>
+            </Setting>
+            <Setting Key1="InstallDate">
+              <Rule Name="sInstallDate" Query="$."></Rule>
+            </Setting>
+            <Setting Key1="MoreInfoUrl">
+              <Rule Name="sMoreInfo" Query="$."></Rule>
+            </Setting>
+            <Setting Key1="LocalPackage" Substitution="PATCHPATH" ></Setting>
+            <Object Type="Group" Name="MsiPatchSequence" Display="Right">
+              <Object Type="MSI" Key1="MSIPATCHSEQUENCETABLE" Key4="%PATCHPATH%" Display="Hide">
+                <Setting Key1="PatchFamily" Display="Right">
+                  <Rule Name="sPatchFamily" Query="$."></Rule>
+                </Setting>
+                <Setting Key1="Sequence" Display="Right"></Setting>
+                <Setting Key1="Attributes" Display="Right"></Setting>
+              </Object>
+            </Object>
+            <Setting Key1="ProductCode"></Setting>
+            <Setting Key1="PatchCode"></Setting>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="If" Key1="'%INSTALLTYPE%'='ClickToRun'">
+        <Object Type="Group" Name="ClickToRun Updates" GroupingClass="True" Class="Office Update" Display="Right">
+          <Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml"></Reference>
+        </Object>
+      </Object>
+    </Object>
+    <!--/OFFICE DETAILS-->
+    <!--USER DETAILS-->
+    <Object Type="Group" Name="User Details" Display="Right">
+      <Reference Type="UserDetails" Name="UserDetails" File="common.config.xml"></Reference>
+    </Object>
+    <!--/USER DETAILS-->
+    <!--MACHINE DETAILS-->
+    <Object Type="Group" Name="Machine Details">
+      <Reference Type="MachineDetails" Name="MachineDetails" File="common.config.xml"></Reference>
+    </Object>
+    <!--/MACHINE DETAILs-->
+    <!--EVENTLOGS-->
+    <Object Type="Group" Name="Application Event Logs" Class="Event Logs" GroupingClass="True">
+      <Object Type="Group" Name="Application Event Log Entries for Last Communicator crashes" Class="Application Event Logs" GroupingClass="True" TrackProgress="TrackProgress">
+        <Object Type="EventLog" Key1="Application" Key3="1000" Key4="communicator.exe" Key7="14" Key8="10000">
+          <Setting Key1="__ALL"></Setting>
+        </Object>
+      </Object>
+    </Object>
+    <!--/EVENTLOGS-->
+    
+  </Object>
+</ObjectCollector>

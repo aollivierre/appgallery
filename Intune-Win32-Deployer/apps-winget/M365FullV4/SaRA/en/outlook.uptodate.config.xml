@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ObjectCollector>
+	<Configuration ConfigName="Outlook Update Check"
+	               ChangeDescription="2.0.1608.23"
+	               ConfigVersion="2.0.1608.23"
+	               ArticleURL="http://go.microsoft.com/fwlink/p/?LinkID={2}"
+	               DownloadURL="http://www.microsoft.com/office/offcat"
+	               FixItURL="http://go.microsoft.com/?linkid={0}"
+	               ReferencedFiles=""
+	               Symptoms="1">
+		<Substitution Name="MAJORVERSION"></Substitution>
+		<Substitution Name="INSTALLTYPE"></Substitution>
+		<Substitution Name="APPNAME">Outlook</Substitution>
+		<Substitution Name="DAYS"></Substitution>
+		<Substitution Name="MAXEVENTS"></Substitution>
+		<DataPostprocessor Name="0 Configuration Sumary Data Generation" Assembly="BPA.OfficeCommonOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.ConfigSummaryDataPostprocessor" />
+		<ConfigPreprocessor Name="0 OutlookGlobalSubstitutionConfigPreprocessor Preprocessor" Assembly="BPA.CommonOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.OutlookGlobalSubstitutionConfigPreprocessor" />
+		<ConfigPreprocessor Name="1 Type Preprocessor" Assembly="BPA.CommonOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+		<ObjectProcessor Name="Group" Assembly="BPA.CommonOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+		<ObjectProcessor Name="If" Assembly="BPA.CommonOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.IfObjectProcessor" />
+		<ObjectProcessor Name="EventLog" Assembly="BPA.ConfigCollectorOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.EvLog" />
+		<ObjectProcessor Name="MSI" Assembly="BPA.ConfigCollectorOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.MSI" />
+		<ObjectProcessor Name="Outlook" Assembly="BPA.OutlookCollectorOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.OutlookObjectProcessor" />
+		<ObjectProcessor Name="Engine" Assembly="BPA.CommonOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EngineObjectProcessor" />
+		<ObjectProcessor Name="File" Assembly="BPA.ConfigCollectorOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.FileObjectProcessor" />
+		<ObjectProcessor Name="Registry" Assembly="BPA.ConfigCollectorOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.RegistryObjectProcessor" />
+		<ObjectProcessor Name="WMI" Assembly="BPA.ConfigCollectorOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.WMIObjectProcessor" />
+		<ObjectProcessor Name="GetComputerNameEx" Assembly="BPA.ConfigCollectorOffCAT.dll"
+		                 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.GetComputerNameExObjectProcessor" />
+		<ExtFormat Name="Wow6432Node" Assembly="BPA.OfficeCommonOffCAT.dll"
+										 Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Formats" Convert="Wow6432Node">
+		</ExtFormat>
+		<RestrictionType Name="Task">
+			<Option Name="Offline Scan" Text="RestrictionText" Title="RestrictionTitle" Filter="True" />
+		</RestrictionType>
+	</Configuration>
+
+	<Object Type="MSI" Key1="INSTALLEDAPPLICATIONS" Key5="Outlook" Key6="outlook" Key7="%MAJORVERSION%" Display="Hide">
+		<Setting Key1="Bitness" Substitution="WOW6432NODE" SubstitutionFormat="Wow6432Node" Display="Hide">
+		</Setting>
+		<Setting Key1="Bitness" Substitution="APPBITNESS" Display="Hide">
+			<Rule Name="bitness" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="FullVersion" Display="Hide">
+			<Rule Name="n2DigitVersion" Query="number(substring($.,1,2))"></Rule>
+			<Rule Name="sFullAppVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Name" Display="Hide">
+			<Rule Name="appName" Query="$.">
+			</Rule>
+		</Setting>
+		<Setting Key1="Version" Substitution="APPVERSION" Display="Hide">
+			<Rule Name="n4DigitSKUVersion" Query="$."></Rule>
+		</Setting>
+		<Setting Key1="Type" Substitution="INSTALLTYPE" Display="Hide">
+			<Rule Name="nInstallType" Query="$."></Rule>
+			<Rule Name="f2013MSI" Query="$n4DigitSKUVersion='2013' and $.='MSI'"></Rule>
+			<Rule Name="f2016MSI" Query="$n4DigitSKUVersion='2016' and $.='MSI'"></Rule>
+		</Setting>
+
+		<Object Type="If" Key1="'%MAJORAPPVERSION%'='15.0' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x86'">
+			<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{E9E5CFFC-AFFE-4F83-A695-7734FA4775B9}">
+				<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+				<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+				<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+					<Rule Name="SKU2013" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+					<Rule Name="ReleaseType2013" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+					<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+						<Setting Key1="" Display="Hide"></Setting>
+					</Object>
+					<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+						<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE"
+						        Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%"
+						        Display="Hide">
+							<Setting Key1="ProductVersion" Display="Hide">
+								<Rule Name="fOfficeProductVersion15" Query="$." AlwaysEvaluate="True"></Rule>
+							</Setting>
+						</Object>
+						<Setting Key1="ProductName" Display="Hide">
+							<Rule Name="SKUName2013" Query="$."></Rule>
+						</Setting>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+		<Object Type="If" Key1="'%MAJORAPPVERSION%'='15.0' and '%INSTALLTYPE%'='MSI' and '%APPBITNESS%'='x64'">
+			<Object Type="MSI" Key1="MSIENUMCLIENTS" Key2="{3A5F96E7-F51D-4942-98DB-3CD037FB39E5}">
+				<Setting Key1="ProductCode" Substitution="PRODUCTCODE" Display="Hide"></Setting>
+				<Setting Key1="ProductCode" Substitution="REGPRODUCTCODE" SubstitutionFormat="({)(.*)(})----$2" Display="Hide"></Setting>
+				<Object Type="If" Key1="contains('%PRODUCTCODE%','0FF1CE')">
+					<Rule Name="SKU201364" Query="substring('%PRODUCTCODE%',11,4)"></Rule>
+					<Rule Name="ReleaseType201364" Query="substring('%PRODUCTCODE%',3,1)"></Rule>
+					<Object Type="Group" Name="ProductCode =%PRODUCTCODE%" Display="Hide">
+						<Setting Key1="" Display="Hide"></Setting>
+					</Object>
+					<Object Type="MSI" Key1="MSIGETPRODUCTINFO" Key2="%PRODUCTCODE%">
+						<Object Type="Registry" Key2="HKEY_LOCAL_MACHINE"
+						        Key3="Software\%WOW6432NODE%\Microsoft\Office\15.0\Common\InstalledPackages\%REGPRODUCTCODE%"
+						        Display="Hide">
+							<Setting Key1="ProductVersion" Display="Hide">
+								<Rule Name="fOfficeProductVersion15x64" Query="$." AlwaysEvaluate="True"></Rule>
+							</Setting>
+						</Object>
+						<Setting Key1="ProductName" Display="Hide">
+							<Rule Name="SKUName201364" Query="$."></Rule>
+						</Setting>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+
+		<Reference Type="OSDetails" Name="OSDetails" File="common.config.xml">
+		</Reference>
+		<Reference Type="MSO" Name="MSO" File="common.config.xml">
+		</Reference>
+		<Reference Type="CloudMbxRegistry" Name="CloudMbxRegistry" File="outlook.config.xml">
+		</Reference>
+		<Reference Type="Office_Updates" Name="Office_Updates" File="officeupdates.config.xml">
+		</Reference>
+		<Reference Type="C2R_Updates" Name="C2R_Updates" File="common.config.xml">
+		</Reference>
+
+	</Object>
+
+	<!--EXTERNALREFS-->
+	<Rule Name="sPpCoreVersion"></Rule>
+	<Rule Name="sWordVersion"></Rule>
+	<Rule Name="fPolicies"></Rule>
+	<Rule Name="effectiveSlowBitrate"></Rule>
+
+</ObjectCollector>
