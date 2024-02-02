@@ -360,7 +360,7 @@ Restore-SignaturesFromDocuments
 
 
 $clientId = '5ac5aaa3-8f84-4d2e-bbff-e8dd7099e8e0'
-$clientSecret = 'PW98Q~~-~CP1XDjmJHUDSRYEoF~irFHK4~cwca4h'
+$clientSecret = 'Whateveryouscretis'
 $tenantName = 'lcwhc.onmicrosoft.com'
 # $site_objectid = '7f764990-e69d-41fc-b62c-d833b16bb8ab'
 # $site_objectid = '898b76df-8e5a-4f17-ba50-53c32d2dad50'
