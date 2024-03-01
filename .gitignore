@@ -40,4 +40,5 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows
 *.kdbx
-Microsoft.Teams-v3-MSIX-Bootstrapper/install.intunewin
+install.intunewin
+secrets.json
