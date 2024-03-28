@@ -1,0 +1,5 @@
+<Configuration>
+  <Property Name="FORCEAPPSHUTDOWN" Value="FALSE" />
+	<Updates Channel="Current" />
+	<Display Level="None" AcceptEULA="TRUE" />
+</Configuration>

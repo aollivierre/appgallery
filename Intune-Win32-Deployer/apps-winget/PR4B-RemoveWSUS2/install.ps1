@@ -7,7 +7,7 @@ $Version = 1
 
 $Schedule_Frequency = "Hourly"      # Once, Hourly, Daily, AtLogon
 $Schedule_RepeatInterval = "1"      # Number            (for Daily and Hourly)
-$Schedule_StartDate = "2023-09-12"  # YYYY.MM.DD        (for Once)
+$Schedule_StartDate = "2024-16-01"  # YYYY.MM.DD        (for Once)
 $Schedule_StartTime = "6pm"         # ex 8am or 5pm     (for Once, Hourly, Daily)
 
 ##########################################################################

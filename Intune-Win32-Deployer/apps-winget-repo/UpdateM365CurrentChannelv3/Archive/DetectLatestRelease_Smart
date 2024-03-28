@@ -1,0 +1,28 @@
+# Define variables
+$tenantId = "YOUR_TENANT_ID"
+$appId = "YOUR_APP_ID"
+$appSecret = "YOUR_APP_SECRET"
+$resource = "https://graph.microsoft.com"
+$version = "v1.0"
+$officeAppId = "d31e3e17-e8f9-4a0b-9a1b-276e02e936c1"
+
+# Get access token
+$tokenEndpoint = "https://login.microsoftonline.com/$tenantId/oauth2/token"
+$body = @{
+    grant_type    = "client_credentials"
+    client_id     = $appId
+    client_secret = $appSecret
+    resource      = $resource
+}
+$token = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $body
+
+# Get latest version of Office
+$officeEndpoint = "$resource/$version/deviceAppManagement/mobileApps/$officeAppId"
+$officeHeaders = @{
+    Authorization = "Bearer $($token.access_token)"
+}
+$officeResponse = Invoke-RestMethod -Method Get -Uri $officeEndpoint -Headers $officeHeaders
+$latestVersion = $officeResponse.properties.contentVersions[-1].displayName
+
+# Output latest version
+Write-Output "Latest version of Office: $latestVersion"

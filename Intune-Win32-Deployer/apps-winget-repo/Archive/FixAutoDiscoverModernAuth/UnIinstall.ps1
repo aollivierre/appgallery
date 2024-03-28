@@ -1,0 +1,1 @@
+if (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Exchange" -Name "AlwaysUseMSOAuthForAutoDiscover" -ErrorAction SilentlyContinue) { Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Exchange" -Name "AlwaysUseMSOAuthForAutoDiscover" }

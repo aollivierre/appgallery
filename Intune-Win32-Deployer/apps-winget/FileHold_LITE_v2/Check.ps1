@@ -1,0 +1,1 @@
+if ((Test-Path "C:\Program Files (x86)\FileHold\FDA\FDA.exe") -and ((Get-ItemProperty "C:\Program Files (x86)\FileHold\FDA\FDA.exe").VersionInfo.FileVersion -eq "17.0.0.0")) { Write-Output "F"; exit 0 } else { exit 1 }

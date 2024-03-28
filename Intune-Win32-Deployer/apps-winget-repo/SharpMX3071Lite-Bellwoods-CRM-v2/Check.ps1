@@ -1,0 +1,2 @@
+#Unique Tracking ID 621cb665-decd-4772-97ff-41b2556e24c7
+$pName = "SHARP CRM"; $pRegKeyPath = "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Print\Printers\$pName"; if ((Get-ItemProperty -Path $pRegKeyPath -Name "Name" -ErrorAction SilentlyContinue)."Name" -eq $pName) { Write-Output "Printer '$pName' detected."; exit 0 } else { exit 1 }

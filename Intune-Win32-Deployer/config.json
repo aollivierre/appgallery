@@ -1,0 +1,13 @@
+{
+    "ID": "Microsoft.Teams-v11-MSIX-Bootstrapper",
+    "Publisher": "Abdullah Ollivierre",
+    "AppVersion": "24004.1307.2669.7070",
+    "Developer": "Abdullah Ollivierre",
+    "Owner": "Abdullah Ollivierre",
+    "CompanyPortalFeaturedApp": "true",
+    "InstallExperience": "system",
+    "RestartBehavior": "suppress",
+    "serviceUIPSADT": false,
+    "InformationURL": "https://placeholder.com/info",
+    "PrivacyURL": "https://placeholder.com/privacy"
+}

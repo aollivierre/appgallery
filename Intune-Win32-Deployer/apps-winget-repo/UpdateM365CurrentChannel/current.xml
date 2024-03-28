@@ -1,0 +1,4 @@
+<Configuration> 
+	<Updates Channel="Current" />
+	<Display Level="None" AcceptEULA="TRUE" />
+</Configuration> 

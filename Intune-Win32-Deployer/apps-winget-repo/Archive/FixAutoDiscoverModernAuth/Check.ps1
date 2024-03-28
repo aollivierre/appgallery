@@ -1,0 +1,1 @@
+if (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Exchange" -Name "AlwaysUseMSOAuthForAutoDiscover" -ErrorAction SilentlyContinue) { Write-Output "F"; exit 0 } else { exit 1 }

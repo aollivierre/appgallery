@@ -1,0 +1,9 @@
+{
+  "PackageName": "PR4B_EnableBitlocker",
+  "PackageUniqueGUID": "419499a4-f334-4cbb-bfdb-f1cbe856829f",
+  "Version": 1,
+  "PackageExecutionContext": "system",
+  "RepetitionInterval": "PT5M",
+  "LoggingDeploymentName": "PR4B_EnableBitlockerCustomlog",
+  "ScriptMode": "PackageName"
+}

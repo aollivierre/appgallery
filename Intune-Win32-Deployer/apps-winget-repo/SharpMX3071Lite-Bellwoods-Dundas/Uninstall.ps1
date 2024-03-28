@@ -1,0 +1,1 @@
+$pName = "DUNDAS_SHARP"; if (Get-Printer -Name $pName -ErrorAction SilentlyContinue) { Remove-Printer -Name $pName -Confirm:$false }

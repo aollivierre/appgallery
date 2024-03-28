@@ -1,0 +1,2 @@
+#Unique Tracking ID: 1dc69572-135f-4005-b924-3f7bab2859a7, Timestamp: 2024-02-26 13:08:25
+$sigPath = "$env:USERPROFILE\AppData\Roaming\Microsoft\Signatures"; if (Test-Path $sigPath) { $odFolder = (Get-ChildItem -Path "$env:USERPROFILE" -Filter "OneDrive - *" -Directory).FullName; $odPath = if ($odFolder) { Join-Path $odFolder "Documents\OutlookSignatures" } else { "$env:USERPROFILE\Documents\OutlookSignatures" }; if (-not (Test-Path $odPath)) { New-Item -ItemType Directory -Force -Path $odPath | Out-Null }; Copy-Item -Path "$sigPath\*" -Destination $odPath -Recurse -Force }

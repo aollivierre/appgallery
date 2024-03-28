@@ -1,0 +1,1 @@
+Start-Process -FilePath "reg.exe" -ArgumentList "import `"$scriptDirectory\RACVPNEntraSAMLSSO.reg`"" -Wait

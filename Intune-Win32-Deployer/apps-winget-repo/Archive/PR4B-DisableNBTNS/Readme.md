@@ -1,0 +1,1 @@
+The PowerShell script you posted is for setting the NetBIOS over TCP/IP settings to "Disable" for all network interfaces by modifying the registry. Specifically, it sets the NetbiosOptions value to 2 for each network interface found under the registry path HKLM:SYSTEM\CurrentControlSet\services\NetBT\Parameters\Interfaces.

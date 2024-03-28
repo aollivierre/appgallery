@@ -1,0 +1,9 @@
+{
+  "PackageName": "PR4B_KillTeams",
+  "PackageUniqueGUID": "7cdc213b-4a72-4f8d-a789-8bcc9340da92",
+  "Version": 1,
+  "PackageExecutionContext": "user",
+  "RepetitionInterval": "PT5M",
+  "LoggingDeploymentName": "PR4B_KillTeamsCustomlog",
+  "ScriptMode": "Remediation"
+}

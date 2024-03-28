@@ -1,0 +1,2 @@
+#Unique Tracking ID cd916b4d-07cf-4fa4-b050-b2ecc6b3b8a2
+$pName = "DUNDAS_SHARP"; $pRegKeyPath = "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Print\Printers\$pName"; if ((Get-ItemProperty -Path $pRegKeyPath -Name "Name" -ErrorAction SilentlyContinue)."Name" -eq $pName) { Write-Output "Printer '$pName' detected."; exit 0 } else { exit 1 }

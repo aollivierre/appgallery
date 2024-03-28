@@ -1,0 +1,1 @@
+﻿& ".\f.exe" /S /V"/qn ALLUSERS=1"

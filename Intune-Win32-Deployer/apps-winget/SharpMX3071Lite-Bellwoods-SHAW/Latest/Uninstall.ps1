@@ -1,0 +1,1 @@
+$pName = "SHARP SHAW"; if (Get-Printer -Name $pName -ErrorAction SilentlyContinue) { Remove-Printer -Name $pName -Confirm:$false }

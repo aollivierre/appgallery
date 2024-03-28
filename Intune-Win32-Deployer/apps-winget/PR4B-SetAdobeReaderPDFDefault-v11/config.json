@@ -1,0 +1,9 @@
+{
+  "PackageName": "PR4B_SetAdobeReaderPDFDefault",
+  "PackageUniqueGUID": "db96ca9b-3d44-4d86-9bb5-742e85a63724",
+  "Version": 1,
+  "PackageExecutionContext": "user",
+  "RepetitionInterval": "PT5M",
+  "LoggingDeploymentName": "PR4B_SetAdobeReaderPDFDefaultCustomlog",
+  "ScriptMode": "Remediation"
+}
