@@ -1,10 +1,10 @@
-# & ".\TeamViewer_Host.msi" '/S' '/V"/qn IKEY=DI9OOWPZR7438NT2WCJF SKEY=9Y023lEkVeiiNjg3zxPGVfLIJvZk8wVrGHDqpigL HOST=api-d327e3d5.duosecurity.com AUTOPUSH=#1 FAILOPEN=#1 SMARTCARD=#1 RDPONLY=#0"'
+# & ".\TeamViewer_Host.msi" '/S' '/V"/qn IKEY=xxxxxxxxxxxxxxxxxxxx SKEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx HOST=api-xxxxxxxxx.duosecurity.com AUTOPUSH=#1 FAILOPEN=#1 SMARTCARD=#1 RDPONLY=#0"'
 
 
 # MSIEXEC.EXE /i "PATH_TO_MSI_FILE\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=YOUR_CUSTOM_CONFIG_ID
 
 
-MSIEXEC.EXE /i ".\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=he26pyq APITOKEN=7757967-7qRfr5r4Voq9MRxS7UKZ ASSIGNMENTOPTIONS="--reassign" ASSIGNMENTOPTIONS="--group-id=""g176322730""" SETTINGSFILE=teamviewer_settings_export.tvopt
+MSIEXEC.EXE /i ".\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=xxxx APITOKEN=7757967-xxxxx ASSIGNMENTOPTIONS="--reassign" ASSIGNMENTOPTIONS="--group-id=""g176322730""" SETTINGSFILE=teamviewer_settings_export.tvopt
 
 
 

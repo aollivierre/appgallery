@@ -461,12 +461,13 @@ Install-PrinterWithParameters -PortName $PortName -PrinterIP $PrinterIP -Printer
 
 
 
-$clientId = '5ac5aaa3-8f84-4d2e-bbff-e8dd7099e8e0'
-$clientSecret = 'PW98Q~~-~CP1XDjmJHUDSRYEoF~irFHK4~cwca4h'
-$tenantName = 'lcwhc.onmicrosoft.com'
+$clientId = 'xxxxxxxxxxxxxx-e8dd7099e8e0'
+$clientSecret = 'xxxxxxxxxxxxxxxxx'
+$tenantName = 'contoso.onmicrosoft.com'
 # $site_objectid = '7f764990-e69d-41fc-b62c-d833b16bb8ab'
 # $site_objectid = '898b76df-8e5a-4f17-ba50-53c32d2dad50'
-$webhook_url = 'https://lcwhc.webhook.office.com/webhookb2/898b76df-8e5a-4f17-ba50-53c32d2dad50@f8e714f5-f15a-435d-b51e-9c93d637a9c4/IncomingWebhook/b05c1bec03bb49099708856ba1d7027a/4ddd24b7-90b8-4550-9201-164041a906f3'
+$webhook_url = 'https://contoso.webhook.office.com/webhookb2/xxxxxxxxxxxxxxxxxxxxxxxx'
+
 
 
 

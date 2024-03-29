@@ -4,10 +4,10 @@
 # MSIEXEC.EXE /i "PATH_TO_MSI_FILE\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=YOUR_CUSTOM_CONFIG_ID
 
 
-# MSIEXEC.EXE /i ".\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=he26pyq APITOKEN=7757967-7qRfr5r4Voq9MRxS7UKZ ASSIGNMENTOPTIONS="--reassign" ASSIGNMENTOPTIONS="--group-id=""g176322730""" SETTINGSFILE=teamviewer_settings_export.tvopt
+# MSIEXEC.EXE /i ".\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=xxxxxx APITOKEN=7757967-xxxxxxxxxxxxx ASSIGNMENTOPTIONS="--reassign" ASSIGNMENTOPTIONS="--group-id=""g176322730""" SETTINGSFILE=teamviewer_settings_export.tvopt
 
 
-# MSIEXEC.EXE /i ".\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=he26pyq
+# MSIEXEC.EXE /i ".\TeamViewer_Host.msi" /qn CUSTOMCONFIGID=xxxxxx
 
 
 
@@ -15,8 +15,8 @@
 
 
 
-# $customConfigId = "he26pyq"
-# $apiToken = "7757967-7qRfr5r4Voq9MRxS7UKZ"
+# $customConfigId = "xxxxxx"
+# $apiToken = "7757967-xxxxxxxxxxx"
 # $groupId = "g176322730"
 # $settingsFile = "teamviewer_settings_export.tvopt"
 # $msiFilePath = ".\TeamViewer_Host.msi"

@@ -335,11 +335,11 @@ foreach ($ModuleName in $ModuleNames) {
 # 0c0bf378-bf22-4481-8f81-9e89a9b4960a: Directory.ReadWrite.All
 
 
-$clientId = '3c9b3719-36a9-47d3-881e-8321d6823592'
-$clientSecret = 'StI8Q~3Q~tRT.m3Zyni6C7Ea_yW5MX5nmM~yKctO'
-$tenantName = 'cna365.onmicrosoft.com'
+$clientId = 'xxxxxxxxxxxxxxx-8321d6823592'
+$clientSecret = 'xxxxxxxxxxxxxxxxx'
+$tenantName = 'contoso.onmicrosoft.com'
 # $groupObjectID = '7f764990-e69d-41fc-b62c-d833b16bb8ab'
-$webhook_url = 'https://cna365.webhook.office.com/webhookb2/7f764990-e69d-41fc-b62c-d833b16bb8ab@8bb6061d-2d46-4095-9f9e-41cfcbc1e9f1/IncomingWebhook/1ed31e5d1da34bb99e0673029ddd26f6/2d6b0104-7a5d-45c9-a73b-4d7e3b500327'
+$webhook_url = 'https://contoso.webhook.office.com/webhookb2/xxxxxxxxxxxxx'
 
 
 
