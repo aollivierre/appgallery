@@ -759,9 +759,9 @@ $null = Upload-FileToSharePoint -document_drive_id $document_drive_id -file_path
 
 
 
-$azureAppId = "3c9b3719-36a9-47d3-881e-8321d6823592"
+$azureAppId = "xxxxxxxxxxxxxxxxx-8321d6823592"
 $azureTenantId = "8bb6061d-2d46-4095-9f9e-41cfcbc1e9f1"
-$azurePassword = ConvertTo-SecureString "Ied8Q~SaDAA-.7csdNV0P35qB78NelrJFJ7Erds2" -AsPlainText -Force
+$azurePassword = ConvertTo-SecureString "xxxxxxxxxxxxxxxxxxxxxxxxx" -AsPlainText -Force
 $azureCredential = New-Object System.Management.Automation.PSCredential($azureAppId, $azurePassword)
 
 Connect-AzAccount -ServicePrincipal -Credential $azureCredential -Tenant $azureTenantId
