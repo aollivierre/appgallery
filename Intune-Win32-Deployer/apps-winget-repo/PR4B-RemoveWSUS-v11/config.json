@@ -1,0 +1,9 @@
+{
+  "PackageName": "PR4B_RemoveWSUS",
+  "PackageUniqueGUID": "f5222292-74e4-40b0-b026-d3305787e40c",
+  "Version": 1,
+  "PackageExecutionContext": "System",
+  "RepetitionInterval": "PT60M",
+  "LoggingDeploymentName": "PR4B_RemoveWSUSCustomlog",
+  "ScriptMode": "DetectAndRemediate"
+}

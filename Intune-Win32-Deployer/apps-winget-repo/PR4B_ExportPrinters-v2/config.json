@@ -1,0 +1,9 @@
+{
+  "PackageName": "PR4B_ExportPRINTERtoSPO",
+  "PackageUniqueGUID": "8b57647e-d4b1-41fa-a455-e9ff2e094513",
+  "Version": 1,
+  "PackageExecutionContext": "SYSTEM",
+  "RepetitionInterval": "PT60M",
+  "LoggingDeploymentName": "PR4B_ExportPRINTERtoSPOCustomlog",
+  "ScriptMode": "Remediation"
+}

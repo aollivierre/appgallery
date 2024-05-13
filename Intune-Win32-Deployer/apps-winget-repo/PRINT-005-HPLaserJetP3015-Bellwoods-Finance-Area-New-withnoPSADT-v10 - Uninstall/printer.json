@@ -1,0 +1,9 @@
+{
+    "PrinterName": "HP-LJ-P3015 (HP LaserJet P3010 Series)",
+    "PrinterIPAddress": "192.168.53.20",
+    "PortName": "IP_192.168.53.20",
+    "DriverName": "HP LaserJet P3011/P3015 PCL6 Class Driver",
+    "InfPathRelative": "Driver\\hpcu270u.inf",
+    "InfFileName": "hpcu270u.inf",
+    "DriverIdentifier": "amd64_3e20dbae029ad04a"
+}

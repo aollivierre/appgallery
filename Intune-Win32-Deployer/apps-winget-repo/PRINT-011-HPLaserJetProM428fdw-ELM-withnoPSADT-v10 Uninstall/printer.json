@@ -1,0 +1,9 @@
+{
+    "PrinterName": "HPED1D4B (HP LaserJet Pro M428f-M429f)",
+    "PrinterIPAddress": "192.168.2.76",
+    "PortName": "IP_192.168.2.76",
+    "DriverName": "HP LaserJet Pro M428f-M429f PCL-6 (V4)",
+    "InfPathRelative": "Driver\\hpcu270u.inf",
+    "InfFileName": "hpcu270u.inf",
+    "DriverIdentifier": "amd64_3e20dbae029ad04a"
+}

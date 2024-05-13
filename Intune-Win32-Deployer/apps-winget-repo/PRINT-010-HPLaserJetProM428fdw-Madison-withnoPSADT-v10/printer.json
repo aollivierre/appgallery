@@ -1,0 +1,9 @@
+{
+    "PrinterName": "HP Laserjet Pro M428fdw - Madison - New",
+    "PrinterIPAddress": "192.168.2.19",
+    "PortName": "IP_192.168.2.19",
+    "DriverName": "HP Universal Printing PCL 6",
+    "InfPathRelative": "Driver\\hpcu270u.inf",
+    "InfFileName": "hpcu270u.inf",
+    "DriverIdentifier": "amd64_3e20dbae029ad04a"
+}

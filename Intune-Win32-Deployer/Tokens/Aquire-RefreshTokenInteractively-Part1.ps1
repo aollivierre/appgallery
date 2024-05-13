@@ -1,7 +1,7 @@
-$clientId = "xxxxxxxxx-4eb1d0b50e92"
-# $clientSecret = "xxxxxxxxxxxx"
-# $tenantName = "contoso.onmicrosoft.com"
-$tenantID = "xxxx-c15d21a89f13"
+$clientId = "cc9a5e95-f33d-45f9-a942-4eb1d0b50e92"
+# $clientSecret = "CFu8Q~ITd-NIsZCy3ZQgjoF-cqvmhQqwc~9ZGcPX"
+# $tenantName = "bellwoodscentres.onmicrosoft.com"
+$tenantID = "bfe58736-eeb3-4527-b77c-c15d21a89f13"
 
 $RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
 

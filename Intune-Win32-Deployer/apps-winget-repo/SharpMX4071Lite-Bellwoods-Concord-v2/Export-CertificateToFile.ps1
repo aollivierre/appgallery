@@ -3,8 +3,7 @@ function Export-TrustedPublisherCerts {
         [string]$ExportDirName = "certs"
     )
 
-    $ScriptRoot = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-    $ExportPath = Join-Path -Path $ScriptRoot -ChildPath $ExportDirName
+    $ExportPath = Join-Path -Path $PSScriptRoot -ChildPath $ExportDirName
 
     # Check if the export directory exists, if not, create it
     if (-not (Test-Path -Path $ExportPath)) {

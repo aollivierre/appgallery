@@ -1,0 +1,9 @@
+{
+  "PackageName": "PR4B_ExportSSIDtoSPO",
+  "PackageUniqueGUID": "7e065650-3794-4ee4-9a42-3438d268cebe",
+  "Version": 1,
+  "PackageExecutionContext": "SYSTEM",
+  "RepetitionInterval": "PT60M",
+  "LoggingDeploymentName": "PR4B_ExportSSIDtoSPOCustomlog",
+  "ScriptMode": "Remediation"
+}

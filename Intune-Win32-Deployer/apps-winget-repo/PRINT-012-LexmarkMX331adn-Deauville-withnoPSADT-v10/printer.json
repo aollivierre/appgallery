@@ -1,0 +1,9 @@
+{
+    "PrinterName": "Lexamrk MX331adn - Deauville - New",
+    "PrinterIPAddress": "192.168.2.79",
+    "PortName": "IP_192.168.2.79",
+    "DriverName": "Lexmark Universal v2",
+    "InfPathRelative": "Driver\\LMUD1o40.inf",
+    "InfFileName": "LMUD1o40.inf",
+    "DriverIdentifier": "amd64_51d0ca74e641a8db"
+}

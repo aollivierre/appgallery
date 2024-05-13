@@ -1,0 +1,9 @@
+{
+    "PrinterName": "Brother MFC-L2710DW - ELM - New",
+    "PrinterIPAddress": "169.254.0.1",
+    "PortName": "IP_169.254.0.1",
+    "DriverName": "Brother MFC-L2710DW XML Paper",
+    "InfPathRelative": "Driver\\BRXM17A.inf",
+    "InfFileName": "BRXM17A.inf",
+    "DriverIdentifier": "amd64_61e473e495249321"
+}

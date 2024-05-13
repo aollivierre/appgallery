@@ -1,0 +1,9 @@
+{
+    "PrinterName": "Deauville Lexmark",
+    "PrinterIPAddress": "192.168.2.79",
+    "PortName": "IP_192.168.2.79",
+    "DriverName": "Microsoft IPP Class Driver",
+    "InfPathRelative": "Driver\\LMUD1o40.inf",
+    "InfFileName": "LMUD1o40.inf",
+    "DriverIdentifier": "amd64_51d0ca74e641a8db"
+}

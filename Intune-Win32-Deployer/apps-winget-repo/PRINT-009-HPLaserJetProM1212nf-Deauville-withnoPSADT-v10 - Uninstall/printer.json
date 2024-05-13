@@ -1,0 +1,9 @@
+{
+    "PrinterName": "HP Laserjet Pro M1212nf - Deauville - New",
+    "PrinterIPAddress": "169.254.0.1",
+    "PortName": "IP_169.254.0.1",
+    "DriverName": "Microsoft IPP Class Driver",
+    "InfPathRelative": "Driver\\hpcu270u.inf",
+    "InfFileName": "hpcu270u.inf",
+    "DriverIdentifier": "amd64_3e20dbae029ad04a"
+}

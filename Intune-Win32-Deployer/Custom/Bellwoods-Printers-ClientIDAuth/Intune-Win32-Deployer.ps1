@@ -366,9 +366,9 @@ function Upload-Win32App ($Prg, $Prg_Path, $Prg_img) {
 
         # Define the parameters for non-interactive connection
         $connectionParams = @{
-            clientId = ""
-            tenantID = ""
-            ClientSecret = ""  # Replace with your actual Client Secret
+            clientId = "cc9a5e95-f33d-45f9-a942-4eb1d0b50e92"
+            tenantID = "bfe58736-eeb3-4527-b77c-c15d21a89f13"
+            ClientSecret = "3WD8Q~TIlVDVzb1mx2Gv9m.is9AaE6C3D5PpucBZ"  # Replace with your actual Client Secret
         }
 
         # Call the Connect-MSIntuneGraph function with splatted parameters
@@ -381,10 +381,10 @@ function Upload-Win32App ($Prg, $Prg_Path, $Prg_img) {
         # }
 
 
-        # $clientId = ""
-        # $tenantID = ""
+        # $clientId = "cc9a5e95-f33d-45f9-a942-4eb1d0b50e92"
+        # $tenantID = "bfe58736-eeb3-4527-b77c-c15d21a89f13"
 
-        # $refreshToken = ''
+        # $refreshToken = '0.AXgANoflv7PuJ0W3fMFdIaifE5Vemsw98_lFqUJOsdC1DpJ4AOA.AgABAAEAAAAmoFfGtYxvRrNriQdPKIZ-AgDs_wUA9P8JHLDLZbvx6evTZBj7o-7EwVbBG6pZXK4DLt0BFQUAi0sz-rWUme11jZj4tArzuWPwupsq3UXQOL7j_DEJFO28RaDRwYylFdBbmLRjoP0NW0EBUpk-_1E4yqlz7b5yT5XwVSOLvL2dBv19EZJzGzAn76KX6wTNbUCqWhjrs04J6VJrmBK1bUzjL2PdOtkddPxXFt7ZcTF4AEyDXXNuO8_ZCRmrkMcMgjCjsqYV5RSti6KNWur4H-1-eiOZXqwekzA-a1SGxcCEqRyggiFvtEXME5sXmQDCK2HfukJNwxrI6E_mu6g5xTH4lfM1UQz7Lly2m3Opclo-KQn_YGFLTRvOa1yqyzCzttZYYCBmaVm9IMleLjoVphJpEjXXwXrdbfmcBG37U4gWw6vAW7NO6TEdnRqzfpviSaa2IKYjuNXnK52N6HlB5B4c0ZEaNDsa2UDtNG64hwGZnR8yHMS9ZlaBttfrn3kXuoLd8l6T1ICVjEvH_vbHMthMJGsKzET1bMqkAo6pvtTK3Cwn2aO4CCePgnfgbbbrWzYx9t070arE_XgUfezok3EYMbMN51YBBjIc6kuZTp9_EtI4dqWiGLjsN8QEpRpzOxP3__fSM0JI27jcEYjrD5ZJmFEjwHsddTzUr5j9EZqJeUCfrUkKYb1jvYVjOvzAD9oWdFkwPsENI0DGcGdCcgUS22GgvZc6AF_XF_qb7OQ6e-hCDm7tb6yND0wmTMq4r2t1Zpp2NvTeZwfWK1cYLElVLkgL_x2BoifA6ZoioiIADGZAwrWYRQ'
 
 
         # Token endpoint
@@ -545,10 +545,10 @@ function Import-FromCatalog {
         
         
         
-    #     $clientId = ""
-    #     $tenantID = ""
+    #     $clientId = "cc9a5e95-f33d-45f9-a942-4eb1d0b50e92"
+    #     $tenantID = "bfe58736-eeb3-4527-b77c-c15d21a89f13"
 
-    #     $refreshToken = ''
+    #     $refreshToken = '0.AXgANoflv7PuJ0W3fMFdIaifE5Vemsw98_lFqUJOsdC1DpJ4AOA.AgABAAEAAAAmoFfGtYxvRrNriQdPKIZ-AgDs_wUA9P8JHLDLZbvx6evTZBj7o-7EwVbBG6pZXK4DLt0BFQUAi0sz-rWUme11jZj4tArzuWPwupsq3UXQOL7j_DEJFO28RaDRwYylFdBbmLRjoP0NW0EBUpk-_1E4yqlz7b5yT5XwVSOLvL2dBv19EZJzGzAn76KX6wTNbUCqWhjrs04J6VJrmBK1bUzjL2PdOtkddPxXFt7ZcTF4AEyDXXNuO8_ZCRmrkMcMgjCjsqYV5RSti6KNWur4H-1-eiOZXqwekzA-a1SGxcCEqRyggiFvtEXME5sXmQDCK2HfukJNwxrI6E_mu6g5xTH4lfM1UQz7Lly2m3Opclo-KQn_YGFLTRvOa1yqyzCzttZYYCBmaVm9IMleLjoVphJpEjXXwXrdbfmcBG37U4gWw6vAW7NO6TEdnRqzfpviSaa2IKYjuNXnK52N6HlB5B4c0ZEaNDsa2UDtNG64hwGZnR8yHMS9ZlaBttfrn3kXuoLd8l6T1ICVjEvH_vbHMthMJGsKzET1bMqkAo6pvtTK3Cwn2aO4CCePgnfgbbbrWzYx9t070arE_XgUfezok3EYMbMN51YBBjIc6kuZTp9_EtI4dqWiGLjsN8QEpRpzOxP3__fSM0JI27jcEYjrD5ZJmFEjwHsddTzUr5j9EZqJeUCfrUkKYb1jvYVjOvzAD9oWdFkwPsENI0DGcGdCcgUS22GgvZc6AF_XF_qb7OQ6e-hCDm7tb6yND0wmTMq4r2t1Zpp2NvTeZwfWK1cYLElVLkgL_x2BoifA6ZoioiIADGZAwrWYRQ'
 
 
     #     # Token endpoint
