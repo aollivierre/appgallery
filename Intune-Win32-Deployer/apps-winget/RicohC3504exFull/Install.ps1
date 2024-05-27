@@ -41,7 +41,8 @@ function RunAsAdmin {
         $scriptPath = $MyInvocation.MyCommand.Path
         Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"" -Verb RunAs
         exit
-    } else {
+    }
+    else {
         Write-Host "Script is running as administrator." -ForegroundColor Green
     }
 }
@@ -96,7 +97,8 @@ function Initialize-ScriptAndLogging {
             CSVFilePath = $CSVFilePath
         }
 
-    } catch {
+    }
+    catch {
         Write-Error "An error occurred while initializing script and logging: $_"
     }
 }
@@ -146,10 +148,12 @@ function Create-EventSourceAndLog {
     if (-not (Get-WinEvent -ListLog $LogName -ErrorAction SilentlyContinue)) {
         try {
             New-EventLog -LogName $LogName -Source $EventSource
-        } catch [System.InvalidOperationException] {
+        }
+        catch [System.InvalidOperationException] {
             Write-Warning "Error creating the event log. Make sure you run PowerShell as an Administrator."
         }
-    } elseif (-not ([System.Diagnostics.EventLog]::SourceExists($EventSource))) {
+    }
+    elseif (-not ([System.Diagnostics.EventLog]::SourceExists($EventSource))) {
         # Get the existing log name for the event source
         $existingLogName = (Get-WinEvent -ListLog * | Where-Object { $_.LogName -contains $EventSource }).LogName
 
@@ -158,7 +162,8 @@ function Create-EventSourceAndLog {
             Remove-EventLog -Source $EventSource -ErrorAction SilentlyContinue
             try {
                 New-EventLog -LogName $LogName -Source $EventSource
-            } catch [System.InvalidOperationException] {
+            }
+            catch [System.InvalidOperationException] {
                 New-EventLog -LogName $LogName -Source $EventSource
             }
         }
@@ -176,17 +181,18 @@ function Write-CustomEventLog {
 
     # Map the Level to the corresponding EntryType
     switch ($Level) {
-        'DEBUG'   { $EntryType = 'Information' }
-        'INFO'    { $EntryType = 'Information' }
+        'DEBUG' { $EntryType = 'Information' }
+        'INFO' { $EntryType = 'Information' }
         'WARNING' { $EntryType = 'Warning' }
-        'ERROR'   { $EntryType = 'Error' }
-        default   { $EntryType = 'Information' }
+        'ERROR' { $EntryType = 'Error' }
+        default { $EntryType = 'Information' }
     }
 
     # Write the event to the custom event log
     try {
-        Write-EventLog -LogName $LogName -Source $EventSource -EventID $EventID -Message $EventMessage -EntryType $EntryType
-    } catch [System.InvalidOperationException] {
+        Write-EventLog -LogName $LogName -Source $EventSource -EventId $EventID -Message $EventMessage -EntryType $EntryType
+    }
+    catch [System.InvalidOperationException] {
         Write-Warning "Error writing to the event log. Make sure you run PowerShell as an Administrator."
     }
 }
@@ -217,15 +223,15 @@ function Write-EnhancedLog {
 
     # Set foreground color based on log level
     switch ($Level) {
-        'INFO'    { $ForegroundColor = [ConsoleColor]::Green }
+        'INFO' { $ForegroundColor = [ConsoleColor]::Green }
         'WARNING' { $ForegroundColor = [ConsoleColor]::Yellow }
-        'ERROR'   { $ForegroundColor = [ConsoleColor]::Red }
+        'ERROR' { $ForegroundColor = [ConsoleColor]::Red }
     }
 
     # Write the message with the specified colors
     $currentForegroundColor = $Host.UI.RawUI.ForegroundColor
     $Host.UI.RawUI.ForegroundColor = $ForegroundColor
-    Write-output $formattedMessage
+    Write-Output $formattedMessage
     $Host.UI.RawUI.ForegroundColor = $currentForegroundColor
 
     # Append to CSV file
@@ -241,9 +247,9 @@ function Write-EnhancedLog {
 
 function Export-EventLog {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$LogName,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ExportPath
     )
 
@@ -252,10 +258,12 @@ function Export-EventLog {
 
         if (Test-Path $ExportPath) {
             Write-EnhancedLog -Message "Event log '$LogName' exported to '$ExportPath'" -Level "INFO" -ForegroundColor ([ConsoleColor]::Green)
-        } else {
+        }
+        else {
             Write-EnhancedLog -Message "Event log '$LogName' not exported: File does not exist at '$ExportPath'" -Level "WARNING" -ForegroundColor ([ConsoleColor]::Yellow)
         }
-    } catch {
+    }
+    catch {
         Write-EnhancedLog -Message "Error exporting event log '$LogName': $($_.Exception.Message)" -Level "ERROR" -ForegroundColor ([ConsoleColor]::Red)
     }
 }
@@ -302,138 +310,138 @@ function Install-PrinterWithParameters {
 
     # (paste the entire script here, replacing hard-coded parameters with the passed parameters)
 
-#Reset Error catching variable
-$Throwbad = $Null
+    #Reset Error catching variable
+    $Throwbad = $Null
 
-#Run script in 64bit PowerShell to enumerate correct path for pnputil
-If ($ENV:PROCESSOR_ARCHITEW6432 -eq "AMD64") {
-    Try {
-        &"$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH -PortName $PortName -PrinterIP $PrinterIP -DriverName $DriverName -PrinterName $PrinterName -INFFile $INFFile
-    }
-    Catch {
-        Write-Error "Failed to start $PSCOMMANDPATH"
-        Write-Warning "$($_.Exception.Message)"
-        $Throwbad = $True
-    }
-}
-
-Write-EnhancedLog -Message "##################################"
-Write-EnhancedLog -Message "Installation started"
-Write-EnhancedLog -Message "##################################"
-Write-EnhancedLog -Message "Install Printer using the following Messages..."
-Write-EnhancedLog -Message "Port Name: $PortName"
-Write-EnhancedLog -Message "Printer IP: $PrinterIP"
-Write-EnhancedLog -Message "Printer Name: $PrinterName"
-Write-EnhancedLog -Message "Driver Name: $DriverName"
-Write-EnhancedLog -Message "INF File: $INFFile"
-
-$INFARGS = @(
-    "/add-driver"
-    "$INFFile"
-)
-
-If (-not $ThrowBad) {
-
-    Try {
-
-        #Stage driver to driver store
-        Write-EnhancedLog -Message "Staging Driver to Windows Driver Store using INF ""$($INFFile)"""
-        Write-EnhancedLog -Message "Running command: Start-Process pnputil.exe -ArgumentList $($INFARGS) -wait -passthru"
-        Start-Process pnputil.exe -ArgumentList $INFARGS -wait -passthru
-
-    }
-    Catch {
-        Write-Warning "Error staging driver to Driver Store"
-        Write-Warning "$($_.Exception.Message)"
-        Write-EnhancedLog -Message "Error staging driver to Driver Store"
-        Write-EnhancedLog -Message "$($_.Exception)"
-        $ThrowBad = $True
-    }
-}
-
-If (-not $ThrowBad) {
-    Try {
-    
-        #Install driver
-        $DriverExist = Get-PrinterDriver -Name $DriverName -ErrorAction SilentlyContinue
-        if (-not $DriverExist) {
-            Write-EnhancedLog -Message "Adding Printer Driver ""$($DriverName)"""
-            Add-PrinterDriver -Name $DriverName -Confirm:$false
+    #Run script in 64bit PowerShell to enumerate correct path for pnputil
+    If ($ENV:PROCESSOR_ARCHITEW6432 -eq "AMD64") {
+        Try {
+            &"$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH -PortName $PortName -PrinterIP $PrinterIP -DriverName $DriverName -PrinterName $PrinterName -INFFile $INFFile
         }
-        else {
-            Write-EnhancedLog -Message "Print Driver ""$($DriverName)"" already exists. Skipping driver installation."
+        Catch {
+            Write-Error "Failed to start $PSCOMMANDPATH"
+            Write-Warning "$($_.Exception.Message)"
+            $Throwbad = $True
         }
     }
-    Catch {
-        Write-Warning "Error installing Printer Driver"
-        Write-Warning "$($_.Exception.Message)"
-        Write-EnhancedLog -Message "Error installing Printer Driver"
-        Write-EnhancedLog -Message "$($_.Exception)"
-        $ThrowBad = $True
-    }
-}
 
-If (-not $ThrowBad) {
-    Try {
+    Write-EnhancedLog -Message "##################################"
+    Write-EnhancedLog -Message "Installation started"
+    Write-EnhancedLog -Message "##################################"
+    Write-EnhancedLog -Message "Install Printer using the following Messages..."
+    Write-EnhancedLog -Message "Port Name: $PortName"
+    Write-EnhancedLog -Message "Printer IP: $PrinterIP"
+    Write-EnhancedLog -Message "Printer Name: $PrinterName"
+    Write-EnhancedLog -Message "Driver Name: $DriverName"
+    Write-EnhancedLog -Message "INF File: $INFFile"
 
-        #Create Printer Port
-        $PortExist = Get-Printerport -Name $PortName -ErrorAction SilentlyContinue
-        if (-not $PortExist) {
-            Write-EnhancedLog -Message "Adding Port ""$($PortName)"""
-            Add-PrinterPort -name $PortName -PrinterHostAddress $PrinterIP -Confirm:$false
-        }
-        else {
-            Write-EnhancedLog -Message "Port ""$($PortName)"" already exists. Skipping Printer Port installation."
-        }
-    }
-    Catch {
-        Write-Warning "Error creating Printer Port"
-        Write-Warning "$($_.Exception.Message)"
-        Write-EnhancedLog -Message "Error creating Printer Port"
-        Write-EnhancedLog -Message "$($_.Exception)"
-        $ThrowBad = $True
-    }
-}
+    $INFARGS = @(
+        "/add-driver"
+        "$INFFile"
+    )
 
-If (-not $ThrowBad) {
-    Try {
+    If (-not $ThrowBad) {
 
-        #Add Printer
-        $PrinterExist = Get-Printer -Name $PrinterName -ErrorAction SilentlyContinue
-        if (-not $PrinterExist) {
-            Write-EnhancedLog -Message "Adding Printer ""$($PrinterName)"""
-            Add-Printer -Name $PrinterName -DriverName $DriverName -PortName $PortName -Confirm:$false
-        }
-        else {
-            Write-EnhancedLog -Message "Printer ""$($PrinterName)"" already exists. Removing old printer..."
-            Remove-Printer -Name $PrinterName -Confirm:$false
-            Write-EnhancedLog -Message "Adding Printer ""$($PrinterName)"""
-            Add-Printer -Name $PrinterName -DriverName $DriverName -PortName $PortName -Confirm:$false
-        }
+        Try {
 
-        $PrinterExist2 = Get-Printer -Name $PrinterName -ErrorAction SilentlyContinue
-        if ($PrinterExist2) {
-            Write-EnhancedLog -Message "Printer ""$($PrinterName)"" added successfully"
+            #Stage driver to driver store
+            Write-EnhancedLog -Message "Staging Driver to Windows Driver Store using INF ""$($INFFile)"""
+            Write-EnhancedLog -Message "Running command: Start-Process pnputil.exe -ArgumentList $($INFARGS) -wait -passthru"
+            Start-Process pnputil.exe -ArgumentList $INFARGS -Wait -PassThru
+
         }
-        else {
-            Write-Warning "Error creating Printer"
-            Write-EnhancedLog -Message "Printer ""$($PrinterName)"" error creating printer"
+        Catch {
+            Write-Warning "Error staging driver to Driver Store"
+            Write-Warning "$($_.Exception.Message)"
+            Write-EnhancedLog -Message "Error staging driver to Driver Store"
+            Write-EnhancedLog -Message "$($_.Exception)"
             $ThrowBad = $True
         }
     }
-    Catch {
-        Write-Warning "Error creating Printer"
-        Write-Warning "$($_.Exception.Message)"
-        Write-EnhancedLog -Message "Error creating Printer"
-        Write-EnhancedLog -Message "$($_.Exception)"
-        $ThrowBad = $True
-    }
-}
 
-If ($ThrowBad) {
-    Write-Error "An error was thrown during installation. Installation failed. Refer to the log file in %temp% for details"
-    Write-EnhancedLog -Message "Installation Failed"
-}
+    If (-not $ThrowBad) {
+        Try {
+    
+            #Install driver
+            $DriverExist = Get-PrinterDriver -Name $DriverName -ErrorAction SilentlyContinue
+            if (-not $DriverExist) {
+                Write-EnhancedLog -Message "Adding Printer Driver ""$($DriverName)"""
+                Add-PrinterDriver -Name $DriverName -Confirm:$false
+            }
+            else {
+                Write-EnhancedLog -Message "Print Driver ""$($DriverName)"" already exists. Skipping driver installation."
+            }
+        }
+        Catch {
+            Write-Warning "Error installing Printer Driver"
+            Write-Warning "$($_.Exception.Message)"
+            Write-EnhancedLog -Message "Error installing Printer Driver"
+            Write-EnhancedLog -Message "$($_.Exception)"
+            $ThrowBad = $True
+        }
+    }
+
+    If (-not $ThrowBad) {
+        Try {
+
+            #Create Printer Port
+            $PortExist = Get-PrinterPort -Name $PortName -ErrorAction SilentlyContinue
+            if (-not $PortExist) {
+                Write-EnhancedLog -Message "Adding Port ""$($PortName)"""
+                Add-PrinterPort -Name $PortName -PrinterHostAddress $PrinterIP -Confirm:$false
+            }
+            else {
+                Write-EnhancedLog -Message "Port ""$($PortName)"" already exists. Skipping Printer Port installation."
+            }
+        }
+        Catch {
+            Write-Warning "Error creating Printer Port"
+            Write-Warning "$($_.Exception.Message)"
+            Write-EnhancedLog -Message "Error creating Printer Port"
+            Write-EnhancedLog -Message "$($_.Exception)"
+            $ThrowBad = $True
+        }
+    }
+
+    If (-not $ThrowBad) {
+        Try {
+
+            #Add Printer
+            $PrinterExist = Get-Printer -Name $PrinterName -ErrorAction SilentlyContinue
+            if (-not $PrinterExist) {
+                Write-EnhancedLog -Message "Adding Printer ""$($PrinterName)"""
+                Add-Printer -Name $PrinterName -DriverName $DriverName -PortName $PortName -Confirm:$false
+            }
+            else {
+                Write-EnhancedLog -Message "Printer ""$($PrinterName)"" already exists. Removing old printer..."
+                Remove-Printer -Name $PrinterName -Confirm:$false
+                Write-EnhancedLog -Message "Adding Printer ""$($PrinterName)"""
+                Add-Printer -Name $PrinterName -DriverName $DriverName -PortName $PortName -Confirm:$false
+            }
+
+            $PrinterExist2 = Get-Printer -Name $PrinterName -ErrorAction SilentlyContinue
+            if ($PrinterExist2) {
+                Write-EnhancedLog -Message "Printer ""$($PrinterName)"" added successfully"
+            }
+            else {
+                Write-Warning "Error creating Printer"
+                Write-EnhancedLog -Message "Printer ""$($PrinterName)"" error creating printer"
+                $ThrowBad = $True
+            }
+        }
+        Catch {
+            Write-Warning "Error creating Printer"
+            Write-Warning "$($_.Exception.Message)"
+            Write-EnhancedLog -Message "Error creating Printer"
+            Write-EnhancedLog -Message "$($_.Exception)"
+            $ThrowBad = $True
+        }
+    }
+
+    If ($ThrowBad) {
+        Write-Error "An error was thrown during installation. Installation failed. Refer to the log file in %temp% for details"
+        Write-EnhancedLog -Message "Installation Failed"
+    }
 
 
 
@@ -495,36 +503,37 @@ function Get-MicrosoftGraphAccessToken {
 }
 
 
-    $site_objectid = $null
-    function Get-M365GroupObjectId {
-        param (
-            [Parameter(Mandatory=$true)]
-            [string]$groupEmail
-        )
+$site_objectid = $null
+function Get-M365GroupObjectId {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$groupEmail
+    )
     
-        $url = "https://graph.microsoft.com/v1.0/groups"
-        $groups = @()
+    $url = "https://graph.microsoft.com/v1.0/groups"
+    $groups = @()
     
-        do {
-            $response = Invoke-RestMethod -Headers $headers -Uri $url -Method Get
-            $groups += $response.value
-            $url = $response.'@odata.nextLink'
-        } while ($url)
+    do {
+        $response = Invoke-RestMethod -Headers $headers -Uri $url -Method Get
+        $groups += $response.value
+        $url = $response.'@odata.nextLink'
+    } while ($url)
 
 
-        # #DBG
+    # #DBG
     
-        $group = $groups | Where-Object { $_.mail -eq $groupEmail }
+    $group = $groups | Where-Object { $_.mail -eq $groupEmail }
     
-        if ($group) {
-            return $group.id
-        } else {
-            Write-EnhancedLog -Message "M365 Group not found with email address: $groupEmail" -Level "DEBUG" -ForegroundColor ([ConsoleColor]::Yellow)
-            return $null
-        }
+    if ($group) {
+        return $group.id
     }
+    else {
+        Write-EnhancedLog -Message "M365 Group not found with email address: $groupEmail" -Level "DEBUG" -ForegroundColor ([ConsoleColor]::Yellow)
+        return $null
+    }
+}
     
-    # $site_objectid = Get-M365GroupObjectId -groupEmail "syslog@lhc.ca"
+# $site_objectid = Get-M365GroupObjectId -groupEmail "syslog@lhc.ca"
 
 
 function Get-SharePointDocumentDriveId {
@@ -602,7 +611,8 @@ function Upload-FileToSharePoint {
         Invoke-RestMethod -Uri $putUrl -Headers $upload_headers -Method Put -InFile $file_path -ContentType 'multipart/form-data'
 
         Write-EnhancedLog -Message "File '$SPOUploadfilename' was uploaded to '$putUrl'" -Level 'INFO' -ForegroundColor Green
-    } catch {
+    }
+    catch {
         Write-EnhancedLog -Message "Error encountered while uploading file '$SPOUploadfilename' to '$putUrl': $_" -Level 'ERROR' -ForegroundColor Red
     }
 }
@@ -638,7 +648,8 @@ function Send-TeamsMessage {
         $Teamsresponse = Invoke-RestMethod @params
 
         Write-EnhancedLog -Message "Message sent to Microsoft Teams successfully." -Level 'INFO' -ForegroundColor Green
-    } catch {
+    }
+    catch {
         Write-EnhancedLog -Message "Error encountered while sending message to Microsoft Teams: $_" -Level 'ERROR' -ForegroundColor Red
     }
 }
@@ -664,7 +675,8 @@ function Scan-FolderForExtension {
         else {
             Write-EnhancedLog -Message "Folder path '$folderPath' does not exist." -Level 'WARNING' -ForegroundColor Yellow
         }
-    } catch {
+    }
+    catch {
         Write-EnhancedLog -Message "Error encountered while scanning folder '$folderPath' for files with extension '$fileExtension': $_" -Level 'ERROR' -ForegroundColor Red
     }
 
@@ -708,12 +720,12 @@ try {
     $allScanResults = @()
 
     # foreach ($drive in $drives) {
-        $folderPath = "C:\intune\Win32\InstallingPrintDrviers\"
-        # $folderPath = $folderPath -replace "^C:", "$drive"
+    $folderPath = "C:\intune\Win32\InstallingPrintDrviers\"
+    # $folderPath = $folderPath -replace "^C:", "$drive"
 
-        # Write-EnhancedLog "Scanning folder '$folderpath' for files with extension '$file_extension'..."
-        # $scanResults = Scan-FolderForExtension -folderPath $folderPath -fileExtension $file_extension
-        # $allScanResults += $scanResults
+    # Write-EnhancedLog "Scanning folder '$folderpath' for files with extension '$file_extension'..."
+    # $scanResults = Scan-FolderForExtension -folderPath $folderPath -fileExtension $file_extension
+    # $allScanResults += $scanResults
     # }
 
 
@@ -795,12 +807,12 @@ catch {
 
 
 
-  # Send the report file to the specified Teams channel
-  $messageText += Get-Content -Path $reportFilePath -Raw
-  $messageText += Get-Content -Path $logFile -Raw
-  Write-EnhancedLog "Sending report to Teams channel..."
-  Send-TeamsMessage -webhook_url $webhook_url -message_text $messageText
-  Write-EnhancedLog "Report sent successfully."
+# Send the report file to the specified Teams channel
+$messageText += Get-Content -Path $reportFilePath -Raw
+$messageText += Get-Content -Path $logFile -Raw
+Write-EnhancedLog "Sending report to Teams channel..."
+Send-TeamsMessage -webhook_url $webhook_url -message_text $messageText
+Write-EnhancedLog "Report sent successfully."
 
 # Remove variables and clear secrets
 Remove-Variable -Name clientId
