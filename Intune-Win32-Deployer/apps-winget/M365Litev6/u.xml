@@ -1,0 +1,4 @@
+<Configuration ID="579288f0-54f4-49c3-bf40-93e6c45ca440">
+  <Remove All="TRUE" />
+  <RemoveMSI />
+</Configuration>
