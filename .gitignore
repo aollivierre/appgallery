@@ -45,3 +45,5 @@ secrets.json
 *.exe
 *.msi
 *.intunewin
+Intune-Win32-Deployer/apps-winget-repo/FortiClientEMSv7_Bellwoods-v5.zip
+Intune-Win32-Deployer/apps-winget-repo/FortiClientVPNv7_v4-CHFC.zip
