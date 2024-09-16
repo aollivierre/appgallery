@@ -1,0 +1,29 @@
+{
+    "requiredModules": [
+        "Microsoft.Graph.Authentication",
+        "Microsoft.Graph.Applications",
+        "Microsoft.Graph.Identity.DirectoryManagement",
+        "Microsoft.Graph.Users"
+    ],
+    "importedModules": [
+        "Microsoft.Graph.Identity.DirectoryManagement",
+        "Microsoft.Graph.Authentication",
+        "Microsoft.Graph.Identity.DirectoryManagement",
+        "Microsoft.Graph.Applications",
+        "Microsoft.Graph.Users"
+    ],
+    "myModules": [
+        "EnhancedAO.Graph.SignInLogs",
+        "EnhancedBoilerPlateAO",
+        "EnhancedDeviceMigrationAO",
+        "EnhancedFileManagerAO",
+        "EnhancedGraphAO",
+        "EnhancedHyperVAO",
+        "EnhancedLoggingAO",
+        "EnhancedPSADTAO",
+        "EnhancedSchedTaskAO",
+        "EnhancedSPOAO",
+        "EnhancedVPNAO",
+        "EnhancedWin32DeployerAO"
+    ]
+}
