@@ -232,7 +232,7 @@ Try {
 		Set-PSFConfig -Fullname 'PSFramework.Logging.FileSystem.ModernLog' -Value $true -PassThru | Register-PSFConfig -Scope SystemDefault
 
 		# Define the base logs path and job name
-		$JobName = "AAD_Migration"
+		$JobName = "M365AppsUpdate"
 		$parentScriptName = Get-ParentScriptName
 		Write-EnhancedLog -Message "Parent Script Name: $parentScriptName"
 
@@ -353,96 +353,96 @@ Try {
 		$ProvisioningPackName = $config.ProvisioningPackname
 
 		# Example of logging the loaded configuration
-		Write-EnhancedLog -Message "Loaded configuration from $configPath" -Level "INFO"
-		Write-EnhancedLog -Message "MigrationPath: $MigrationPath" -Level "INFO"
-		Write-EnhancedLog -Message "UseOneDriveKFM: $UseOneDriveKFM" -Level "INFO"
-		Write-EnhancedLog -Message "InstallOneDrive: $InstallOneDrive" -Level "INFO"
-		Write-EnhancedLog -Message "TenantID: $TenantID" -Level "INFO"
-		Write-EnhancedLog -Message "DeferDeadline: $DeferDeadline" -Level "INFO"
-		Write-EnhancedLog -Message "TempUser: $TempUser" -Level "INFO"
-		Write-EnhancedLog -Message "ProvisioningPack: $ProvisioningPack" -Level "INFO"
-		Write-EnhancedLog -Message "ProvisioningPackName: $ProvisioningPackName" -Level "INFO"
+		# Write-EnhancedLog -Message "Loaded configuration from $configPath" -Level "INFO"
+		# Write-EnhancedLog -Message "MigrationPath: $MigrationPath" -Level "INFO"
+		# Write-EnhancedLog -Message "UseOneDriveKFM: $UseOneDriveKFM" -Level "INFO"
+		# Write-EnhancedLog -Message "InstallOneDrive: $InstallOneDrive" -Level "INFO"
+		# Write-EnhancedLog -Message "TenantID: $TenantID" -Level "INFO"
+		# Write-EnhancedLog -Message "DeferDeadline: $DeferDeadline" -Level "INFO"
+		# Write-EnhancedLog -Message "TempUser: $TempUser" -Level "INFO"
+		# Write-EnhancedLog -Message "ProvisioningPack: $ProvisioningPack" -Level "INFO"
+		# Write-EnhancedLog -Message "ProvisioningPackName: $ProvisioningPackName" -Level "INFO"
 
 		# Wait-Debugger
 
 
 		# Script variables
-		$DomainLeaveUser = $DomainLeaveUser
-		$DomainLeavePassword = $DomainLeavePassword
+		# $DomainLeaveUser = $DomainLeaveUser
+		# $DomainLeavePassword = $DomainLeavePassword
 
 
-		Show-InstallationProgress -Status 'Analyzing OneDriveSync Util Status'
+		# Show-InstallationProgress -Status 'Analyzing OneDriveSync Util Status'
 
 
 		#Region AnalyzeOneDriveSyncUtilStatusParams
 
-		If ($UseOneDriveKFM) {
+		# If ($UseOneDriveKFM) {
 
-			# 	Write-Output "OneDriveKFM flag is set to True. Checking Sync Status before continuing."
+		# 	Write-Output "OneDriveKFM flag is set to True. Checking Sync Status before continuing."
 
 
-			$RemoveExistingStatusFilesParams = @{
-				LogFolder      = "logs"
-				StatusFileName = "ODSyncUtilStatus.json"
+		# $RemoveExistingStatusFilesParams = @{
+		# 	LogFolder      = "logs"
+		# 	StatusFileName = "ODSyncUtilStatus.json"
         
-			}
-			# Remove existing status files
-			Remove-ExistingStatusFiles @RemoveExistingStatusFilesParams
+		# }
+		# Remove existing status files
+		# Remove-ExistingStatusFiles @RemoveExistingStatusFilesParams
 
 	
-			# 	#Check the most recent OD4B Sync status. Write error to event log if not healthy and exit
-			$taskParams = @{
-				TaskPath = "\AAD Migration"
-				TaskName = "AADM Get OneDrive Sync Util Status"
-			}
+		# 	#Check the most recent OD4B Sync status. Write error to event log if not healthy and exit
+		# $taskParams = @{
+		# 	TaskPath = "\AAD Migration"
+		# 	TaskName = "AADM Get OneDrive Sync Util Status"
+		# }
 
-			Show-InstallationProgress -Status 'Triggering Task AADM Get OneDrive Sync Util Status'
+		# Show-InstallationProgress -Status 'Triggering Task AADM Get OneDrive Sync Util Status'
 		
-			# Trigger OneDrive Sync Status Scheduled Task
-			Trigger-ScheduledTask @taskParams
+		# Trigger OneDrive Sync Status Scheduled Task
+		# Trigger-ScheduledTask @taskParams
 		
 
-			# Example usage with try-catch mechanism and Write-EnhancedLog
-			$AnalyzeOneDriveSyncUtilStatusParams = @{
-				LogFolder      = "logs"
-				StatusFileName = "ODSyncUtilStatus.json"
-				MaxRetries     = 5
-				RetryInterval  = 10
-			}
+		# Example usage with try-catch mechanism and Write-EnhancedLog
+		# $AnalyzeOneDriveSyncUtilStatusParams = @{
+		# 	LogFolder      = "logs"
+		# 	StatusFileName = "ODSyncUtilStatus.json"
+		# 	MaxRetries     = 5
+		# 	RetryInterval  = 10
+		# }
 
-			try {
-				$result = Analyze-OneDriveSyncUtilStatus @AnalyzeOneDriveSyncUtilStatusParams
+		# try {
+		# 	$result = Analyze-OneDriveSyncUtilStatus @AnalyzeOneDriveSyncUtilStatusParams
 
-				# Example decision-making based on the result
-				if ($result.Status -eq "Healthy") {
+		# 	# Example decision-making based on the result
+		# 	if ($result.Status -eq "Healthy") {
 
-					Show-InstallationProgress -Status 'OneDrive is healthy... proceeding with migration'
-					Write-EnhancedLog -Message "OneDrive is healthy, no further action required." -Level "INFO"
+		# 		Show-InstallationProgress -Status 'OneDrive is healthy... proceeding with migration'
+		# 		Write-EnhancedLog -Message "OneDrive is healthy, no further action required." -Level "INFO"
 					
-				}
-				elseif ($result.Status -eq "InProgress") {
-					Write-EnhancedLog -Message "OneDrive is syncing, please wait..." -Level "INFO"
-					exit 1
-				}
-				elseif ($result.Status -eq "Failed") {
-					Write-EnhancedLog -Message "OneDrive has encountered an error, please investigate." -Level "WARNING"
-					exit 1
-				}
-				else {
-					Write-EnhancedLog -Message "OneDrive status is unknown, further analysis required." -Level "NOTICE"
-					Write-EnhancedLog -Message "Exiting due to unknown OneDrive status." -Level "CRITICAL"
-					exit 1
-				}
-			}
-			catch {
-				Write-EnhancedLog -Message "An error occurred while analyzing OneDrive status: $($_.Exception.Message)" -Level "ERROR"
-				Write-EnhancedLog -Message "Please check if you are logged in to OneDrive and try again." -Level "ERROR"
-				Handle-Error -ErrorRecord $_
+		# 	}
+		# 	elseif ($result.Status -eq "InProgress") {
+		# 		Write-EnhancedLog -Message "OneDrive is syncing, please wait..." -Level "INFO"
+		# 		exit 1
+		# 	}
+		# 	elseif ($result.Status -eq "Failed") {
+		# 		Write-EnhancedLog -Message "OneDrive has encountered an error, please investigate." -Level "WARNING"
+		# 		exit 1
+		# 	}
+		# 	else {
+		# 		Write-EnhancedLog -Message "OneDrive status is unknown, further analysis required." -Level "NOTICE"
+		# 		Write-EnhancedLog -Message "Exiting due to unknown OneDrive status." -Level "CRITICAL"
+		# 		exit 1
+		# 	}
+		# }
+		# catch {
+		# 	Write-EnhancedLog -Message "An error occurred while analyzing OneDrive status: $($_.Exception.Message)" -Level "ERROR"
+		# 	Write-EnhancedLog -Message "Please check if you are logged in to OneDrive and try again." -Level "ERROR"
+		# 	Handle-Error -ErrorRecord $_
     
-				# Throw to halt the entire script
-				throw $_
-			}
-		}
+		# 	# Throw to halt the entire script
+		# 	throw $_
+		# }
+		# }
 
 		#endregion AnalyzeOneDriveSyncUtilStatusParams
 
@@ -460,26 +460,40 @@ Try {
 		## <Perform Installation tasks here>
 
 
-		Show-InstallationProgress -Status 'Calling Main-MigrateToAADJOnly to schedule Entra Join on next reboot, suspend bitlocker and Leave current domain '
+		Show-InstallationProgress -Status 'Calling M365 Updates '
 		
 
 		# Script variables
-		$DomainLeaveUser = $DomainLeaveUser
-		$DomainLeavePassword = $DomainLeavePassword
+		# $DomainLeaveUser = $DomainLeaveUser
+		# $DomainLeavePassword = $DomainLeavePassword
 
 
-		$MainMigrateParams = @{
-			# PPKGName   = "C:\code\CB\Entra\DeviceMigration\Files\ICTC_EJ_Bulk_Enrollment_v4\ICTC_EJ_Bulk_Enrollment_v5.ppkg"
-			# PPKGName         = "ICTC_EJ_Bulk_Enrollment_v5.ppkg"
-			PPKGPath         = $ProvisioningPack
-			# DomainLeaveUser     = "YourDomainUser"
-			# DomainLeavePassword = "YourDomainPassword"
-			TempUser         = $TempUser
-			TempUserPassword = $TempPass
-			ScriptPath       = "C:\ProgramData\AADMigration\Scripts\Phase1EntraJoin.PostRunOnce.ps1"
-		}
+		# $MainMigrateParams = @{
+		# 	# PPKGName   = "C:\code\CB\Entra\DeviceMigration\Files\ICTC_EJ_Bulk_Enrollment_v4\ICTC_EJ_Bulk_Enrollment_v5.ppkg"
+		# 	# PPKGName         = "ICTC_EJ_Bulk_Enrollment_v5.ppkg"
+		# 	PPKGPath         = $ProvisioningPack
+		# 	# DomainLeaveUser     = "YourDomainUser"
+		# 	# DomainLeavePassword = "YourDomainPassword"
+		# 	TempUser         = $TempUser
+		# 	TempUserPassword = $TempPass
+		# 	ScriptPath       = "C:\ProgramData\AADMigration\Scripts\Phase1EntraJoin.PostRunOnce.ps1"
+		# }
 
-		Main-MigrateToAADJOnly @MainMigrateParams
+		# Main-MigrateToAADJOnly @MainMigrateParams
+
+
+		$d = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+
+		# if((Get-ChildItem -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"|Get-ItemProperty|Where-Object{$_.DisplayName -match "Microsoft 365 Apps" })){ Start-Process -FilePath "$d\s.exe" -ArgumentList "/configure", "$d\u.xml" -Wait -WindowStyle Hidden}
+
+
+		Start-Process -FilePath "$d\sara\SaRAcmd.exe" -ArgumentList "-S OfficeScrubScenario -AcceptEula -OfficeVersion All" -wait -WindowStyle Hidden
+
+		Start-Process -FilePath "$d\s.exe" -ArgumentList "/configure", "$d\u.xml" -Wait -WindowStyle Hidden
+            
+		Start-Process -FilePath "$d\s.exe" -ArgumentList "/configure", "$d\c.xml" -Wait -WindowStyle Hidden
+
+
 
 		##*===============================================
 		##* POST-INSTALLATION
@@ -488,17 +502,17 @@ Try {
 
 		## <Perform Post-Installation tasks here>
 
-		Show-InstallationProgress -Status 'Disabling Task PR4B-AADM Launch PSADT for Interactive Migration'
+		# Show-InstallationProgress -Status 'Disabling Task PR4B-AADM Launch PSADT for Interactive Migration'
 
-		$DisableScheduledTaskByPath = @{
-			TaskName = "PR4B-AADM Launch PSADT for Interactive Migration"
-			TaskPath = "\AAD Migration\"
-		}
-		Disable-ScheduledTaskByPath @DisableScheduledTaskByPath
+		# $DisableScheduledTaskByPath = @{
+		# 	TaskName = "PR4B-AADM Launch PSADT for Interactive Migration"
+		# 	TaskPath = "\AAD Migration\"
+		# }
+		# Disable-ScheduledTaskByPath @DisableScheduledTaskByPath
 
-		Show-InstallationProgress -Status 'Computer has left the domain and will reboot now to start Entra Join (Phase 1)'
+		Show-InstallationProgress -Status 'M365 Updates are now completed'
 
-		Restart-ComputerIfNeeded
+		# Restart-ComputerIfNeeded
 
 		## Display a message at the end of the install
 		If (-not $useDefaultMsi) { Show-InstallationPrompt -Message 'You can customize text to appear at the end of an install or remove it completely for unattended installations.' -ButtonRightText 'OK' -Icon Information -NoWait }
