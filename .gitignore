@@ -48,3 +48,24 @@ secrets.json
 Intune-Win32-Deployer/apps-winget-repo/FortiClientEMSv7_Bellwoods-v5.zip
 Intune-Win32-Deployer/apps-winget-repo/FortiClientVPNv7_v4-CHFC.zip
 *.exe
+*.msi
+/Intune-Win32-Deployer/apps-winget-repo/HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v8/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-005-HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v10/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-005-HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v9/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-009-HPLaserJetProM1212nf-Deauville-withnoPSADT-v10 - Uninstall/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-009-HPLaserJetProM1212nf-Deauville-withnoPSADT-v10/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-010-HPLaserJetProM428fdw-Madison-withnoPSADT-v10 - Uninstall/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-010-HPLaserJetProM428fdw-Madison-withnoPSADT-v10/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-011-HPLaserJetProM428fdw-ELM-withnoPSADT-v10 Uninstall/Driver
+/Intune-Win32-Deployer/apps-winget-repo/PRINT-011-HPLaserJetProM428fdw-ELM-withnoPSADT-v10/Driver
+/Intune-Win32-Deployer/Sharp-HP-Brother/HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v2/Driver
+/Intune-Win32-Deployer/Sharp-HP-Brother/HPLaserJetP3015-Bellwoods-Finance-Area-New-PSADT/HPDriver
+/Intune-Win32-Deployer/Sharp-HP-Brother/HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v3/Driver
+/Intune-Win32-Deployer/Sharp-HP-Brother/HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT/Driver
+/Intune-Win32-Deployer/Sharp-HP-Brother/HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v4/Driver
+/Intune-Win32-Deployer/apps-winget-repo/HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v6/Driver
+/Intune-Win32-Deployer/apps-winget-repo/HPLaserJetP3015-Bellwoods-Finance-Area-New-withnoPSADT-v3/Driver
+/Intune-Win32-Deployer/apps-winget-repo/AdobePro-v2/Files
+/Intune-Win32-Deployer/apps-winget-repo/AdobePro-v3/Files
+*.msix
+/Intune-Win32-Deployer/apps-winget/AdobePro-v4/Files
