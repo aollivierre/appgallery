@@ -36,7 +36,7 @@ foreach ($path in $teamViewerPaths) {
 }
 
 if ($teamViewerExe) {
-    Start-Process -FilePath $teamViewerExe -ArgumentList "assignment", "--id", "0001CoABChB_v5MwSa8R7o8P_rKIEvk7EigIACAAAgAJACy2Zi09RdZnXEaaCiwaca_tqmQwD_Jl-MczmvzG-wSzGkB8W7SmmlegzfK9r1qmVL39mYxWpE434_lZbmR7-_u8wLAjko6jO8YAVCA91RlMOsBp9NUzSkwYqzplaRat5iR7IAEQoJnZ0wY"
+    Start-Process -FilePath $teamViewerExe -ArgumentList "assignment", "--id", "0001CoABChA0Wtyw41UR74SOzFGxK_rXEigIACAAAgAJACbSLLKpBBA6xZ-LyQnQTR-eZS-k2LbZwnYA3hzgn3SyGkDPy2YN1c_GAI_NPqig6Pj2KlsEx8tWXmtGjlI2edd2S45EsUzHcwJ7NxQ8FYG76qUp2Y4MyeLXBJ5zKbYzGP2uIAEQ9-LB8g0="
 } else {
     Write-Error "TeamViewer executable not found in any of the expected locations"
     exit 1
